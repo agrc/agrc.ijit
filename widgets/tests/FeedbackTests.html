@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<head>
+    <title>Feedback Tests</title>
+
+    <style type="text/css">
+        @import "http://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/dojo/dijit/themes/claro/claro.css";
+        @import "../../../agrc/themes/standard/map/BaseMap.css";
+        @import '../../themes/standard/notify/Feedback.css';
+        html {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+        #map-div {
+            border: solid gray 1px;
+            width: 400px;
+            height: 500px;
+        }
+        *:focus {
+            outline: none;
+        }
+    </style>
+
+    <script type="text/javascript">
+        dojoConfig = {
+            parseOnLoad: true,
+            isDebug: true,
+            debugAtAllCosts: true,
+            baseUrl: './',
+            modulePaths: {
+                'agrc': '../../../agrc',
+                'ijit': '../../'
+            }
+        };
+    </script>
+
+    <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.8"></script>
+    <script type='text/javascript'>
+        dojo.require('agrc.widgets.map.BaseMap');
+        dojo.require('ijit.widgets.notify.Feedback');
+
+        var map, feedback;
+        dojo.ready(function () {
+            map = new agrc.widgets.map.BaseMap('map-div');
+            feedback = new ijit.widgets.notify.Feedback({
+                map: map,
+                appName: 'FeedbackTestPage'
+            }, dojo.create('div'));
+        });
+    </script>
+</head>
+<body class="claro">
+    <div id='map-div'></div>
+</body>
+</html>

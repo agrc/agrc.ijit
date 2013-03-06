@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+        <title>Pane Stack Widget Tests</title>
+
+        <!-- META TAGS -->
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8">
+		<meta name="description" content="We should do some SEO" />
+        <meta name="keywords" content="Comma, Separated List"/>
+		
+		<!-- CSS -->
+		<link rel='stylesheet' type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/2.3/js/dojo/dijit/themes/claro/claro.css'>
+    	<link rel='stylesheet' type='text/css' href='../../themes/standard/layout/PaneStack.css' />
+		<link rel="stylesheet" type="text/css" href="jasmine-1.0.1/jasmine.css">
+		<style type="text/css">
+			#test-div {
+				width: 200px;
+			}
+		</style>
+		
+		
+		<!-- JAVASCRIPT -->
+		<script type='text/javascript'>
+			dojoConfig={
+				isDebug: true,
+				debugAtAllCosts: true,
+				parseOnLoad: true,
+				baseUrl: './',
+				modulePaths: {
+					"ijit": "../../"
+				}
+			};
+		</script>
+		<script type='text/javascript' src='http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.3'></script>
+		<script type="text/javascript" src="jasmine-1.0.1/jasmine.js"></script>
+        <script type="text/javascript" src="jasmine-1.0.1/jasmine-html.js"></script>
+		<script type='text/javascript' src='spec/SpecPaneStack.js'></script>
+		<script type='text/javascript'>
+			dojo.require('ijit.widgets.layout.PaneStack');
+			dojo.require("dijit.form.Button");
+			
+			function init(){
+				console.log(this.declaredClass, arguments.callee, arguments);
+				
+				// init widget
+				paneStack = new ijit.widgets.layout.PaneStack(null, "test-div");
+				
+				// run tests
+				jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+	            jasmine.getEnv().execute();
+			}
+			
+			dojo.ready(init);
+		</script>
+	</head>
+	<body class='claro' style='overflow: auto;'>
+		<div id='test-div'>
+			<div title="Title1">
+				Content1
+			</div>
+			<div title="Title2">
+				Content2
+				<button data-dojo-type="dijit.form.Button">Button</button>
+			</div>
+			<div title="Title3">
+				test
+				test
+				sete<br>
+				sadf
+				<br>&aacute;
+			</div>
+		</div>
+	</body>
+</html>

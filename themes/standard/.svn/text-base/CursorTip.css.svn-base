@@ -1,0 +1,8 @@
+.cursor-tip {
+    z-index: 999;
+    border-radius: 3px;
+    font-size: smaller;
+    background-color: white;
+    padding: 5px;
+    border: 1px solid gray;
+}

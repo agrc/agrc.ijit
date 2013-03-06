@@ -1,0 +1,34 @@
+.toc-widget .dijitTree {
+	overflow-x: hidden;
+}
+.toc-widget .claro .dijitTreeExpando {
+	display: inline;
+	margin-bottom: 1px;
+	margin-right: 2px;
+}
+.toc-widget .dijitTreeRow img {
+	display: none;
+}
+.toc-widget .dijitTreeLabel {
+	margin: 0px;
+}
+.toc-widget .dijitTreeRowHover {
+	background-color: transparent;
+}
+.toc-widget .dijitTreeRowSelected {
+	background-color: transparent;
+	border-color: transparent;
+}
+.toc-widget .dijitTreeRowActive {
+	/*border: solid 1px transparent;*/
+	background-position: 0;
+}
+.toc-widget .dijitTreeRow {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	border-width: 0px;
+	margin: 0 0 0 1px;
+}
+.toc-widget .dijitCheckBox {
+    margin-top: -6px;
+}

@@ -1,0 +1,86 @@
+10
+
+dir
+103
+https://subversion.dts.utah.gov/agrc-widgets/ijit/widgets
+https://subversion.dts.utah.gov/agrc-widgets
+
+
+
+2012-10-16T00:31:43.639063Z
+93
+sgourley
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+966f050d-1673-be4e-afc5-99042f34cf28
+
+tests
+dir
+
+dijit
+dir
+
+upload
+dir
+
+CursorTip.js
+file
+
+
+
+
+2013-01-17T17:00:02.000000Z
+68d6f8e87f5e200fc6c654ac6af2a696
+2012-07-18T13:28:37.926601Z
+87
+sdavis
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3742
+
+mobile
+dir
+
+notify
+dir
+
+layer
+dir
+
+layout
+dir
+
+map
+dir
+

@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>PageLayout Widget Tests</title>
+		<!-- META TAGS -->
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+		<!-- CSS -->
+		<link rel='stylesheet' type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/2.2/js/dojo/dijit/themes/claro/claro.css'>
+		<link rel='stylesheet' type='text/css' href='../../themes/standard/layout/PageLayout.css' />
+		<link rel='stylesheet' type='text/css' href='../../../agrc/branches/1.0/agrc/themes/standard/agrc.css' />
+		<link rel="stylesheet" type="text/css" href="jasmine-1.0.1/jasmine.css">
+
+		<!-- JAVASCRIPT -->
+		<script type='text/javascript'>
+			djConfig= {
+				isDebug: true,
+				debugAtAllCosts: true,
+				parseOnLoad: true,
+				baseUrl: './',
+				modulePaths: {
+					"ijit": "../../",
+					"agrc": '../../../agrc/branches/1.0/agrc'
+				}
+			};
+		</script>
+		<script type='text/javascript' src='http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.2'></script>
+		<script type="text/javascript" src="jasmine-1.0.1/jasmine.js"></script>
+		<script type="text/javascript" src="jasmine-1.0.1/jasmine-html.js"></script>
+		<script type='text/javascript' src='spec/SpecPageLayout.js'></script>
+		<script type='text/javascript'>
+			dojo.require('ijit.widgets.layout.PageLayout');
+
+			function init() {
+				console.log(this.declaredClass, arguments.callee, arguments);
+
+				// init widget
+				var sExtent = new esri.geometry.Extent(422706, 4527993, 428707, 4534510,
+				new esri.SpatialReference({
+					wkid: 26912
+				}));
+				var params = {
+					title: 'PageLayout Widget Tests',
+					links: [
+					['mapserv', 'http://mapserv.utah.gov'],
+					['test', 'http://google.com']
+					],
+					baseMapParams: {
+						extent: sExtent,
+						fitExtent: true,
+						useDefaultExtent: false
+					},
+					logo2: '../../themes/standard/images/AGRC_logo.png',
+					footerLinks: [{
+						text: 'Dialog Box Link',
+						action: 'showContent',
+						content: 'html/dialog_contents.html'
+					},{
+						text: 'External Site Link',
+						action: 'http://www.google.com'
+					}]
+				};
+				var w = new ijit.widgets.layout.PageLayout(params, 'main');
+
+				// run tests
+				jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+				jasmine.getEnv().execute();
+			}
+
+			dojo.ready(init);
+		</script>
+	</head>
+	<body class='claro' style='overflow: auto;'>
+		<div id='main'>
+			<div id='right'>
+				Note: The BaseMap layout gets offset a bit by the Jasmine test html that's added
+				after the widget is initiallized. It should work just fine without the tests.
+			</div>
+		</div>
+	</body>
+</html>

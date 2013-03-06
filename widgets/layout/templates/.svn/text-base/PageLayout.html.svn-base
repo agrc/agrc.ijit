@@ -1,0 +1,34 @@
+<div class='pagelayout'>
+	<!-- MAIN BORDER CONTAINER -->
+	<div dojoAttachPoint='mainContainer' dojoType='dijit.layout.BorderContainer' 
+		gutters='false' class='main-container'>
+		<!-- HEADER -->
+		<div dojoType='dijit.layout.ContentPane' region='top' class='header'>
+			<div dojoAttachPoint='logo1' class='logo1'></div>
+			<h1 class='layouttitle'>${title}</h1>
+			<div class="quick-links" dojoAttachPoint='quickLinks'></div>
+		</div>
+		
+		<!-- INNER BORDER CONTAINER -->
+		<div dojoAttachPoint='innerContainer' dojoType='dijit.layout.BorderContainer' 
+			region='center' class='inner-container'>
+			<!-- MAP -->
+			<div dojoType='dijit.layout.ContentPane' region='center' class='map-container'>
+				<div id='mapDiv' class='map-div'></div>
+			</div>
+			
+			<!-- RIGHT SIDEBAR -->
+			<div dojoAttachPoint='rightSidebar' dojoType='dijit.layout.ContentPane' 
+				region='right' class='right-sidebar'>
+			</div>
+		</div>
+		
+		<!-- FOOTER -->
+		<div dojoType='dijit.layout.ContentPane' region='bottom' class='footer'>
+			<div dojoAttachPoint='innerFooter' class='inner-footer'>
+				&copy; 2012 Utah AGRC | 
+				<a href='http://gis.utah.gov/agrc_contacts' target='_blank'>Contact Us</a> 
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Value Selector Tests</title>
+
+		<!-- META TAGS -->
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+
+		<!-- prevent cache / remove for build-->
+		<meta http-equiv="cache-control" content="no-cache">
+		<meta http-equiv="pragma" content="no-cache">
+
+		<!-- CSS -->
+		<!-- should be loaded dynamically by server / client side solution coming at 1.7?? -->
+		<link href="/libs/dojo-release-1.7.0b2-src/dojox/mobile/themes/iphone/iphone.css" rel="stylesheet" />
+
+		<!-- JAVASCRIPT -->
+		<script type="text/javascript">
+			dojoConfig = {
+				isDebug: true,
+				modulePaths: {
+					"ijit": "/RoadkillReporter_Phone/src/ijit"
+				},
+				parseOnLoad: true,
+				mobileAnim: 'slide'
+			};
+		</script>
+		<script src="/libs/dojo-release-1.7.0b2-src/dojo/dojo.js"></script>
+		<script type="text/javascript" src="jasmine-1.0.1/jasmine.js"></script>
+        <script type="text/javascript" src="jasmine-1.0.1/jasmine-html.js"></script>
+		<script type='text/javascript' src='spec/SpecValueSelector.js'></script>
+		<script language="JavaScript" type="text/javascript">
+			dojo.require("dojox.mobile");
+			dojo.require("dojox.mobile.parser");
+			dojo.requireIf(!dojo.isWebKit, "dojox.mobile.compat");
+			dojo.require("ijit.widgets.mobile.ValueSelector");
+			dojo.require("dojox.mobile.ScrollableView");
+			
+			function init(){
+				console.info("init", arguments);
+				new ijit.widgets.mobile.ValueSelector({
+					label: "Test label",
+					options: [
+						["option1", "value1"],
+						["option2", "value2"],
+						["option3", "value3"]
+					],
+					allowNew: true
+				}, "test-div");
+				
+				// run tests
+				jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+	            jasmine.getEnv().execute();
+			}
+			
+			dojo.ready(init);
+		</script>
+	</head>
+	<body>
+		<div id="home" dojoType="dojox.mobile.ScrollableView" selected="true">
+			<h1 dojoType="dojox.mobile.Heading" label="ValueSelector Tests"></h1>
+			<div id="test-div"></div>
+		</div>
+	</body>
+</html>

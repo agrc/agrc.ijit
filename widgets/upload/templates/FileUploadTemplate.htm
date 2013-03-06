@@ -1,0 +1,18 @@
+﻿<div>
+    <div dojoattachpoint="uploadContainer">
+        <form method="post" dojoattachpoint="form" action="${url}" enctype="multipart/form-data"
+        encoding="multipart/form-data">
+        <input type="file" name="file">
+        <button dojotype="dijit.form.Button" dojoattachpoint="submitBtn" type="submit" dojoattachEvent="onClick: upload">
+            Submit</button>
+        <div dojoattachpoint="errorContainer" class="uploadError">
+        </div>
+        </form>
+    </div>
+    <div dojoattachpoint="fileContainer">
+        <input dojotype="dijit.form.TextBox" dojoattachpoint="filename" value="${uploadName}"
+            readonly="readonly" />
+        <button dojotype="dijit.form.Button" dojoattachpoint="deleteBtn" dojoattachevent="onClick: deleteUpload">
+            Delete File</button>
+    </div>
+</div>

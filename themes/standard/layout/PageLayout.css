@@ -1,0 +1,91 @@
+body,html {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #A6A8AA;
+	min-width: 600px;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+}
+.pagelayout {
+	width: 95%;
+	min-width: 1020px;
+	height: 100%;
+	margin: auto;
+	background-color: white;
+}
+.pagelayout .main-container {
+	height: 100%;
+}
+.pagelayout .inner-container {
+	border: 0px;
+}
+.pagelayout .logo1 {
+	background: url("../images/AGRC_logo.png") no-repeat;
+    top: 11px;
+    left: 15px;
+    position: absolute;
+    height: 60px;
+    width: 108px;
+}
+.pagelayout .header {
+	overflow: hidden;
+	padding: 0px;
+	height: 83px;
+	margin-bottom: -5px;
+}
+.pagelayout .layouttitle {
+	color: #2B52A3;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	margin-top: 21px; /* for IE 7 */
+}
+.pagelayout .quick-links {
+	top: 15px;
+    position: absolute;
+    right: 15px;
+    font-size: small;
+}
+.pagelayout .inner-footer {
+	color: #404040;
+	text-align: center;
+	font-size: 11px;
+}
+.pagelayout .inner-footer a {
+    color: #404040;
+}
+.pagelayout .map-container {
+	padding: 0px;
+	overflow: hidden;
+}
+.pagelayout .map-div {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+.pagelayout .right-sidebar {
+	width: 250px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+.pagelayout .footer {
+	height: 21px;
+	padding: 0px;
+}
+.pagelayout #right {
+	margin: -1px;
+	height: 100%;
+}
+.pagelayout .logo2 {
+	position: absolute;
+	left: 129px;
+	top: 11px;
+}.pagelayout .footer-link {
+	cursor: pointer;
+	text-decoration: underline;
+}
+.dijitPopup {
+	font-size: small;
+}

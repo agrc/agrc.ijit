@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <script type="text/javascript">
+        djConfig={
+            parseOnLoad: true,
+            isDebug: true,
+			debugAtAllCosts: true,
+            usePlainJson: true,
+            enableMozDomContentLoaded: true,
+            baseUrl: './',
+			modulePaths: {
+			    'agrc': '../../',
+                'ijit': '../../'
+			},
+            dojoBlankHtmlUrl: './blank.htm'
+        };
+    </script>
+
+    <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.1"></script>
+    
+    <title>Feedback Test</title>
+    <style type="text/css">
+        @import "../../themes/standard/agrc.css";
+        @import "http://serverapi.arcgisonline.com/jsapi/arcgis/2.1/js/dojo/dijit/themes/tundra/tundra.css";
+		@import "http://serverapi.arcgisonline.com/jsapi/arcgis/2.1/js/dojo/dijit/themes/claro/claro.css";
+    </style>
+</head>
+<body class="tundra agrc" style="width: 75%">
+    <p>
+        Maecenas pulvinar volutpat est nec dignissim. Donec volutpat nibh ut lorem convallis
+        hendrerit. Curabitur lorem odio, imperdiet quis eleifend ac, pellentesque non sem.
+        Etiam nisl urna, pulvinar eget pharetra sed, condimentum ac felis. Nam mattis lobortis
+        erat, at bibendum nulla ornare at. In ac tellus mi. Cras vehicula velit in turpis
+        interdum vel imperdiet leo ultricies. Sed placerat nibh tortor. Vivamus feugiat
+        odio a nunc laoreet semper. Duis mattis interdum risus at laoreet.
+    </p>
+    <table cellspacing="0" width="100%" cellpadding="0" class="badgeTable">
+        <tbody>
+            <tr>
+                <td>
+                    <label>
+                        Contract Attachment A</label>
+                </td>
+                <td>
+                    <div dojotype="ijit.widgets.upload.FileUpload" id="contractattachmenta" name="contractattachmenta"
+                        uploadname="" style="width: 190px"
+                        guid="<%= Model.StoredDocuments.Guid.ToString() %>" filetypes='PDF' url="<%= Url.RouteUrl("project", new  {controller="Upload", action="UploadFile", ProjectNumber="-1"}) %>"
+                        deleteurl="<%= Url.RouteUrl("project", new  {controller="Upload", action="DeleteFile", ProjectNumber="-1"}) %>">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        Conflict of Interest Form</label>
+                </td>
+                <td>
+                    <div dojotype="ijit.widgets.upload.FileUpload" id="conflictofinterest" name="conflictofinterest"
+                        uploadname="" style="width: 190px"
+                        guid="<%=Model.StoredDocuments.Guid.ToString() %>" filetypes='PDF' url="<%= Url.RouteUrl("project", new  {controller="Upload", action="UploadFile", ProjectNumber="-1"}) %>"
+                        deleteurl="<%= Url.RouteUrl("project", new  {controller="Upload", action="DeleteFile", ProjectNumber="-1"}) %>">
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>    <p>
+        <input type="button" value="hide" id="hide"/>
+        <input type="button" value="show" id="show" />
+    </p>
+</body>
+</html>
+
+<script type="text/javascript">
+    dojo.require('ijit.widgets.upload.FileUpload');
+
+    dojo.addOnLoad(function () {
+        var item = dijit.byId('contractattachmenta');
+        dojo.connect(dojo.byId('show'), "onclick", item, "showUploadButton", true);
+        dojo.connect(dojo.byId('hide'), "onclick", item, "hideUploadButton", true);
+    });
+	
+	function changeTheme(){
+		console.log(this.declaredClass, arguments.callee, arguments);
+		
+		dojo.forEach(dojo.byId('themeSelect').options, function(op){
+			dojo.toggleClass(dojo.body(), op.text, op.selected);
+		});
+	}
+</script>
+

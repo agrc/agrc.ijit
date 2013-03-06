@@ -1,0 +1,6 @@
+.panestack {
+	margin-bottom: 1px;
+}
+.panestack .dijitTitlePane {
+	margin-bottom: -1px;
+}
