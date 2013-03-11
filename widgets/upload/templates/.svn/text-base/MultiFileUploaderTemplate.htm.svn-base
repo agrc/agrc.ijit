@@ -1,8 +1,0 @@
-﻿<div>
-    <label>
-        ${labelText}</label>
-    <div dojoattachpoint="containerNode">
-        <input type="file" name="${postName}" style="display:block" />
-    </div>
-    <button dojotype="dijit.form.Button" label="${moreLabel}" dojoattachPoint="addButton" dojoattachevent="onClick: _add" />
-</div>
