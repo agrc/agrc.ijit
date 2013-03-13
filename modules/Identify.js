@@ -2,7 +2,7 @@
 /*jslint sub:true*/
 dojo.provide("ijit.modules.Identify");
 
-dojo.require('esri.dijit.Popup');
+//dojo.require('esri.dijit.Popup');
 
 dojo.declare("ijit.modules.Identify", null, {
     // summary:
