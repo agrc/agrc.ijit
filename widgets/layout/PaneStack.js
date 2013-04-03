@@ -30,15 +30,15 @@ dojo.declare("ijit.widgets.layout.PaneStack", dijit._Widget, {
     //      <ul><li>ijit/themes/standard/layout/PaneStack.css</li></ul>
     // example:
     // |    var pStack = new ijit.widgets.layout.PaneStack(null, "pane-stack");
-    
+
     // panes: dijit.TitlePane[]
     //		An array of all of the panes within the widget
     panes: null,
-    
+
     baseClass: "panestack",
-    
+
     // Parameters to constructor
-    
+
     create: function(params, divId) {
         // summary:
         //    create method
@@ -47,14 +47,14 @@ dojo.declare("ijit.widgets.layout.PaneStack", dijit._Widget, {
         // div: String|DomNode
         //    A reference to the div that you want the widget to be created in.
         console.log(this.declaredClass + "::" + arguments.callee.nom, arguments);
-        
+
         this.panes = [];
         var that = this;
-        
+
         dojo.forEach(dojo.byId(divId).childNodes, function(node) {
-            if(node.nodeName === "DIV") {
+            if (node.nodeName === "DIV") {
                 var df = dojo.doc.createDocumentFragment();
-                while(node.firstChild) {
+                while (node.firstChild) {
                     df.appendChild(node.firstChild);
                 }
                 var pane = new dijit.TitlePane({
@@ -64,7 +64,7 @@ dojo.declare("ijit.widgets.layout.PaneStack", dijit._Widget, {
                 }, node);
                 pane.startup();
                 pane.watch("open", function(att, oldVal, newVal) {
-                    if(newVal) {
+                    if (newVal) {
                         that._onPaneOpen(this);
                     }
                 });
@@ -72,8 +72,6 @@ dojo.declare("ijit.widgets.layout.PaneStack", dijit._Widget, {
             }
         }, this);
 
-
-        
         this.inherited(arguments);
     },
     postCreate: function() {
@@ -83,13 +81,34 @@ dojo.declare("ijit.widgets.layout.PaneStack", dijit._Widget, {
         //    private
         console.log(this.declaredClass + "::" + arguments.callee.nom, arguments);
     },
+    add: function(pane) {
+        // summary:
+        //    Allows a new pane to be added
+        // tags:
+        //    public
+        console.log(this.declaredClass + "::" + arguments.callee.nom, arguments);
+
+        var that = this;
+        this.domNode.appendChild(pane.domNode);
+        pane.startup();
+        pane.watch("open", function(att, oldVal, newVal) {
+            if (newVal) {
+                that._onPaneOpen(this);
+            }
+        });
+        this.panes.push(pane);
+    },
+    remove: function(pane) {
+        this.panes.pop(pane);
+        pane.destroyRecursive();
+    },
     _onPaneOpen: function(openPane) {
         // summary:
         //		When a pane is opened, close all of the other panes.
         // console.log(this.declaredClass + "::" + arguments.callee.nom, arguments);
 
         dojo.forEach(this.panes, function(pane) {
-            if(pane != openPane && pane.get("open")) {
+            if (pane != openPane && pane.get("open")) {
                 //pane.set("open", false);
                 pane.toggle();
             }
