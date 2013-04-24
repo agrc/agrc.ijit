@@ -7,7 +7,7 @@ define([
     'agrc/modules/EsriLoader!esri/tasks/IdentifyParameters',
     'dojo/aspect',
     'dojo/_base/array',
-    'esri/InfoTemplate'
+    'agrc/modules/EsriLoader!esri/InfoTemplate'
 
 ], function(
     declare,
