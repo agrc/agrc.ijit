@@ -1,13 +1,13 @@
 define([
     'dojo/_base/declare',
-    'agrc/modules/EsriLoader!esri/dijit/Popup',
+    'esri/dijit/Popup',
     'dojo/_base/lang',
     'dojo/dom-construct',
-    'agrc/modules/EsriLoader!esri/tasks/IdentifyTask',
-    'agrc/modules/EsriLoader!esri/tasks/IdentifyParameters',
+    'esri/tasks/IdentifyTask',
+    'esri/tasks/IdentifyParameters',
     'dojo/aspect',
     'dojo/_base/array',
-    'agrc/modules/EsriLoader!esri/InfoTemplate'
+    'esri/InfoTemplate'
 
 ], function(
     declare,
@@ -23,6 +23,15 @@ define([
     return declare("ijit/modules/Identify", null, {
         // summary:
         //      quick and dirty identify for all layers in map service
+        // 
+        // example:
+        // |    this.popup = new Popup({url: AGRC.urls.enviroMapService});
+        // |    this.map = new BaseMap(this.mapDiv, {
+        // |        useDefaultBaseMap: false,
+        // |        showAttribution: false,
+        // |        infoWindow: this.popup.popup
+        // |    });
+        // |    this.popup.setMap(this.map);
         
         // iParams: esri.tasks.IdentifyParameters
         iParams: null,
