@@ -1,115 +1,104 @@
-/*global dojo, console, dijit*/
+define([
+    'dojo/_base/declare',
+    'dijit/_WidgetBase',
+    'dijit/_TemplatedMixin',
+    'dijit/_WidgetsInTemplateMixin',
+    'dojo/fx',
+    'dojo/text!ijit/widgets/layout/templates/SideBarToggler.html',
+    'dojo/dom-style',
+    'dojo/dom-class'
 
-// provide namespace
-dojo.provide("ijit.widgets.layout.SideBarToggler");
+],
 
-// dojo widget requires
-dojo.require("dijit._Widget");
-dojo.require("dijit._Templated");
-
-// other dojo requires
-dojo.require("dojo.fx");
-
-dojo.declare("ijit.widgets.layout.SideBarToggler", [dijit._Widget, dijit._Templated], {
-    // description:
-    //      Button used to open and close a sidebar in a full screen border container layout
-    
-    // widgetsInTemplate: [private] Boolean
-    //      Specific to dijit._Templated.
-    widgetsInTemplate: true,
-    
-    // templatePath: [private] String
-    //      Path to template. See dijit._Templated
-    templatePath: dojo.moduleUrl("ijit.widgets.layout", "templates/SideBarToggler.html"),
-    
-    // baseClass: [private] String
-    //    The css class that is applied to the base div of the widget markup
-    baseClass: "side-bar-toggler",
-    
-    // open: Boolean
-    open: true,
-    
-    // openWidth: Number
-    //      The width of the sidebar when it's open
-    openWidth: 0,
-    
-    // Parameters to constructor
-    
-    // sidebar: domNode
-    sidebar: null,
-    
-    // mainContainer: dijit.layout.BorderContainer
-    mainContainer: null,
-    
-    // map: agrc.widgets.map.BaseMap
-    map: null,
-    
-    // centerContainer: dijit.layout.ContentPane
-    //      The center region of the border container
-    centerContainer: null,
-    
-    constructor: function(params, div) {
-        // summary:
-        //    Constructor method
-        // params: Object
-        //    Parameters to pass into the widget. Required values include:
-        // div: String|DomNode
-        //    A reference to the div that you want the widget to be created in.
-        console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+function (
+    declare,
+    _WidgetBase,
+    _TemplatedMixin,
+    _WidgetsInTemplateMixin,
+    fxCore,
+    template,
+    domStyle,
+    domClass
+    ) {
+    return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin],
+    {
+        // description:
+        //      Button used to open and close a sidebar in a full screen border container layout
         
-        this.openWidth = dojo.style(params.sidebar, 'width');
-    },
-    postCreate: function() {
-        // summary:
-        //    Overrides method of same name in dijit._Widget.
-        // tags:
-        //    private
-        console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
-    
-        this._wireEvents();
-    },
-    _wireEvents: function() {
-        // summary:
-        //    Wires events.
-        // tags:
-        //    private
-        console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+        widgetsInTemplate: true,
+        templateString: template,
         
-        this.connect(this.domNode, 'onclick', this.onClick);
-    },
-    onClick: function(params){
-        // summary:
-        //      description
-        console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+        // baseClass: [private] String
+        //    The css class that is applied to the base div of the widget markup
+        baseClass: "side-bar-toggler",
         
-        // adjust sidebar width
-        var width = (this.open) ? 0 : this.openWidth;
-        var centerWidth = (this.open) ? this.openWidth : -this.openWidth;
-        var that = this;
-        var sidebarAni = dojo.animateProperty({
-            node: this.sidebar,
-            properties: {
-                width: width
-            },
-            onEnd: function(){
-                that.mainContainer.layout();
-                that.map.resize();
-            },
-            duration: 200
-        });
-        var mainAni = dojo.animateProperty({
-            node: this.centerContainer,
-            properties: {
-                width: dojo.style(this.centerContainer, 'width') + centerWidth,
-                left: dojo.style(this.centerContainer, 'left') - centerWidth
-            },
-            duration: 200
-        });
-        dojo.fx.combine([sidebarAni, mainAni]).play();
+        // open: Boolean
+        open: true,
         
-        // flip arrow
-        dojo.toggleClass(this.arrowImg, 'closed');
+        // openWidth: Number
+        //      The width of the sidebar when it's open
+        openWidth: 0,
         
-        this.open = !this.open;
-    }
+        // Parameters to constructor
+        
+        // sidebar: domNode
+        sidebar: null,
+        
+        // mainContainer: dijit.layout.BorderContainer
+        mainContainer: null,
+        
+        // map: agrc.widgets.map.BaseMap
+        map: null,
+        
+        // centerContainer: dijit.layout.ContentPane
+        //      The center region of the border container
+        centerContainer: null,
+        
+        constructor: function(params, div) {
+            // summary:
+            //    Constructor method
+            // params: Object
+            //    Parameters to pass into the widget. Required values include:
+            // div: String|DomNode
+            //    A reference to the div that you want the widget to be created in.
+            console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+            
+            this.openWidth = domStyle.get(params.sidebar, 'width');
+        },
+        onClick: function(params){
+            // summary:
+            //      description
+            console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+            
+            // adjust sidebar width
+            var width = (this.open) ? 0 : this.openWidth;
+            var centerWidth = (this.open) ? this.openWidth : -this.openWidth;
+            var that = this;
+            var sidebarAni = fxCore.animateProperty({
+                node: this.sidebar,
+                properties: {
+                    width: width
+                },
+                onEnd: function(){
+                    that.mainContainer.layout();
+                    that.map.resize();
+                },
+                duration: 200
+            });
+            var mainAni = fxCore.animateProperty({
+                node: this.centerContainer,
+                properties: {
+                    width: domStyle.get(this.centerContainer, 'width') + centerWidth,
+                    left: domStyle.get(this.centerContainer, 'left') - centerWidth
+                },
+                duration: 200
+            });
+            fxCore.combine([sidebarAni, mainAni]).play();
+            
+            // flip arrow
+            domClass.toggle(this.arrowImg, 'closed');
+            
+            this.open = !this.open;
+        }
+    });
 });
