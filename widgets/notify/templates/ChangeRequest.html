@@ -3,13 +3,13 @@
         <div class="control-group">
             <label class="control-label" for="btn_draw">Outline Areas</label>
             <div class="controls">
-                <button class="btn btn-warning" type="button"><i class="icon-pencil icon-white"> </i> Outline Issue</button>
+                <button class="btn btn-warning" type="button" data-dojo-attach-point='btn_redline'><i class="icon-pencil icon-white"> </i> Outline Issue</button>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="input_zone">Describe Issue:</label>
+            <label class="control-label" for="${id}_txt_description">Describe Issue:</label>
             <div class="controls">
-                <input type="text" data-dojo-attach-point="txt_description"> 
+                <input type="text" id="${id}_txt_description" data-dojo-attach-point="txt_description"> 
                 <span class="help-inline error">Required!</span>
             </div>
         </div>

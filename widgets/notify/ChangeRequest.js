@@ -7,10 +7,12 @@ define([
         'dojo/_base/Color',
         'dojo/_base/array',
         'dojo/dom-style',
+        'dojo/dom-attr',
         'dojo/dom-class',
         'dojo/on',
         'dojo/query',
         'dojo/string',
+        'dojo/aspect',
         'esri/request',
         'esri/toolbars/draw',
         'esri/symbols/SimpleLineSymbol',
@@ -26,10 +28,12 @@ define([
         Color,
         array,
         style,
+        domAttr,
         domClass,
         on,
         query,
         dojoString,
+        aspect,
         esriRequest,
         Draw,
         SimpleLineSymbol,
@@ -101,23 +105,45 @@ define([
             },
 
             postCreate: function() {
+                console.info(this.declaredClass + '::' + arguments.callee.nom);
+
                 this.form_redline.onsubmit = function() {
                     return false;
                 };
 
-                this.own(on(this.btn_submit, 'click', lang.hitch(this, 'submitRedline')),
-                         on(this.btn_redline, 'click', lang.hitch(this, '_activateToolbar')),
-                         on(this.toolbar, "DrawEnd", lang.hitch(this, '_displayGraphic')));
+                var scoped = this;
+                this.own(
+                    on(this.btn_submit, 'click', lang.hitch(this, 'submitRedline')),
+                    on(this.btn_redline, 'click', lang.hitch(this, 'onDrawStart')),
+                    aspect.after(this.toolbar, "onDrawEnd", lang.hitch(this, 'onDrawEnd'), true),
+                    aspect.after(this.toolbar, 'activate', function() {
+                        domAttr.set(scoped.btn_redline, 'disabled', true);
+                    }),
+                    aspect.after(this.toolbar, 'deactivate', function() {
+                        domAttr.set(scoped.btn_redline, 'disabled', false);
+                    })
+                );
             },
 
-            _activateToolbar: function() {
-                this.toolbar.activate(Draw.LINE);
+            onDrawStart: function() {
+                console.info(this.declaredClass + '::' + arguments.callee.nom);
+
+                if (this.map && this._graphic) {
+                    this.graphicsLayer.remove(this._graphic);
+                }
+
+                this.toolbar.activate(Draw.FREEHAND_POLYLINE);
             },
 
-            _displayGraphic: function(geometry) {
-                var graphic = new Graphic(geometry, this.symbol);
-                this.graphicsLayer.add(graphic);
+            onDrawEnd: function(geometry) {
+                console.info(this.declaredClass + '::' + arguments.callee.nom);
+
+                this._graphic = new Graphic(geometry, this.symbol);
+                this.graphicsLayer.add(this._graphic);
+
                 this.toolbar.deactivate();
+
+                this.txt_description.focus();
             },
 
             submitRedline: function() {
@@ -129,8 +155,6 @@ define([
                     this.completed();
                     return false;
                 }
-
-                this.onSubmit();
 
                 if (this.map && this._graphic) {
                     this.graphicsLayer.remove(this._graphic);
@@ -147,7 +171,7 @@ define([
                     description: description,
                     redline: this._graphic
                 }).then(
-                    lang.hitch(this, '_completed'), lang.hitch(this, '_error')
+                    lang.hitch(this, 'completed'), lang.hitch(this, 'error')
                 );
 
                 return false;
@@ -228,6 +252,7 @@ define([
             },
 
             completed: function() {
+                console.info(this.declaredClass + '::' + arguments.callee.nom);
 
             },
 
