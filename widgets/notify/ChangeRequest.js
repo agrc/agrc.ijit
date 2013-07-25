@@ -9,7 +9,6 @@ define([
         'dojo/dom-style',
         'dojo/dom-class',
         'dojo/on',
-        'dojo/topic',
         'dojo/query',
         'dojo/string',
         'esri/request',
@@ -29,7 +28,6 @@ define([
         style,
         domClass,
         on,
-        topic,
         query,
         dojoString,
         esriRequest,
@@ -49,14 +47,6 @@ define([
         //      **Description**:
         //      This widget hits the email service.
         //      </p>
-        //      <p>
-        //      **Published Topics**: (See the [Dojo Topic System](http://dojotoolkit.org/reference-guide/quickstart/topics.html))
-        //      </p>
-        //      <ul>
-        //          <li>agrc.widgets.locate.FindAddress.OnFindStart[none]</li>
-        //          <li>agrc.widgets.locate.FindAddress.OnFind[result]</li>
-        //          <li>agrc.widgets.locate.FindAddress.OnFindError[err]</li>
-        //      </ul>
         //      **Exceptions**:
         //      </p>
         //      <ul><li>none</li></ul>
