@@ -4,11 +4,14 @@ define([
         'dijit/_TemplatedMixin',
         'dojo/text!agrc/widgets/notify/templates/ChangeRequest.html',
         'dojo/_base/lang',
-        'dojo/on',
         'dojo/_base/Color',
-        'dojo/topic',
+        'dojo/_base/array',
         'dojo/dom-style',
         'dojo/dom-class',
+        'dojo/on',
+        'dojo/topic',
+        'dojo/query',
+        'dojo/string',
         'esri/request',
         'esri/toolbars/draw',
         'esri/symbols/SimpleLineSymbol'
@@ -20,11 +23,14 @@ define([
         templatedMixin,
         template,
         lang,
-        on,
         Color,
-        topic,
+        array,
         style,
         domClass,
+        on,
+        topic,
+        query,
+        dojoString,
         esriRequest,
         Draw,
         SimpleLineSymbol
@@ -105,18 +111,17 @@ define([
                 on(this.btn_submit, 'click', lang.hitch(this, 'submitRedline'));
             },
 
-
             submitRedline: function() {
                 // summary:
                 //      submits the change request.
                 console.info(this.declaredClass + '::' + arguments.callee.nom);
 
                 if (!this._validate()) {
-                    this._done();
+                    this.onCompleted();
                     return false;
                 }
 
-                this._geocoding();
+                this.onSubmit();
 
                 if (this.map && this._graphic) {
                     this.graphicsLayer.remove(this._graphic);
@@ -133,10 +138,51 @@ define([
                     description: description,
                     redline: this._graphic
                 }).then(
-                    lang.hitch(this, '_onFind'), lang.hitch(this, '_onError')
+                    lang.hitch(this, '_completed'), lang.hitch(this, '_error')
                 );
 
                 return false;
+            },
+
+            _validate: function() {
+                // summary:
+                //      validates the widget
+                // description:
+                //      makes sure everything is the way it needs to be
+                // tags:
+                //      private
+                // returns:
+                //      bool
+                console.info(this.declaredClass + "::" + arguments.callee.nom);
+
+                var that = this;
+
+                // hide error messages
+                query('.help-inline.error', this.domNode).style('display', 'none');
+                query('.control-group', this.domNode).removeClass('error');
+
+                return array.every([
+                        this.txt_description
+                    ],
+                    function(tb) {
+                        return that._isValid(tb);
+                    });
+            },
+
+            _isValid: function(textBox) {
+                // summary:
+                //      validates that there are values in the textbox
+                // textBox: TextBox Element
+                console.log(this.declaredClass + "::_isValid", arguments);
+
+                var valid = dojoString.trim(textBox.value).length > 0;
+
+                if (!valid) {
+                    query('span', textBox.parentElement).style('display', 'inline');
+                    domClass.add(textBox.parentElement.parentElement, 'error');
+                }
+
+                return valid;
             },
 
             _invokeWebService: function(args) {
@@ -172,13 +218,11 @@ define([
                 });
             },
 
-
-            done: function() {
-                // summary: 
-                //      extensibiity point.
+            _completed: function(response) {
+                this.onCompleted(response);
             },
 
-            _onError: function(err) {
+            _error: function(err) {
                 // summary:
                 //      handles script io error
                 // description:
@@ -193,9 +237,24 @@ define([
                 domClass.add(this.errorMsg.parentElement.parentElement, 'error');
 
                 // re-enable find button
-                this.done();
+                this.onCompleted(err);
 
                 topic.publish('agrc.widgets.notify.ChangeRequest.OnError', [err]);
+            },
+
+            onCompleted: function() {
+                // summary: 
+                //      extensibiity point.
+            },
+
+            onSubmit: function() {
+                // summary: 
+                //      extensibiity point.
+            },
+
+            onError: function() {
+                // summary: 
+                //      extensibiity point.
             }
         });
     });
