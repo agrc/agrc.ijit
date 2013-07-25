@@ -14,7 +14,8 @@ define([
         'dojo/string',
         'esri/request',
         'esri/toolbars/draw',
-        'esri/symbols/SimpleLineSymbol'
+        'esri/symbols/SimpleLineSymbol',
+        'esri/graphic'
     ],
 
     function(
@@ -33,7 +34,8 @@ define([
         dojoString,
         esriRequest,
         Draw,
-        SimpleLineSymbol
+        SimpleLineSymbol,
+        Graphic
     ) {
         // description:
         //      **Summary**: Allows a user to markup a map, give a description, and submit the shape and description for review.
@@ -73,6 +75,8 @@ define([
             title: 'Report Map Issue',
             graphicsLayer: null,
             _graphic: null,
+            toolbar: null,
+            symbol: null,
 
             constructor: function() {
                 // summary:
@@ -101,6 +105,9 @@ define([
                     this.symbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
                         new Color([255, 0, 0]), 1);
                 }
+
+                this.toolbar = new Draw(this.map);
+                this.toolbar.setLineSymbol(this.symbol);
             },
 
             postCreate: function() {
@@ -108,7 +115,19 @@ define([
                     return false;
                 };
 
-                on(this.btn_submit, 'click', lang.hitch(this, 'submitRedline'));
+                this.own(on(this.btn_submit, 'click', lang.hitch(this, 'submitRedline')),
+                         on(this.btn_redline, 'click', lang.hitch(this, '_activateToolbar')),
+                         on(this.toolbar, "DrawEnd", lang.hitch(this, '_displayGraphic')));
+            },
+
+            _activateToolbar: function() {
+                this.toolbar.activate(Draw.LINE);
+            },
+
+            _displayGraphic: function(geometry) {
+                var graphic = new Graphic(geometry, this.symbol);
+                this.graphicsLayer.add(graphic);
+                this.toolbar.deactivate();
             },
 
             submitRedline: function() {
