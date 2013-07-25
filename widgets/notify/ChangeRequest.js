@@ -6,6 +6,7 @@ define([
         'dojo/_base/lang',
         'dojo/_base/Color',
         'dojo/_base/array',
+        'dojo/_base/json',
         'dojo/dom-style',
         'dojo/dom-attr',
         'dojo/dom-class',
@@ -27,6 +28,7 @@ define([
         lang,
         Color,
         array,
+        dojoJson,
         style,
         domAttr,
         domClass,
@@ -152,7 +154,6 @@ define([
                 console.info(this.declaredClass + '::' + arguments.callee.nom);
 
                 if (!this._validate()) {
-                    this.completed();
                     return false;
                 }
 
@@ -232,28 +233,35 @@ define([
                 var url = "http://localhost/sendemailservice/notify";
 
                 var options = {
-                    email: {
+                    email: dojoJson.toJson({
                         toIds: -1,
                         fromId: -1
-                    },
+                    }),
                     template: {
                         templateId: -1,
                         templateValues: {
-                            graphic: this._graphic
+                            description: this.txt_description.value
                         }
                     }
                 };
 
+                if(this._graphic && this._graphic.geometry)
+                    options.template.templateValues.graphic = this._graphic.geometry.toJson();
+
+                options.template = dojoJson.toJson(options.template);
+
                 return esriRequest({
                     url: url,
                     content: options,
-                    callbackParamName: 'callback'
+                    callbackParamName: 'callback',
+                    handleAs: 'json'
                 });
             },
 
             completed: function() {
                 console.info(this.declaredClass + '::' + arguments.callee.nom);
 
+                this._graphic = null;
             },
 
             error: function() {
