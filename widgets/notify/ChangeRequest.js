@@ -2,7 +2,7 @@ define([
         'dojo/_base/declare',
         'dijit/_WidgetBase',
         'dijit/_TemplatedMixin',
-        'dojo/text!agrc/widgets/notify/templates/ChangeRequest.html',
+        'dojo/text!ijit/widgets/notify/templates/ChangeRequest.html',
         'dojo/_base/lang',
         'dojo/_base/Color',
         'dojo/_base/array',
