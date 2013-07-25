@@ -136,7 +136,7 @@ define([
                 console.info(this.declaredClass + '::' + arguments.callee.nom);
 
                 if (!this._validate()) {
-                    this.onCompleted();
+                    this.completed();
                     return false;
                 }
 
@@ -237,11 +237,11 @@ define([
                 });
             },
 
-            _completed: function(response) {
-                this.onCompleted(response);
+            completed: function() {
+
             },
 
-            _error: function(err) {
+            error: function() {
                 // summary:
                 //      handles script io error
                 // description:
@@ -254,26 +254,6 @@ define([
 
                 style.set(this.errorMsg, 'display', 'inline');
                 domClass.add(this.errorMsg.parentElement.parentElement, 'error');
-
-                // re-enable find button
-                this.onCompleted(err);
-
-                topic.publish('agrc.widgets.notify.ChangeRequest.OnError', [err]);
-            },
-
-            onCompleted: function() {
-                // summary: 
-                //      extensibiity point.
-            },
-
-            onSubmit: function() {
-                // summary: 
-                //      extensibiity point.
-            },
-
-            onError: function() {
-                // summary: 
-                //      extensibiity point.
             }
         });
     });
