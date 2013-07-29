@@ -14,7 +14,7 @@ define([
         'dojo/query',
         'dojo/string',
         'dojo/aspect',
-        'esri/request',
+        'dojo/request',
         'esri/toolbars/draw',
         'esri/symbols/SimpleLineSymbol',
         'esri/graphic'
@@ -36,7 +36,7 @@ define([
         query,
         dojoString,
         aspect,
-        esriRequest,
+        request,
         Draw,
         SimpleLineSymbol,
         Graphic
@@ -47,22 +47,18 @@ define([
         //      **Owner(s)**: Steve Gourley
         //      </p>
         //      <p>
-        //      **Test Page**: TODO
+        //      **Test Page**: widgets/tests/ChangeRequest.html
         //      </p>
         //      <p>
         //      **Description**:
-        //      This widget hits the email service.
+        //      This widget hits the email service. A separate viewer page will show the markup made.
         //      </p>
         //      **Exceptions**:
         //      </p>
         //      <ul><li>none</li></ul>
-        //      <p>
-        //      **Required Files**:
-        //      </p>
-        //      <ul><li>resources/locate/FindAddress.css</li></ul>
         //
         // example:
-        // |    new FindAddress({map: map}, 'test1');
+        // |    new ChangeRequest({map: map}, 'div');
 
         return declare('agrc.ijit.widgets.notify.ChangeRequest', [widgetBase, templatedMixin], {
             templateString: template,
@@ -169,8 +165,7 @@ define([
                 }
 
                 this.request = this._invokeWebService({
-                    description: description,
-                    redline: this._graphic
+                    description: description
                 }).then(
                     lang.hitch(this, 'completed'), lang.hitch(this, 'error')
                 );
@@ -233,28 +228,33 @@ define([
                 var url = "http://localhost/sendemailservice/notify";
 
                 var options = {
-                    email: dojoJson.toJson({
-                        toIds: -1,
-                        fromId: -1
-                    }),
+                    email: {
+                        toIds: [3],
+                        fromId: 2
+                    },
                     template: {
-                        templateId: -1,
+                        templateId: 3,
                         templateValues: {
-                            description: this.txt_description.value
+                            description: args.description,
+                            application: window.location.href,
+                            basemap: this.map.layerIds[0]
                         }
                     }
                 };
 
-                if(this._graphic && this._graphic.geometry)
-                    options.template.templateValues.graphic = this._graphic.geometry.toJson();
+                if (this._graphic && this._graphic.geometry) {
+                    options.template.templateValues.link = "http://localhost/experimental/GraphicViewer?center={{center}}&level={{level}}&redline={{redline}}";
+                    options.template.templateValues.center = this.map.extent.getCenter().toJson();
+                    options.template.templateValues.level = this.map.getLevel();
+                    options.template.templateValues.redline = this._graphic.geometry.toJson();
+                }
 
-                options.template = dojoJson.toJson(options.template);
-
-                return esriRequest({
-                    url: url,
-                    content: options,
-                    callbackParamName: 'callback',
-                    handleAs: 'json'
+                //options.template = dojoJson.toJson(options.template);
+                return request.post(url, {
+                    data: dojoJson.toJson(options),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
                 });
             },
 
@@ -262,6 +262,7 @@ define([
                 console.info(this.declaredClass + '::' + arguments.callee.nom);
 
                 this._graphic = null;
+                this.txt_description.value = "";
             },
 
             error: function() {
