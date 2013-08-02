@@ -1,0 +1,9 @@
+.change-request .error-msg, .change-request .help-inline {
+    display: none;
+}
+.change-request .control-group {
+    margin-bottom: 0;
+}
+.change-request .control-group>label {
+    margin-bottom: 0;
+}

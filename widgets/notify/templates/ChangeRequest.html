@@ -1,21 +1,19 @@
 <div>
     <form data-dojo-attach-point='form_redline'>
-        <div class="control-group">
+        <div class="form-group">
             <label class="control-label" for="btn_draw">Outline Areas</label>
             <div class="controls">
-                <button class="btn btn-warning" type="button" data-dojo-attach-point='btn_redline'><i class="icon-pencil icon-white"> </i> Outline Issue</button>
+                <button class="btn btn-warning btn-block" type="button" data-dojo-attach-point='btn_redline'><i class="icon-pencil icon-white"> </i> Outline Issue</button>
             </div>
-        </div>
-        <div class="control-group">
             <label class="control-label" for="${id}_txt_description">Describe Issue:</label>
             <div class="controls">
-                <input type="text" id="${id}_txt_description" data-dojo-attach-point="txt_description"> 
+                <input type="text" class="form-control" id="${id}_txt_description" data-dojo-attach-point="txt_description"> 
                 <span class="help-inline error">Required!</span>
             </div>
         </div>
         <div class="control-group">
             <div class="controls">
-                <button type="submit" class="btn" data-dojo-attach-point='btn_submit'>Send</button> 
+                <button type="submit" class="btn btn-block" data-dojo-attach-point='btn_submit'>Send</button> 
                 <span data-dojo-attach-point='errorMsg' class="help-inline error">Uh oh!</span>
             </div>
         </div>

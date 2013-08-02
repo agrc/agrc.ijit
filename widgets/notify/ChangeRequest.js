@@ -87,9 +87,14 @@ define([
 
                 // default to use the map's graphics layer if none was passed in
                 if (!this.graphicsLayer && !! this.map) {
-                    this.connect(this.map, 'onLoad', function() {
-                        this.graphicsLayer = this.map.graphics;
-                    });
+                    this.graphicsLayer = this.map.graphics;
+
+                    //if maps already loaded just set this first.
+                    this.own(
+                        on(this.map, 'Load', lang.hitch(this,function() {
+                            this.graphicsLayer = this.map.graphics;
+                        }))
+                    );
                 }
 
                 // create symbol if none was provided in options
@@ -141,7 +146,7 @@ define([
 
                 this.toolbar.deactivate();
 
-                this.txt_description.focus();
+                //this.txt_description.focus();
             },
 
             submitRedline: function() {
@@ -163,6 +168,8 @@ define([
                     this.request.cancel('duplicate in flight');
                     this.request = null;
                 }
+
+                this.btn_submit.innerHTML = "Submitting...";
 
                 this.request = this._invokeWebService({
                     description: description
@@ -263,6 +270,7 @@ define([
 
                 this._graphic = null;
                 this.txt_description.value = "";
+                this.btn_submit.innerHTML = "Thanks!";
             },
 
             error: function() {
@@ -278,6 +286,7 @@ define([
 
                 style.set(this.errorMsg, 'display', 'inline');
                 domClass.add(this.errorMsg.parentElement.parentElement, 'error');
+                this.btn_submit.innerHTML = "Whoops.";
             }
         });
     });

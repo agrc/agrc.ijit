@@ -11,32 +11,31 @@
     <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css">
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-    <style type='text/css'>
-      
-    </style>
+    <link rel="stylesheet" href='../../../resources/map/BaseMap.css'>
+    <link rel="stylesheet" href='../../../resources/notify/ChangeRequest.css'>
 
     <!-- JAVASCRIPT -->
     <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>
     <script type="text/javascript">
-        var projectUrl = location.pathname.replace(/\/[^\/]+$/, "") + '/';
-        var baseMap, widgetUnderTest;
+    var projectUrl = location.pathname.replace(/\/[^\/]+$/, "") + '/';
+    var baseMap, widgetUnderTest;
 
-        require({
-                packages: [{
-                    name: 'ijit',
-                    location: projectUrl + '../../../agrc.ijit'
-                }, {
-                    name: 'agrc',
-                    location: projectUrl + '../../../agrc.widgets'
-                }]
-            }, [
-                'agrc/widgets/map/BaseMap',
-                'ijit/widgets/notify/ChangeRequest',
-                'dojo/domReady!'
-            ],
-            function(
-                BaseMap, Module
-            ) {
+    require({
+        packages: [{
+            name: 'ijit',
+            location: projectUrl + '../../../agrc.ijit'
+        }, {
+            name: 'agrc',
+            location: projectUrl + '../../../agrc.widgets'
+        }]
+    }, [
+    'agrc/widgets/map/BaseMap',
+    'ijit/widgets/notify/ChangeRequest',
+    'dojo/domReady!'
+    ],
+    function(
+        BaseMap, Module
+        ) {
                 // take all defaults
                 baseMap = new BaseMap('basemap-div');
                 widgetUnderTest = new Module({map: baseMap}, 'div');
