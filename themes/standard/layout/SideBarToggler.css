@@ -2,8 +2,8 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 20px;
-    height: 20px;
+    width: 23px;
+    height: 23px;
     border: solid 1px #B5BCC7;
     border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -17,10 +17,13 @@
 .side-bar-toggler img {
     background-image: url(../images/arrows.png);
     background-repeat: no-repeat;
-    width: 6px;
+    width: 7px;
     height: 12px;
     margin: 0 0 0 7px;
 }
 .side-bar-toggler .closed {
-    background-position: -8px 0;
+    background-position: -7px 0;
+}
+.mapContainer .container {
+    max-width: 100%;
 }

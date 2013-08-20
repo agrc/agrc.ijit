@@ -1,8 +1,11 @@
 define([
     'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/on',
     'dijit/_WidgetBase',
     'dijit/_TemplatedMixin',
     'dijit/_WidgetsInTemplateMixin',
+    'dojo/_base/fx',
     'dojo/fx',
     'dojo/text!ijit/widgets/layout/templates/SideBarToggler.html',
     'dojo/dom-style',
@@ -12,10 +15,13 @@ define([
 
 function (
     declare,
+    lang,
+    on,
     _WidgetBase,
     _TemplatedMixin,
     _WidgetsInTemplateMixin,
     fxCore,
+    fx,
     template,
     domStyle,
     domClass
@@ -54,7 +60,7 @@ function (
         //      The center region of the border container
         centerContainer: null,
         
-        constructor: function(params, div) {
+        constructor: function (params) {
             // summary:
             //    Constructor method
             // params: Object
@@ -65,7 +71,14 @@ function (
             
             this.openWidth = domStyle.get(params.sidebar, 'width');
         },
-        onClick: function(params){
+        postCreate: function () {
+            // summary:
+            //      description
+            console.log(this.declaredClass + "::postCreate", arguments);
+        
+            on(this.domNode, 'click', lang.hitch(this, this.onClick));
+        },
+        onClick: function () {
             // summary:
             //      description
             console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
@@ -93,7 +106,7 @@ function (
                 },
                 duration: 200
             });
-            fxCore.combine([sidebarAni, mainAni]).play();
+            fx.combine([sidebarAni, mainAni]).play();
             
             // flip arrow
             domClass.toggle(this.arrowImg, 'closed');
