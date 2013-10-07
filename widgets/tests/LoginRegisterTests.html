@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LoginRegister Widget Tests</title>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <link rel="stylesheet" href="../resources/LoginRegister.css">
+
+        <script type="text/javascript">
+            var projectUrl = location.pathname.replace(/\/[^\/]+$/, "") + '/';
+            var dojoConfig = {
+                packages: [{
+                    name: 'ijit',
+                    location: projectUrl + '../../'
+                }]
+            };
+        </script>
+        <script type="text/javascript" src="http://js.arcgis.com/3.7"></script>
+        <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/dijit.css">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            require([
+                'ijit/widgets/LoginRegister',
+
+            ],
+
+            function (
+                LoginRegister
+                ) {
+                window.AGRC = {appName: 'app1'};
+                testWidget = new LoginRegister({
+                }, 'testdiv');
+            });
+        </script>
+    </head>
+    <body>
+        <div id="testdiv"></div>
+    </body>
+</html>

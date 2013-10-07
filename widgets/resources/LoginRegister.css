@@ -1,0 +1,33 @@
+@import '_LoginRegisterSignInPane.css';
+@import '_LoginRegisterRequestPane.css';
+@import '_LoginRegisterForgotPane.css';
+
+.login-register .dijitStackContainer-child {
+    /* required or else these are set to 0 for some reason
+    maybe it's a problem with them being within another widget? */
+    height: auto !important;
+    width: auto !important;
+}
+.login-register .modal-dialog {
+    width: 400px;
+}
+.login-register .forgot-btn {
+    padding: 0;
+}
+.login-register .modal-footer {
+    margin-top: 0;
+}
+.login-register .alert {
+    margin: 10px 0 0 0;
+    display: none;
+}
+.login-register .progress-bar {
+    width: 100%;
+}
+.login-register .progress {
+    margin: 10px 0;
+    display: none;
+}
+.login-register .form-group.last {
+    margin-bottom: 0
+}

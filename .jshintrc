@@ -14,7 +14,9 @@
         "waitsFor",
         "describe",
         "xdescribe",
-        "stubModule"
+        "stubModule",
+        "$",
+        "AGRC"
     ],
 
     "evil": true,

@@ -1,35 +1,59 @@
 /*global module:false*/
 module.exports = function(grunt) {
-    var files = [
-        // these can be used after all widgets/modules have been upgraded to AMD
-        // 'widgets/tests/spec/*.js',
-        // 'modules/tests/spec/*.js'
+    var specs = [
+        'widgets/tests/spec/SpecLoginRegister.js',
+        'widgets/tests/spec/Spec_LoginRegisterPaneMixin.js',
+        'widgets/tests/spec/Spec_LoginRegisterSignInPane.js',
+        'widgets/tests/spec/Spec_LoginRegisterRequestPane.js',
+        'widgets/tests/spec/Spec_LoginRegisterForgotPane.js'
     ];
+    var jsFiles = specs.concat([
+        'widgets/tests/SetUpTests.js',
+        'widgets/LoginRegister.js',
+        'widgets/_LoginRegisterPaneMixin.js',
+        'widgets/_LoginRegisterSignInPane.js',
+        'widgets/_LoginRegisterRequestPane.js',
+        'widgets/_LoginRegisterForgotPane.js',
+        'GruntFile.js'
+    ]);
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         jasmine: {
             app: {
                 src: [
-                    'widgets/tests/SetUpTests.js'
                 ],
                 options: {
                     vendor: [
+                        'widgets/tests/SetUpTests.js',
                         'http://js.arcgis.com/3.7/'
                     ],
-                    specs: files
+                    specs: specs
                 }
             }
         },
         jshint: {
-            files: files,
+            files: jsFiles,
             options: {
                 jshintrc: '.jshintrc'
             }
         },
         watch: {
-            files: files,
-            tasks: ['jasmine:app:build', 'jshint']
+            files: [
+                'modules/**/*.js',
+                'themes/**/*.js',
+                'widgets/**/*.js',
+                'modules/**/*.html',
+                'themes/**/*.html',
+                'widgets/**/*.html',
+                'modules/**/*.css',
+                'themes/**/*.css',
+                'widgets/**/*.css'
+            ],
+            tasks: ['jasmine:app:build', 'jshint'],
+            options: {
+                livereload: true
+            }
         },
         connect: {
             uses_defaults: {}
