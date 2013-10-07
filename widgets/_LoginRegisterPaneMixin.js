@@ -115,11 +115,14 @@ function (
             var that = this;
             try {
                 xhr(this.url, {
-                    data: lang.mixin(this.getData(), {
+                    data: JSON.stringify(lang.mixin(this.getData(), {
                         application: AGRC.appName
-                    }),
+                    })),
                     handleAs: 'json',
-                    method: this.xhrMethod
+                    method: this.xhrMethod,
+                    headers: {
+                        "Content-Type": 'application/json'
+                    }
                 }).then(
                     lang.hitch(this, 'onSubmitReturn'), 
                     lang.hitch(this, 'onSubmitError')
