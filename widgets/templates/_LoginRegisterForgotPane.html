@@ -1,0 +1,30 @@
+<div>
+    <div class="modal-content" data-dojo-type="dijit/layout/ContentPane">
+        <div class="modal-header">
+            <h4>Reset Password or
+                <a href="#" data-dojo-attach-event="onclick: goToSignInPane">Sign In</a>
+            </h4>
+        </div>
+        <div class="modal-body">
+            <form data-dojo-attach-point='form' role='form'>
+                <div class="form-group last">
+                    <label>Email address</label>
+                    <input data-dojo-attach-point='emailTxt'
+                        data-dojo-attach-event='onkeyup: validate'
+                        type='email' class='form-control' tabindex='1'>
+                </div>
+                <div data-dojo-attach-point='errorDiv' class="alert alert-danger">
+                    test message
+                </div>
+            </form>
+            <div data-dojo-attach-point="successDiv" class="alert alert-success">
+                Your password has been successfully reset. You will receive an email with further instructions.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button data-dojo-attach-point='submitBtn'
+                data-dojo-attach-event='onclick: onSubmitClick'
+                type='button' class='btn btn-primary' disabled tabindex="2">Reset Password</button>
+        </div>
+    </div>
+</div>
