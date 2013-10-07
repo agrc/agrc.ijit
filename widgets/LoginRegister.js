@@ -1,3 +1,8 @@
+// this is so that jquery is loaded before bootstrap
+require({
+    async: 0
+});
+
 define([
     'dojo/_base/declare', 
     'dojo/_base/lang',
@@ -17,7 +22,9 @@ define([
 
     // no params
     'dijit/layout/StackContainer',
-    'dijit/layout/ContentPane'
+    'dijit/layout/ContentPane',
+    'jquery/jquery',
+    'bootstrap/js/bootstrap'
 ],
 
 function (
