@@ -1,14 +1,12 @@
-// this is so that jquery is loaded before bootstrap
-require({
-    async: 0
-});
-
 define([
     'dojo/_base/declare', 
     'dojo/_base/lang',
+    'dojo/_base/window',
 
     'dojo/request',
     'dojo/dom-style',
+    'dojo/dom-construct',
+    'dojo/aspect',
 
     'dojo/text!./templates/LoginRegister.html',
 
@@ -19,20 +17,23 @@ define([
     'ijit/widgets/_LoginRegisterSignInPane',
     'ijit/widgets/_LoginRegisterRequestPane',
     'ijit/widgets/_LoginRegisterForgotPane',
+    'ijit/widgets/_LoginRegisterLogout',
 
     // no params
     'dijit/layout/StackContainer',
     'dijit/layout/ContentPane',
-    'jquery/jquery',
-    'bootstrap/js/bootstrap'
+    'jquery/jquery'
 ],
 
 function (
     declare, 
     lang,
+    win,
 
     xhr,
     domStyle,
+    domConstruct,
+    aspect,
 
     template,
 
@@ -42,7 +43,8 @@ function (
 
     _LoginRegisterSignInPane,
     _LoginRegisterRequestPane,
-    _LoginRegisterForgotPane
+    _LoginRegisterForgotPane,
+    _LoginRegisterLogout
     ) {
     // summary:
     //      Works with agrc/ArcGisServerPermissionsProxy to allow users to register or login.
@@ -66,6 +68,9 @@ function (
         // forgotPane: _LoginRegisterRequestPane
         forgotPane: null,
 
+        // logout: _LoginRegisterLogout
+        logout: null,
+
         urls: {
             base: '/permissionproxy/api',
             signIn: '/authenticate/user',
@@ -81,17 +86,28 @@ function (
         //      e.g. 'pel' for 'app_pel' in the raven database
         appName: null,
 
+        // logoutDiv: Dom Element
+        //      The dom element in which you want the logout control placed
+        logoutDiv: null,
+
 
         postCreate: function () {
             // summary:
             //      dom is ready
             console.log(this.declaredClass + "::postCreate", arguments);
 
+            var that = this;
+
             // create panes
             this.signInPane = new _LoginRegisterSignInPane({
                 url: this.urls.base + this.urls.signIn,
                 parentWidget: this
             }, this.signInPaneDiv);
+            aspect.after(this.signInPane, 'onSubmitReturn', function (response) {
+                that.logout = new _LoginRegisterLogout({
+                    name: response.result.user.name
+                }, that.logoutDiv);
+            }, true);
             this.requestPane = new _LoginRegisterRequestPane({
                 url: this.urls.base + this.urls.request,
                 parentWidget: this
@@ -100,24 +116,25 @@ function (
                 url: this.urls.base + this.urls.reset,
                 parentWidget: this
             }, this.forgotPaneDiv);
+            this.stackContainer.startup();
 
-            this.modal = $(this.modalDiv).modal({
-                backdrop: 'static',
-                keyboard: false
-            });
+            domConstruct.place(this.domNode, win.body());
 
-            // focus email text box when form is shown
-            var that = this;
-            this.modal.on('shown.bs.modal', function () {
+            // this is to make sure that bootstrap is loaded after jQuery
+            require(['bootstrap'], function () {
+                that.modal = $(that.modalDiv).modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+
+                // focus email text box when form is shown
                 that.signInPane.emailTxt.focus();
             });
-
-            this.stackContainer.startup();
         },
         goToPane: function (pane) {
             // summary:
             //      fires when the user clicks the "Request Access" link
-            // pane: _LoginRegister*Pane
+            // pane: _LoginRegisterPane
             console.log(this.declaredClass + "::goToPane", arguments);
         
             this.stackContainer.selectChild(pane);
