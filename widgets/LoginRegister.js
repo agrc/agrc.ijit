@@ -1,14 +1,16 @@
-// this is so that jquery is loaded before bootstrap
-require({
-    async: 0
-});
+// // this is so that jquery is loaded before bootstrap
+// require({
+//     async: 0
+// });
 
 define([
     'dojo/_base/declare', 
     'dojo/_base/lang',
+    'dojo/_base/window',
 
     'dojo/request',
     'dojo/dom-style',
+    'dojo/dom-construct',
 
     'dojo/text!./templates/LoginRegister.html',
 
@@ -23,16 +25,17 @@ define([
     // no params
     'dijit/layout/StackContainer',
     'dijit/layout/ContentPane',
-    'jquery/jquery',
-    'bootstrap/js/bootstrap'
+    'jquery/jquery'
 ],
 
 function (
     declare, 
     lang,
+    win,
 
     xhr,
     domStyle,
+    domConstruct,
 
     template,
 
@@ -100,19 +103,24 @@ function (
                 url: this.urls.base + this.urls.reset,
                 parentWidget: this
             }, this.forgotPaneDiv);
-
-            this.modal = $(this.modalDiv).modal({
-                backdrop: 'static',
-                keyboard: false
-            });
-
-            // focus email text box when form is shown
-            var that = this;
-            this.modal.on('shown.bs.modal', function () {
-                that.signInPane.emailTxt.focus();
-            });
-
             this.stackContainer.startup();
+
+            domConstruct.place(this.domNode, win.body());
+
+            var that = this;
+            // this is to make sure that bootstrap is loaded after jQuery
+            require(['bootstrap'], function () {
+                that.modal = $(that.modalDiv).modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+
+                // focus email text box when form is shown
+                that.modal.on('shown.bs.modal', function () {
+                    that.signInPane.emailTxt.focus();
+                });
+
+            });
         },
         goToPane: function (pane) {
             // summary:

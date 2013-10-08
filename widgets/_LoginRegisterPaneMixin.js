@@ -114,9 +114,9 @@ function (
 
             var that = this;
             try {
-                xhr(this.url, {
+                var def = xhr(this.url, {
                     data: JSON.stringify(lang.mixin(this.getData(), {
-                        application: AGRC.appName
+                        application: this.parentWidget.appName
                     })),
                     handleAs: 'json',
                     method: this.xhrMethod,
@@ -126,7 +126,8 @@ function (
                 }).then(
                     lang.hitch(this, 'onSubmitReturn'), 
                     lang.hitch(this, 'onSubmitError')
-                ).always(function () {
+                );
+                def.always(function () {
                     that.submitBtn.disabled = false;
                 });
             } catch (e) {
