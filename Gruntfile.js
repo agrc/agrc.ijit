@@ -5,7 +5,8 @@ module.exports = function(grunt) {
         'widgets/tests/spec/Spec_LoginRegisterPaneMixin.js',
         'widgets/tests/spec/Spec_LoginRegisterSignInPane.js',
         'widgets/tests/spec/Spec_LoginRegisterRequestPane.js',
-        'widgets/tests/spec/Spec_LoginRegisterForgotPane.js'
+        'widgets/tests/spec/Spec_LoginRegisterForgotPane.js',
+        'widgets/tests/spec/Spec_LoginRegisterLogout.js'
     ];
     var jsFiles = specs.concat([
         'widgets/tests/SetUpTests.js',
@@ -14,6 +15,7 @@ module.exports = function(grunt) {
         'widgets/_LoginRegisterSignInPane.js',
         'widgets/_LoginRegisterRequestPane.js',
         'widgets/_LoginRegisterForgotPane.js',
+        'widgets/_LoginRegisterLogout.js',
         'GruntFile.js'
     ]);
     // Project configuration.

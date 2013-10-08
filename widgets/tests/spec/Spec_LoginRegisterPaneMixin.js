@@ -24,9 +24,6 @@ function (
     StubModule
     ) {
     describe('ijit/widgets/_LoginRegisterPaneMixin', function () {
-        window.AGRC = {
-            appName: 'appNameTest'
-        };
         var testWidget;
         var destroy = function (widget) {
             widget.destroyRecursive();
@@ -34,12 +31,14 @@ function (
         };
         var hideDialogSpy = jasmine.createSpy('hideDialog');
         var goToPaneSpy = jasmine.createSpy('goToPane');
+        var parentWidget = {
+            hideDialog: hideDialogSpy,
+            goToPane: goToPaneSpy,
+            appName: 'appNameTest'
+        };
         beforeEach(function () {
             testWidget = new _LoginRegisterSignInPane({
-                parentWidget: {
-                    hideDialog: hideDialogSpy,
-                    goToPane: goToPaneSpy
-                }
+                parentWidget: parentWidget
             }, domConstruct.create('div', {}, win.body()));
             testWidget.startup();
         });
@@ -97,7 +96,8 @@ function (
                     'dojo/request': xhr
                 }, ['ijit/widgets/_LoginRegisterPaneMixin']);
                 testWidget2 = new StubbedWidget({
-                    url: url
+                    url: url,
+                    parentWidget: parentWidget
                 }, domConstruct.create('div', {}, win.body()));
                 testWidget2.startup();
             });
@@ -128,11 +128,11 @@ function (
                 expect(xhr).toHaveBeenCalled();
                 expect(xhr.mostRecentCall.args[0]).toEqual(url);
                 var data = xhr.mostRecentCall.args[1].data;
-                expect(data).toEqual({
+                expect(data).toEqual(JSON.stringify({
                     email: email,
                     password: password,
-                    application: AGRC.appName
-                });
+                    application: parentWidget.appName
+                }));
 
                 testWidget2.destroy();
             });
