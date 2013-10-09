@@ -48,7 +48,7 @@ function (
         describe('onSubmitReturn', function () {
             var token = 'blah';
             beforeEach(function () {
-                testWidget.onSubmitReturn({result: {token: token}});
+                testWidget.onSubmitReturn({result: {token: {token: token}}});
             });
             it("hides the dialog", function () {
                 expect(testWidget.parentWidget.hideDialog).toHaveBeenCalled();

@@ -14,6 +14,8 @@ define([
     'dijit/_WidgetBase', 
     'dijit/_WidgetsInTemplateMixin',
 
+    'esri/request',
+
     'ijit/widgets/_LoginRegisterSignInPane',
     'ijit/widgets/_LoginRegisterRequestPane',
     'ijit/widgets/_LoginRegisterForgotPane',
@@ -40,6 +42,8 @@ function (
     _TemplatedMixin, 
     _WidgetBase, 
     _WidgetsInTemplateMixin,
+
+    esriRequest,
 
     _LoginRegisterSignInPane,
     _LoginRegisterRequestPane,
@@ -78,6 +82,10 @@ function (
             reset: '/user/resetpassword'
         },
 
+        // token: String
+        //      The ArcGIS Server token
+        token: null,
+
 
         // parameters passed in via the constructor
 
@@ -107,6 +115,10 @@ function (
                 that.logout = new _LoginRegisterLogout({
                     name: response.result.user.name
                 }, that.logoutDiv);
+                esriRequest.setRequestPreCallback(function (ioArgs) {
+                    ioArgs.content.token = that.token;
+                    return ioArgs;
+                });
             }, true);
             this.requestPane = new _LoginRegisterRequestPane({
                 url: this.urls.base + this.urls.request,

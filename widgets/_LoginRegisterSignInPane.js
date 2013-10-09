@@ -38,7 +38,7 @@ function (
             // returnValue: JSON Object
             console.log(this.declaredClass + "::onSubmitReturn", arguments);
         
-            this.parentWidget.token = returnValue.result.token;
+            this.parentWidget.token = returnValue.result.token.token;
             
             this.parentWidget.hideDialog();
         }
