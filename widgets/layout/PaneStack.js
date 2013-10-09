@@ -55,7 +55,8 @@ function (
 
             this.panes = [];
 
-            array.forEach(dom.byId(divId).childNodes, function(node) {
+            var that = this;
+            array.forEach(dom.byId(divId).children, function(node) {
                 if (node.nodeName === "DIV") {
                     var df = document.createDocumentFragment();
                     while (node.firstChild) {
@@ -67,9 +68,9 @@ function (
                         open: node.attributes.open
                     }, node);
                     pane.startup();
-                    pane.on("open", function(att, oldVal, newVal) {
+                    pane.watch("open", function(att, oldVal, newVal) {
                         if (newVal) {
-                            this._onPaneOpen(this);
+                            that._onPaneOpen(this);
                         }
                     });
                     this.panes.push(pane);

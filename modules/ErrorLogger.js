@@ -42,12 +42,12 @@ dojo.declare("ijit.modules.ErrorLogger", null, {
         this.xhrArgs.load = this.xhrLoad;
         this.xhrArgs.error = this.xhrError;
     },
-    xhrLoad: function(response){
+    xhrLoad: function(){
         // summary:
         //      Callback from xhr get
         console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
     },
-    xhrError: function(error){
+    xhrError: function(){
         // summary:
         //      Error callback from xhr get
         console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
@@ -61,7 +61,8 @@ dojo.declare("ijit.modules.ErrorLogger", null, {
         console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
         
         if (!er){
-            throw 'er is required!';
+            console.error('er is required!');
+            return;
         }
         
         this.xhrArgs.content = {
