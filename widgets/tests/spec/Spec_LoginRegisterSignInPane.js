@@ -1,13 +1,16 @@
 require([
     'ijit/widgets/_LoginRegisterSignInPane',
+    
     'dojo/dom-construct',
+    
     'dojo/_base/window'
-
 ],
 
 function (
     _LoginRegisterSignInPane,
+    
     domConstruct,
+    
     win
     ) {
     describe('ijit/widgets/_LoginRegisterSignInPane', function () {

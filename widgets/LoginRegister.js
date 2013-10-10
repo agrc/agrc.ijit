@@ -97,11 +97,14 @@ define([
             //      The dom element in which you want the logout control placed
             logoutDiv: null,
 
+            // showOnLoad: boolean
+            //      The flag to show the login thing on creation or wait to trigger it.
+            showOnLoad: true,
 
             postCreate: function() {
                 // summary:
                 //      dom is ready
-                console.log(this.declaredClass + "::postCreate", arguments);
+                console.log(this.declaredClass + '::postCreate', arguments);
 
                 var that = this;
 
@@ -135,18 +138,21 @@ define([
                 require(['bootstrap'], function() {
                     that.modal = $(that.modalDiv).modal({
                         backdrop: 'static',
-                        keyboard: false
+                        keyboard: false,
+                        show: that.showOnLoad
                     });
 
                     // focus email text box when form is shown
-                    that.signInPane.emailTxt.focus();
+                    if (that.showOnLoad) {
+                        that.signInPane.emailTxt.focus();
+                    }
                 });
             },
             goToPane: function(pane) {
                 // summary:
                 //      fires when the user clicks the "Request Access" link
                 // pane: _LoginRegisterPane
-                console.log(this.declaredClass + "::goToPane", arguments);
+                console.log(this.declaredClass + '::goToPane', arguments);
 
                 this.stackContainer.selectChild(pane);
                 pane.focusFirstInput();
@@ -154,9 +160,17 @@ define([
             hideDialog: function() {
                 // summary:
                 //      hides the modal dialog
-                console.log(this.declaredClass + "::hideDialog", arguments);
+                console.log(this.declaredClass + '::hideDialog', arguments);
 
                 $(this.modalDiv).modal('hide');
+            },
+            show: function () {
+                // summary:
+                //      shows the login modal
+                // 
+                console.log(this.declaredClass + '::show', arguments);
+             
+                $(this.modalDiv).modal('show');
             }
         });
     });

@@ -31,15 +31,23 @@
         <script type="text/javascript">
             require([
                 'ijit/widgets/LoginRegister',
-
+                
+                'dojo/on'
             ],
 
             function (
-                LoginRegister
+                LoginRegister,
+
+                on
                 ) {
                 testWidget = new LoginRegister({
-                    appName: 'app1',
-                    logoutDiv: 'testdiv'
+                    appName: 'unitTests',
+                    logoutDiv: 'testdiv',
+                    showOnLoad: true
+                });
+
+                on(testWidget, 'sign-in-success', function(stuff){
+                    console.log(stuff);
                 });
             });
         </script>
