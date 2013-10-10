@@ -42,6 +42,9 @@ define([
                 console.log(this.declaredClass + '::onSubmitReturn', arguments);
 
                 this.parentWidget.token = returnValue.result.token.token;
+                this.parentWidget.tokenExpireDate = new Date(returnValue.result.token.expires);
+
+                this.parentWidget.user = returnValue.result.user;
 
                 this.parentWidget.hideDialog();
 

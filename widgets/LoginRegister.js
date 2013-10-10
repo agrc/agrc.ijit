@@ -85,6 +85,21 @@ define([
             //      The ArcGIS Server token
             token: null,
 
+            // tokenExpireDate: Date
+            //      The date and time when the token expires
+            tokenExpireDate: null,
+
+            // user: Object
+            //      The user object returns by the authentication service
+            //      For example:
+            //      {
+            //          "email": "stdavis@utah.gov",
+            //          "role": "report-generator",
+            //          "name": "Scott Davis",
+            //          "agency": "AGRC"
+            //      },
+            user: null,
+
 
             // parameters passed in via the constructor
 
@@ -164,12 +179,12 @@ define([
 
                 $(this.modalDiv).modal('hide');
             },
-            show: function () {
+            show: function() {
                 // summary:
                 //      shows the login modal
                 // 
                 console.log(this.declaredClass + '::show', arguments);
-             
+
                 $(this.modalDiv).modal('show');
             }
         });
