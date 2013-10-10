@@ -128,15 +128,7 @@ define([
                     url: this.urls.base + this.urls.signIn,
                     parentWidget: this
                 }, this.signInPaneDiv);
-                aspect.after(this.signInPane, 'onSubmitReturn', function(response) {
-                    that.logout = new _LoginRegisterLogout({
-                        name: response.result.user.name
-                    }, that.logoutDiv);
-                    esriRequest.setRequestPreCallback(function(ioArgs) {
-                        ioArgs.content.token = that.token;
-                        return ioArgs;
-                    });
-                }, true);
+                this.signInPane.on('sign-in-success', lang.hitch(this, 'onSignInSuccess'));
                 this.requestPane = new _LoginRegisterRequestPane({
                     url: this.urls.base + this.urls.request,
                     parentWidget: this
@@ -186,6 +178,30 @@ define([
                 console.log(this.declaredClass + '::show', arguments);
 
                 $(this.modalDiv).modal('show');
+            },
+            onSignInSuccess: function(loginResult) {
+                // summary:
+                //      called when the user has successfully signed in
+                // loginResult: Object
+                //      result object as returned from the server
+                console.log(this.declaredClass + "::onSignInSuccess", arguments);
+
+                this.logout = new _LoginRegisterLogout({
+                    name: loginResult.user.name
+                }, this.logoutDiv);
+
+                // add token to all future requests
+                esriRequest.setRequestPreCallback(lang.hitch(this, 'onRequestPreCallback'));
+            },
+            onRequestPreCallback: function(ioArgs) {
+                // summary:
+                //      fires just before each request to the server
+                // ioArgs: {}
+                //      the data that will be sent with the request
+                console.log(this.declaredClass + "::onRequestPreCallback", arguments);
+
+                ioArgs.content.token = this.token;
+                return ioArgs;
             }
         });
     });
