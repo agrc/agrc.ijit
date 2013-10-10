@@ -5,7 +5,7 @@ define([
 
         'dojo/on',
 
-        'ijit/widgets/_LoginRegisterPaneMixin'
+        'ijit/widgets/authentication/_LoginRegisterPaneMixin'
     ],
 
     function(
@@ -19,7 +19,7 @@ define([
     ) {
         // summary:
         //      The sign in pane for the LoginRegistration widget.
-        return declare('ijit/widgets/_LoginRegisterSignInPane', [_LoginRegisterPaneMixin], {
+        return declare('ijit/widgets/authentication/_LoginRegisterSignInPane', [_LoginRegisterPaneMixin], {
             templateString: template,
             baseClass: 'login-register-sign-in-pane',
             xhrMethod: 'POST',
@@ -41,7 +41,10 @@ define([
                 // returnValue: JSON Object
                 console.log(this.declaredClass + '::onSubmitReturn', arguments);
 
-                this.parentWidget.token = returnValue.result.token;
+                this.parentWidget.token = returnValue.result.token.token;
+                this.parentWidget.tokenExpireDate = new Date(returnValue.result.token.expires);
+
+                this.parentWidget.user = returnValue.result.user;
 
                 this.parentWidget.hideDialog();
 

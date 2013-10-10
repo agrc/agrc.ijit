@@ -7,10 +7,13 @@ require([
 
         'dojo/Deferred',
 
-        'ijit/widgets/LoginRegister',
+        'stubmodule/StubModule',
+
+        'ijit/widgets/authentication/LoginRegister',
         // have to preload these for tests since we are creating the widget programmatically
-        'ijit/widgets/_LoginRegisterSignInPane',
-        'ijit/widgets/_LoginRegisterRequestPane'
+        'ijit/widgets/authentication/_LoginRegisterSignInPane',
+        'ijit/widgets/authentication/_LoginRegisterRequestPane',
+        'ijit/widgets/authentication/_LoginRegisterLogout'
     ],
 
     function(
@@ -22,9 +25,11 @@ require([
 
         Deferred,
 
+        StubModule,
+
         LoginRegister
     ) {
-        describe('ijit/widgets/LoginRegister', function() {
+        describe('ijit/widgets/authentication/LoginRegister', function() {
             var testWidget;
             // mock query stuff because I'm too cool to include jquery in my tests :)
             window.$ = function() {
@@ -49,7 +54,19 @@ require([
             it('create a valid object', function() {
                 expect(testWidget).toEqual(jasmine.any(LoginRegister));
             });
+            describe('postCreate', function() {
+                it("wires up onSignInSuccess", function() {
+                    spyOn(testWidget, 'onSignInSuccess');
+
+                    testWidget.signInPane.emit('sign-in-success');
+
+                    expect(testWidget.onSignInSuccess).toHaveBeenCalled();
+                });
+            });
             describe('startup options:', function() {
+                beforeEach(function() {
+                    destroy(testWidget);
+                });
                 it('will display after startup', function() {
                     testWidget = new LoginRegister({
                         showOnLoad: true
@@ -59,7 +76,7 @@ require([
                     expect(domStyle.get(testWidget.modalDiv, 'display')).toBe('block');
 
                     //race condition
-                    //expect(domClass.contains(testWidget.modalDiv, 'in')).toBeTruthy();
+                    // expect(domClass.contains(testWidget.modalDiv, 'in')).toBeTruthy();
                 });
                 it('can be hiddin on startup', function() {
                     destroy(testWidget);
@@ -72,7 +89,6 @@ require([
                     expect(domClass.contains(testWidget.modalDiv, 'in')).toBeFalsy();
                 });
                 it('can be shown after creation', function() {
-                    destroy(testWidget);
 
                     testWidget = new LoginRegister({
                         showOnLoad: false
@@ -101,6 +117,36 @@ require([
                     testWidget.goToPane(testWidget.signInPane);
 
                     expect(testWidget.signInPane.focusFirstInput).toHaveBeenCalled();
+                });
+            });
+            describe('onSignInSuccess', function() {
+                // won't work until: https://github.com/agrc/StubModule/issues/3
+                // gets fixed
+                xit("should create the logout widget if not already created", function() {
+                    var logoutSpy = jasmine.createSpy('logoutSpy');
+                    var StubbedModule = StubModule('ijit/widgets/authentication/LoginRegister', {
+                        'ijit/widgets/authentication/_LoginRegisterLogout': logoutSpy
+                    });
+                    var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, win.body()));
+
+                    testWidget2.onSignInSuccess();
+                    testWidget2.onSignInSuccess();
+
+                    expect(logoutSpy.numCalls).toBe(1);
+
+                    destroy(testWidget2);
+                });
+            });
+            describe('onRequestPreCallback', function() {
+                it("adds the token to the content", function() {
+                    var ioArgs = {
+                        content: {}
+                    };
+                    var token = 'blah';
+                    testWidget.token = token;
+
+                    expect(testWidget.onRequestPreCallback(ioArgs).content.token)
+                        .toBe(token);
                 });
             });
         });

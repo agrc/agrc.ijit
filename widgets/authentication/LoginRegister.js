@@ -14,10 +14,12 @@ define([
         'dijit/_WidgetBase',
         'dijit/_WidgetsInTemplateMixin',
 
-        'ijit/widgets/_LoginRegisterSignInPane',
-        'ijit/widgets/_LoginRegisterRequestPane',
-        'ijit/widgets/_LoginRegisterForgotPane',
-        'ijit/widgets/_LoginRegisterLogout',
+        'esri/request',
+
+        'ijit/widgets/authentication/_LoginRegisterSignInPane',
+        'ijit/widgets/authentication/_LoginRegisterRequestPane',
+        'ijit/widgets/authentication/_LoginRegisterForgotPane',
+        'ijit/widgets/authentication/_LoginRegisterLogout',
 
         // no params
         'dijit/layout/StackContainer',
@@ -41,6 +43,8 @@ define([
         _WidgetBase,
         _WidgetsInTemplateMixin,
 
+        esriRequest,
+
         _LoginRegisterSignInPane,
         _LoginRegisterRequestPane,
         _LoginRegisterForgotPane,
@@ -50,7 +54,7 @@ define([
         //      Works with agrc/ArcGisServerPermissionsProxy to allow users to register or login.
         // requires:
         //      jquery and bootstrap.js
-        return declare('widgets/LoginRegister', [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+        return declare('widgets/authentication/LoginRegister', [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             widgetsInTemplate: true,
             templateString: template,
             baseClass: 'login-register',
@@ -76,6 +80,25 @@ define([
                 request: '/user/register',
                 reset: '/user/resetpassword'
             },
+
+            // token: String
+            //      The ArcGIS Server token
+            token: null,
+
+            // tokenExpireDate: Date
+            //      The date and time when the token expires
+            tokenExpireDate: null,
+
+            // user: Object
+            //      The user object returns by the authentication service
+            //      For example:
+            //      {
+            //          "email": "stdavis@utah.gov",
+            //          "role": "report-generator",
+            //          "name": "Scott Davis",
+            //          "agency": "AGRC"
+            //      },
+            user: null,
 
 
             // parameters passed in via the constructor
@@ -105,11 +128,7 @@ define([
                     url: this.urls.base + this.urls.signIn,
                     parentWidget: this
                 }, this.signInPaneDiv);
-                aspect.after(this.signInPane, 'onSubmitReturn', function(response) {
-                    that.logout = new _LoginRegisterLogout({
-                        name: response.result.user.name
-                    }, that.logoutDiv);
-                }, true);
+                this.signInPane.on('sign-in-success', lang.hitch(this, 'onSignInSuccess'));
                 this.requestPane = new _LoginRegisterRequestPane({
                     url: this.urls.base + this.urls.request,
                     parentWidget: this
@@ -152,13 +171,37 @@ define([
 
                 $(this.modalDiv).modal('hide');
             },
-            show: function () {
+            show: function() {
                 // summary:
                 //      shows the login modal
                 // 
                 console.log(this.declaredClass + '::show', arguments);
-             
+
                 $(this.modalDiv).modal('show');
+            },
+            onSignInSuccess: function(loginResult) {
+                // summary:
+                //      called when the user has successfully signed in
+                // loginResult: Object
+                //      result object as returned from the server
+                console.log(this.declaredClass + "::onSignInSuccess", arguments);
+
+                this.logout = new _LoginRegisterLogout({
+                    name: loginResult.user.name
+                }, this.logoutDiv);
+
+                // add token to all future requests
+                esriRequest.setRequestPreCallback(lang.hitch(this, 'onRequestPreCallback'));
+            },
+            onRequestPreCallback: function(ioArgs) {
+                // summary:
+                //      fires just before each request to the server
+                // ioArgs: {}
+                //      the data that will be sent with the request
+                console.log(this.declaredClass + "::onRequestPreCallback", arguments);
+
+                ioArgs.content.token = this.token;
+                return ioArgs;
             }
         });
     });
