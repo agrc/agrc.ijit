@@ -30,8 +30,7 @@
 
         <script type="text/javascript">
             require([
-                'ijit/widgets/LoginRegister',
-
+                'ijit/widgets/LoginRegister'
             ],
 
             function (
@@ -39,7 +38,8 @@
                 ) {
                 testWidget = new LoginRegister({
                     appName: 'app1',
-                    logoutDiv: 'testdiv'
+                    logoutDiv: 'testdiv',
+                    showOnLoad: true
                 });
             });
         </script>
