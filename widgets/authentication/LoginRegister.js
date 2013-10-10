@@ -16,10 +16,10 @@ define([
 
         'esri/request',
 
-        'ijit/widgets/_LoginRegisterSignInPane',
-        'ijit/widgets/_LoginRegisterRequestPane',
-        'ijit/widgets/_LoginRegisterForgotPane',
-        'ijit/widgets/_LoginRegisterLogout',
+        'ijit/widgets/authentication/_LoginRegisterSignInPane',
+        'ijit/widgets/authentication/_LoginRegisterRequestPane',
+        'ijit/widgets/authentication/_LoginRegisterForgotPane',
+        'ijit/widgets/authentication/_LoginRegisterLogout',
 
         // no params
         'dijit/layout/StackContainer',
@@ -54,7 +54,7 @@ define([
         //      Works with agrc/ArcGisServerPermissionsProxy to allow users to register or login.
         // requires:
         //      jquery and bootstrap.js
-        return declare('widgets/LoginRegister', [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+        return declare('widgets/authentication/LoginRegister', [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             widgetsInTemplate: true,
             templateString: template,
             baseClass: 'login-register',

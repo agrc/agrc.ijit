@@ -5,7 +5,7 @@ define([
 
         'dojo/on',
 
-        'ijit/widgets/_LoginRegisterPaneMixin'
+        'ijit/widgets/authentication/_LoginRegisterPaneMixin'
     ],
 
     function(
@@ -19,7 +19,7 @@ define([
     ) {
         // summary:
         //      The sign in pane for the LoginRegistration widget.
-        return declare('ijit/widgets/_LoginRegisterSignInPane', [_LoginRegisterPaneMixin], {
+        return declare('ijit/widgets/authentication/_LoginRegisterSignInPane', [_LoginRegisterPaneMixin], {
             templateString: template,
             baseClass: 'login-register-sign-in-pane',
             xhrMethod: 'POST',

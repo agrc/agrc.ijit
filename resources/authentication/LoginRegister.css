@@ -1,6 +1,7 @@
 @import '_LoginRegisterSignInPane.css';
 @import '_LoginRegisterRequestPane.css';
 @import '_LoginRegisterForgotPane.css';
+@import '_LoginRegisterLogout.css';
 
 .login-register .dijitStackContainer-child {
     /* required or else these are set to 0 for some reason

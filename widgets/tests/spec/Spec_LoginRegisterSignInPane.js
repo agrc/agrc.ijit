@@ -1,5 +1,5 @@
 require([
-        'ijit/widgets/_LoginRegisterSignInPane',
+        'ijit/widgets/authentication/_LoginRegisterSignInPane',
 
         'dojo/dom-construct',
 
@@ -13,7 +13,7 @@ require([
 
         win
     ) {
-        describe('ijit/widgets/_LoginRegisterSignInPane', function() {
+        describe('ijit/widgets/authentication/_LoginRegisterSignInPane', function() {
             var testWidget;
             var destroy = function(widget) {
                 widget.destroyRecursive();

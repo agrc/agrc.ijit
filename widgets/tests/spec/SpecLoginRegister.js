@@ -9,10 +9,11 @@ require([
 
         'stubmodule/StubModule',
 
-        'ijit/widgets/LoginRegister',
+        'ijit/widgets/authentication/LoginRegister',
         // have to preload these for tests since we are creating the widget programmatically
-        'ijit/widgets/_LoginRegisterSignInPane',
-        'ijit/widgets/_LoginRegisterRequestPane'
+        'ijit/widgets/authentication/_LoginRegisterSignInPane',
+        'ijit/widgets/authentication/_LoginRegisterRequestPane',
+        'ijit/widgets/authentication/_LoginRegisterLogout'
     ],
 
     function(
@@ -28,7 +29,7 @@ require([
 
         LoginRegister
     ) {
-        describe('ijit/widgets/LoginRegister', function() {
+        describe('ijit/widgets/authentication/LoginRegister', function() {
             var testWidget;
             // mock query stuff because I'm too cool to include jquery in my tests :)
             window.$ = function() {
@@ -123,8 +124,8 @@ require([
                 // gets fixed
                 xit("should create the logout widget if not already created", function() {
                     var logoutSpy = jasmine.createSpy('logoutSpy');
-                    var StubbedModule = StubModule('ijit/widgets/LoginRegister', {
-                        'ijit/widgets/_LoginRegisterLogout': logoutSpy
+                    var StubbedModule = StubModule('ijit/widgets/authentication/LoginRegister', {
+                        'ijit/widgets/authentication/_LoginRegisterLogout': logoutSpy
                     });
                     var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, win.body()));
 
