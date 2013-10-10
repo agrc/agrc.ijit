@@ -52,29 +52,29 @@ function (
             it("returns false if there is a value missing", function () {
                 testWidget.emailTxt.value = 'blah';
 
-                expect(testWidget.validate()).toBe(false);
+                expect(testWidget.validate({charCode: 0})).toBe(false);
 
                 testWidget.passwordTxt.value = 'blah';
 
-                expect(testWidget.validate()).toBe(true);
+                expect(testWidget.validate({charCode: 0})).toBe(true);
 
                 testWidget.emailTxt.value = '';
 
-                expect(testWidget.validate()).toBe(false);
+                expect(testWidget.validate({charCode: 0})).toBe(false);
             });
             it('enables and disables the sign in button', function () {
                 testWidget.emailTxt.value = 'blah';
-                testWidget.validate();
+                testWidget.validate({charCode: 0});
 
                 expect(testWidget.submitBtn.disabled).toBe(true);
 
                 testWidget.passwordTxt.value = 'blah';
-                testWidget.validate();
+                testWidget.validate({charCode: 0});
 
                 expect(testWidget.submitBtn.disabled).toBe(false);
 
                 testWidget.emailTxt.value = '';
-                testWidget.validate();
+                testWidget.validate({charCode: 0});
 
                 expect(testWidget.submitBtn.disabled).toBe(true);
             });

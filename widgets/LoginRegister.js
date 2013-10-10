@@ -122,7 +122,6 @@ define([
 
                 domConstruct.place(this.domNode, win.body());
 
-                console.log(this.showOnLoad);
                 // this is to make sure that bootstrap is loaded after jQuery
                 require(['bootstrap'], function() {
                     that.modal = $(that.modalDiv).modal({
