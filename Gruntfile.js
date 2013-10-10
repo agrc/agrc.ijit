@@ -10,12 +10,12 @@ module.exports = function(grunt) {
     ];
     var jsFiles = specs.concat([
         'widgets/tests/SetUpTests.js',
-        'widgets/LoginRegister.js',
-        'widgets/_LoginRegisterPaneMixin.js',
-        'widgets/_LoginRegisterSignInPane.js',
-        'widgets/_LoginRegisterRequestPane.js',
-        'widgets/_LoginRegisterForgotPane.js',
-        'widgets/_LoginRegisterLogout.js',
+        'widgets/authentication/LoginRegister.js',
+        'widgets/authentication/_LoginRegisterPaneMixin.js',
+        'widgets/authentication/_LoginRegisterSignInPane.js',
+        'widgets/authentication/_LoginRegisterRequestPane.js',
+        'widgets/authentication/_LoginRegisterForgotPane.js',
+        'widgets/authentication/_LoginRegisterLogout.js',
         'GruntFile.js'
     ]);
     // Project configuration.
@@ -23,8 +23,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         jasmine: {
             app: {
-                src: [
-                ],
+                src: [],
                 options: {
                     vendor: [
                         'widgets/tests/SetUpTests.js',
@@ -37,7 +36,11 @@ module.exports = function(grunt) {
         jshint: {
             files: jsFiles,
             options: {
-                jshintrc: '.jshintrc'
+                jshintrc: '.jshintrc',
+                ignores: [
+                    'resources/libs/*.js',
+                    'widgets/tests/stubmodule/**/*.js'
+                ]
             }
         },
         watch: {
@@ -50,7 +53,9 @@ module.exports = function(grunt) {
                 'widgets/**/*.html',
                 'modules/**/*.css',
                 'themes/**/*.css',
-                'widgets/**/*.css'
+                'widgets/**/*.css',
+                '!**/node_modules/**',
+                '!**/stubmodule/**'
             ],
             tasks: ['jasmine:app:build', 'jshint'],
             options: {
