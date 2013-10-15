@@ -6,16 +6,13 @@ module.exports = function(grunt) {
         'widgets/tests/spec/Spec_LoginRegisterSignInPane.js',
         'widgets/tests/spec/Spec_LoginRegisterRequestPane.js',
         'widgets/tests/spec/Spec_LoginRegisterForgotPane.js',
-        'widgets/tests/spec/Spec_LoginRegisterLogout.js'
+        'widgets/tests/spec/Spec_LoginRegisterLogout.js',
+        'widgets/tests/spec/Spec_UserAdminUser.js',
+        'widgets/tests/spec/SpecUserAdmin.js'
     ];
     var jsFiles = specs.concat([
         'widgets/tests/SetUpTests.js',
-        'widgets/authentication/LoginRegister.js',
-        'widgets/authentication/_LoginRegisterPaneMixin.js',
-        'widgets/authentication/_LoginRegisterSignInPane.js',
-        'widgets/authentication/_LoginRegisterRequestPane.js',
-        'widgets/authentication/_LoginRegisterForgotPane.js',
-        'widgets/authentication/_LoginRegisterLogout.js',
+        'widgets/authentication/*.js',
         'GruntFile.js'
     ]);
     // Project configuration.
@@ -46,14 +43,11 @@ module.exports = function(grunt) {
         watch: {
             files: [
                 'modules/**/*.js',
-                'themes/**/*.js',
                 'widgets/**/*.js',
                 'modules/**/*.html',
-                'themes/**/*.html',
                 'widgets/**/*.html',
                 'modules/**/*.css',
-                'themes/**/*.css',
-                'widgets/**/*.css',
+                'resources/**/*.css',
                 '!**/node_modules/**',
                 '!**/stubmodule/**'
             ],
