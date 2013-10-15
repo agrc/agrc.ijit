@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>_UserAdminUser Widget Tests</title>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/dijit.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../../resources/authentication/_UserAdminUser.css">
+
+        <script type="text/javascript">
+            var projectUrl = location.pathname.replace(/\/[^\/]+$/, "") + '/';
+            var dojoConfig = {
+                packages: [{
+                    name: 'ijit',
+                    location: projectUrl + '../../'
+                },{
+                    name: 'jquery',
+                    location: 'http://code.jquery.com/',
+                    main: 'jquery-1.10.2'
+                },{
+                    name: 'bootstrap',
+                    location: 'http://netdna.bootstrapcdn.com/bootstrap/',
+                    main: '3.0.0/js/bootstrap'
+                }]
+            };
+        </script>
+        <script type="text/javascript" src="http://js.arcgis.com/3.7"></script>
+
+        <script type="text/javascript">
+            require([
+                    'ijit/widgets/authentication/_UserAdminUser'
+                ],
+
+                function(
+                    _UserAdminUser
+                ) {
+                    testWidget = new _UserAdminUser({
+                        name: 'Scott Davis',
+                        agency: 'AGRC',
+                        email: 'stdavis@utah.gov',
+                        roles: ['admin', 'role1', 'role2']
+                    }, 'testdiv');
+                }); 
+        </script>
+    </head>
+    <body>
+        <div id="testdiv"></div>
+    </body>
+</html>

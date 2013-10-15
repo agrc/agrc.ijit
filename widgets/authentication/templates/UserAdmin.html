@@ -1,0 +1,42 @@
+<div>
+    <div class="page-header">
+        <h1>${title} User Administration</h1>
+    </div>
+    <div class="pull-right">
+        <div data-dojo-attach-point="logoutDiv"></div>
+    </div>
+
+    <div data-dojo-attach-point='errMsgDiv' class="alert alert-danger"></div>
+
+    <h3>Users Awaiting Approval</h3>
+    <div data-dojo-attach-point="noUsersMsg" class="alert alert-info">
+        There are no users awaiting approval.
+    </div>
+    <div data-dojo-attach-point="userContainer"></div>
+
+    <h3>Delete User</h3>
+    <label>Email address</label>
+    <div class="input-group">
+        <input type="email" data-dojo-attach-point="delEmailTxt" class="form-control">
+        <span class="input-group-btn">
+            <button class='btn btn-danger' data-dojo-attach-event='onclick: deleteUser'>Delete</button>
+        </span>
+    </div>
+    <div data-dojo-attach-point='deleteSuccessMsgDiv' class="alert alert-success input-group">
+        <strong data-dojo-attach-point='deleteUserSpan'></strong> has been deleted successfully.
+    </div>
+    <div data-dojo-attach-point='deleteErrMsgDiv' class="alert alert-danger"></div>
+
+    <h3>Reset Password</h3>
+    <label>Email address</label>
+    <div class="input-group">
+        <input type="email" data-dojo-attach-point="resetEmailTxt" class="form-control">
+        <span class="input-group-btn">
+            <button class='btn btn-warning' data-dojo-attach-event='onclick: resetPassword'>Reset</button>
+        </span>
+    </div>
+    <div data-dojo-attach-point='resetSuccessMsgDiv' class="alert alert-success input-group">
+        The password for <strong data-dojo-attach-point="resetUserSpan"></strong> has been successfully changed!
+    </div>
+    <div data-dojo-attach-point='resetErrMsgDiv' class="alert alert-danger"></div>
+</div>
