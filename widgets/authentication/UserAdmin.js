@@ -45,7 +45,9 @@ define([
             urls: {
                 base: '/permissionproxy/api',
                 getallwaiting: '/admin/getallwaiting',
-                getroles: '/admin/getroles'
+                getroles: '/admin/getroles',
+                del: '/admin/reject',
+                reset: '/user/resetpassword'
             },
 
             // roles: String[]
@@ -146,6 +148,59 @@ define([
 
                 this.login.destroyRecursive();
                 this.inherited(arguments);
+            },
+            deleteUser: function() {
+                // summary:
+                //      fires when the user clicks the delete button
+                console.log(this.declaredClass + "::deleteUser", arguments);
+
+                this.sendRequest(
+                    this.deleteSuccessMsgDiv,
+                    this.urls.del,
+                    this.delEmailTxt,
+                    'DELETE',
+                    this.deleteUserSpan,
+                    this.deleteErrMsgDiv);
+            },
+            resetPassword: function() {
+                // summary:
+                //      fires when the user clicks on the reset button
+                console.log(this.declaredClass + "::resetPassword", arguments);
+
+                this.sendRequest(
+                    this.resetSuccessMsgDiv,
+                    this.urls.reset,
+                    this.resetEmailTxt,
+                    'PUT',
+                    this.resetUserSpan,
+                    this.resetErrMsgDiv);
+            },
+            sendRequest: function(successMsg, service, textBox, verb, userSpan, errDiv) {
+                // summary:
+                //      send reset or delete request
+                console.log(this.declaredClass + "::sendRequest", arguments);
+
+                domStyle.set(successMsg, 'display', 'none');
+                domStyle.set(errDiv, 'display', 'none');
+
+                request(this.urls.base + service, {
+                    data: JSON.stringify({
+                        email: textBox.value,
+                        application: this.appName
+                    }),
+                    handleAs: 'json',
+                    method: verb,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(function() {
+                    userSpan.innerHTML = textBox.value;
+                    textBox.value = '';
+                    domStyle.set(successMsg, 'display', 'block');
+                }, function(response) {
+                    errDiv.innerHTML = response.message;
+                    domStyle.set(errDiv, 'display', 'block');
+                });
             }
         });
     });

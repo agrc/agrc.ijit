@@ -25,6 +25,9 @@ require([
             beforeEach(function() {
                 testWidget = new UserAdmin({}, domConstruct.create('div', {}, win.body()));
                 testWidget.startup();
+                testWidget.login.user = {
+                    adminToken: 'blah'
+                };
             });
             afterEach(function() {
                 destroy(testWidget);
