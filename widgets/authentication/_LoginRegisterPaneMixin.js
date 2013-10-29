@@ -3,6 +3,7 @@ define([
         'dojo/_base/lang',
 
         'dojo/dom-style',
+        'dojo/dom-attr',
 
         'dojo/query',
         'dojo/request',
@@ -18,6 +19,7 @@ define([
         lang,
 
         domStyle,
+        domAttr,
 
         query,
         xhr,
@@ -118,7 +120,7 @@ define([
                 //      fires when the user clicks the sign in button
                 console.log(this.declaredClass + '::onSubmitClick', arguments);
 
-                this.submitBtn.disabled = true;
+                domAttr.set(this.submitBtn, 'disabled', true);
 
                 this.hideError();
 
@@ -138,7 +140,7 @@ define([
                         lang.hitch(this, 'onSubmitError')
                     );
                     def.always(function() {
-                        that.submitBtn.disabled = false;
+                        domAttr.remove(that.submitBtn, 'disabled')
                     });
                 } catch (e) {
                     this.showError(e);
