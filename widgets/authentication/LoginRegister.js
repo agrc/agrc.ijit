@@ -7,6 +7,7 @@ define([
         'dojo/dom-style',
         'dojo/dom-construct',
         'dojo/aspect',
+        'dojo/topic',
 
         'dojo/text!./templates/LoginRegister.html',
 
@@ -36,7 +37,8 @@ define([
         domStyle,
         domConstruct,
         aspect,
-
+        topic,
+        
         template,
 
         _TemplatedMixin,
@@ -189,6 +191,8 @@ define([
                 this.logout = new _LoginRegisterLogout({
                     name: loginResult.user.name
                 }, this.logoutDiv);
+
+                topic.publish('LoginRegister/sign-in-success', loginResult);
 
                 // add token to all future requests
                 esriRequest.setRequestPreCallback(lang.hitch(this, 'onRequestPreCallback'));
