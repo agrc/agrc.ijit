@@ -189,7 +189,8 @@ define([
                 console.log(this.declaredClass + "::onSignInSuccess", arguments);
 
                 this.logout = new _LoginRegisterLogout({
-                    name: loginResult.user.name
+                    name: loginResult.user.name,
+                    role: loginResult.user.role
                 }, this.logoutDiv);
 
                 topic.publish('LoginRegister/sign-in-success', loginResult);
