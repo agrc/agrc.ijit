@@ -51,19 +51,21 @@ define([
                 // returns: Boolean
                 console.log(this.declaredClass + '::validate', arguments);
 
+                this.submitBtn.disabled = true;
+
                 var valid = query(
                     "input[type='text'], input[type='password'], input[type='email']",
                     this.domNode
                 ).every(function(node) {
                     return node.value.length > 0;
                 });
+                
+                this.submitBtn.disabled = !valid;
 
                 var charOrCode = evt.charCode || evt.keyCode;
                 if (valid && charOrCode == keys.ENTER) {
                     this.onSubmitClick();
                 }
-
-                this.submitBtn.disabled = !valid;
 
                 return valid;
             },
@@ -140,7 +142,7 @@ define([
                         lang.hitch(this, 'onSubmitError')
                     );
                     def.always(function() {
-                        domAttr.remove(that.submitBtn, 'disabled')
+                        domAttr.remove(that.submitBtn, 'disabled');
                     });
                 } catch (e) {
                     this.showError(e);

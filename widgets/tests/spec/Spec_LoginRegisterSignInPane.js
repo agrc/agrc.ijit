@@ -2,6 +2,7 @@ require([
         'ijit/widgets/authentication/_LoginRegisterSignInPane',
 
         'dojo/dom-construct',
+        'dojo/dom-attr',
 
         'dojo/_base/window'
     ],
@@ -10,6 +11,7 @@ require([
         _LoginRegisterSignInPane,
 
         domConstruct,
+        domAttr,
 
         win
     ) {
@@ -36,7 +38,7 @@ require([
                 expect(testWidget).toEqual(jasmine.any(_LoginRegisterSignInPane));
             });
             describe('getData', function() {
-                it("return the correct data", function() {
+                it('return the correct data', function() {
                     var email = 'blah';
                     var pass = 'blah2';
                     testWidget.emailTxt.value = email;
@@ -63,15 +65,47 @@ require([
                         }
                     });
                 });
-                it("hides the dialog", function() {
+                it('hides the dialog', function() {
                     expect(testWidget.parentWidget.hideDialog).toHaveBeenCalled();
                 });
-                it("gets the returned token and expiration date", function() {
+                it('gets the returned token and expiration date', function() {
                     expect(testWidget.parentWidget.token).toBe(token);
                     expect(testWidget.parentWidget.tokenExpireDate.getTime()).toBe(dateNum);
                 });
-                it("stores the user object", function() {
+                it('stores the user object', function() {
                     expect(testWidget.parentWidget.user).toBe(user);
+                });
+            });
+            describe('validate', function() {
+                it('is valid when all fields have a value', function() {
+                    testWidget.emailTxt.value = 'this@email.com';
+                    testWidget.passwordTxt.value = 'super_secret';
+
+                    expect(testWidget.validate({
+                        charCode: 1
+                    })).toBe(true);
+                    expect(domAttr.has(testWidget.submitBtn, 'disabled')).toBeFalsy();
+                });
+                it('is not valid when all fields don\'t have a value', function() {
+                    testWidget.emailTxt.value = 'this@email.com';
+                    testWidget.passwordTxt.value = '';
+
+                    expect(testWidget.validate({
+                        charCode: 1
+                    })).toBe(false);
+                    expect(domAttr.has(testWidget.submitBtn, 'disabled')).toBeTruthy();
+                });
+            });
+            describe('onSubmitClick', function() {
+                it('submit button is disabled on enter click', function() {
+                    testWidget.emailTxt.value = 'this@email.com';
+                    testWidget.passwordTxt.value = 'super_secret';
+
+                    expect(testWidget.validate({
+                        charCode: 13
+                    })).toBe(true);
+
+                    expect(domAttr.has(testWidget.submitBtn, 'disabled')).toBe(true);
                 });
             });
         });
