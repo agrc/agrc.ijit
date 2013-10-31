@@ -20,6 +20,14 @@ define([
             templateString: template,
             baseClass: 'login-register-logout',
 
+            // name: String
+            //      The user's name as displayed in the dropdown link
+            name: null,
+
+            // role: String
+            //      The user's role. Determines the visibility of the user admin link
+            role: null,
+
             onSignOutClick: function(evt) {
                 // summary:
                 //      fires when the user clicks the "Sign out" menu item
