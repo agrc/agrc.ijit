@@ -39,6 +39,9 @@ require([
                         role: 'admin'
                     }, domConstruct.create('div', {}, win.body()));
                     testWidget2.startup();
+                    domStyle.set(testWidget2.adminLink, 'display', 'none');
+
+                    testWidget2.postCreate();
                     
                     expect(domStyle.get(testWidget2.adminLink, 'display')).toEqual('list-item');
 
