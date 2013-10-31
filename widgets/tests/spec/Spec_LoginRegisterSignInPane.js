@@ -95,15 +95,21 @@ require([
                     })).toBe(false);
                     expect(domAttr.has(testWidget.submitBtn, 'disabled')).toBeTruthy();
                 });
-            });
-            describe('onSubmitClick', function() {
-                it('submit button is disabled on enter click', function() {
+                it('submits on enter', function () {
+                    spyOn(testWidget, 'onSubmitClick');
                     testWidget.emailTxt.value = 'this@email.com';
                     testWidget.passwordTxt.value = 'super_secret';
 
-                    expect(testWidget.validate({
+                    testWidget.validate({
                         charCode: 13
-                    })).toBe(true);
+                    });
+
+                    expect(testWidget.onSubmitClick).toHaveBeenCalled();
+                });
+            });
+            describe('onSubmitClick', function() {
+                it('submit button is disabled', function() {
+                    testWidget.onSubmitClick();
 
                     expect(domAttr.has(testWidget.submitBtn, 'disabled')).toBe(true);
                 });
