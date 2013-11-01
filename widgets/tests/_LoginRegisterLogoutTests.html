@@ -30,7 +30,13 @@
                 _LoginRegisterLogout
                 ) {
                 testWidget = new _LoginRegisterLogout({
-                    name: 'Scott Davis'
+                    name: 'Scott Davis',
+                    email: 'stdavis@utah.gov',
+                    role: 'admin',
+                    url: 'change/password/url',
+                    parentWidget: {
+                        appName: 'appName'
+                    }
                 }, 'testdiv');
             });
         </script>

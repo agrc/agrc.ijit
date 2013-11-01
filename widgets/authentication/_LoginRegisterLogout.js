@@ -1,61 +1,109 @@
 define([
-        'dojo/_base/declare',
-        'dijit/_WidgetBase',
-        'dijit/_TemplatedMixin',
-        'dijit/_WidgetsInTemplateMixin',
-        'dojo/text!./templates/_LoginRegisterLogout.html',
-        'dojo/dom-style'
-    ],
+    'dojo/_base/declare',
+    'dojo/text!./templates/_LoginRegisterLogout.html',
+    'dojo/dom-style',
+    'ijit/widgets/authentication/_LoginRegisterPaneMixin'
 
-    function(
-        declare,
-        _WidgetBase,
-        _TemplatedMixin,
-        _WidgetsInTemplateMixin,
-        template,
-        domStyle
-    ) {
-        // summary:
-        //      A widget that provides log out and user name display for Lthe LoginRegister widget.
-        return declare('ijit/widget/authentication/_LoginRegisterLogout', [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
-            widgetsInTemplate: false,
-            templateString: template,
-            baseClass: 'login-register-logout',
+], function(
+    declare,
+    template,
+    domStyle,
+    _LoginRegisterPaneMixin
+) {
+    // summary:
+    //      A widget that provides log out and user name display for Lthe LoginRegister widget.
+    return declare('ijit/widget/authentication/_LoginRegisterLogout', [_LoginRegisterPaneMixin], {
+        widgetsInTemplate: false,
+        templateString: template,
+        baseClass: 'login-register-logout',
 
-            // name: String
-            //      The user's name as displayed in the dropdown link
-            name: null,
+        // mismatchedErrMsg: String
+        //      The message displayed when the new password and confirm password do not match
+        mismatchedErrMsg: '"New Password" and "Confirm New Password" do not match!',
 
-            // role: String
-            //      The user's role. Determines the visibility of the user admin link
-            role: null,
+        // passed in via the constructor
 
-            postCreate: function () {
-                // summary:
-                //      description
-                console.log(this.declaredClass + '::postCreate', arguments);
-            
-                if (this.role === 'admin') {
-                    domStyle.set(this.adminLink, 'display', 'list-item');
-                }
-            },
-            onSignOutClick: function(evt) {
-                // summary:
-                //      fires when the user clicks the "Sign out" menu item
-                // evt: Click Event
-                console.log(this.declaredClass + "::onSignOutClick", arguments);
+        // name: String
+        //      The user's name as displayed in the dropdown link
+        name: null,
 
-                evt.preventDefault();
+        // role: String
+        //      The user's role. Determines the visibility of the user admin link
+        role: null,
 
-                this.refreshPage();
-            },
-            refreshPage: function() {
-                // summary:
-                //      wrapper around window.location.reload to enable testing since 
-                //      it's immutable
-                console.log(this.declaredClass + "::refreshPage", arguments);
+        // email: String
+        //      The user's email.
+        email: null,
 
-                window.location.reload();
+        // url: String
+        //      the url to the change password
+        url: null,
+
+        // parentWidget: LoginRegister
+        parentWidget: null,
+
+        postCreate: function() {
+            // summary:
+            //      description
+            console.log(this.declaredClass + '::postCreate', arguments);
+
+            if (this.role === 'admin') {
+                domStyle.set(this.adminLink, 'display', 'list-item');
             }
-        });
+        },
+        onSignOutClick: function(evt) {
+            // summary:
+            //      fires when the user clicks the "Sign out" menu item
+            // evt: Click Event
+            console.log(this.declaredClass + "::onSignOutClick", arguments);
+
+            evt.preventDefault();
+
+            this.refreshPage();
+        },
+        refreshPage: function() {
+            // summary:
+            //      wrapper around window.location.reload to enable testing since 
+            //      it's immutable
+            console.log(this.declaredClass + "::refreshPage", arguments);
+
+            window.location.reload();
+        },
+        onChangePasswordClick: function (evt) {
+            // summary:
+            //      description
+            // evt: Click Event
+            console.log(this.declaredClass + '::onChangePasswordClick', arguments);
+        
+            evt.preventDefault();
+
+            $(this.modalDiv).modal('show');
+        },
+        getData: function () {
+            // summary:
+            //      returns data suitable for submission to the change password service
+            //      also validates that the new password fields match
+            console.log(this.declaredClass + '::getData', arguments);
+
+            if (this.newPassTxt.value !== this.newPassConfirmTxt.value) {
+                throw this.mismatchedErrMsg;
+            }
+        
+            return {
+                email: this.email,
+                currentPassword: this.currentPassTxt.value,
+                newpassword: this.newPassTxt.value,
+                newpasswordrepeated: this.newPassConfirmTxt.value
+            };
+        },
+        onSubmitReturn: function () {
+            // summary:
+            //      callback for successful xhr request
+            console.log(this.declaredClass + '::onSubmitReturn', arguments);
+        
+            domStyle.set(this.form, 'display', 'none');
+            domStyle.set(this.successDiv, 'display', 'block');
+            domStyle.set(this.submitBtn, 'display', 'none');
+        }
     });
+});

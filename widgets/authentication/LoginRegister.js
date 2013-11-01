@@ -25,7 +25,8 @@ define([
         // no params
         'dijit/layout/StackContainer',
         'dijit/layout/ContentPane',
-        'jquery/jquery'
+        'jquery',
+        'bootstrap'
     ],
 
     function(
@@ -80,7 +81,8 @@ define([
                 base: '/permissionproxy/api',
                 signIn: '/authenticate/user',
                 request: '/user/register',
-                reset: '/user/resetpassword'
+                reset: '/user/resetpassword',
+                change: '/user/changepassword'
             },
 
             // token: String
@@ -190,7 +192,10 @@ define([
 
                 this.logout = new _LoginRegisterLogout({
                     name: loginResult.user.name,
-                    role: loginResult.user.role
+                    role: loginResult.user.role,
+                    email: loginResult.user.email,
+                    url: this.urls.change,
+                    parentWidget: this
                 }, this.logoutDiv);
 
                 topic.publish('LoginRegister/sign-in-success', loginResult);
