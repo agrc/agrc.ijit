@@ -20,12 +20,12 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         jasmine: {
             app: {
-                src: [],
                 options: {
                     vendor: [
                         'widgets/tests/SetUpTests.js',
                         'http://js.arcgis.com/3.7/'
                     ],
+                    helpers: ['http://code.jquery.com/jquery-1.10.2.js'],
                     specs: specs
                 }
             }

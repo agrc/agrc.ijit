@@ -7,6 +7,51 @@
         <ul class="dropdown-menu" role='menu'>
             <li><a href="#" data-dojo-attach-event='onclick: onSignOutClick'>Sign out</a></li>
             <li class='admin-link' data-dojo-attach-point='adminLink'><a href="user_admin.html">User Admin Page</a></li>
+            <li><a href="#" data-dojo-attach-event='onclick: onChangePasswordClick'>Change Password</a></li>
         </ul>
+    </div>
+    <div class="modal fade login-register" data-dojo-attach-point="modalDiv">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class='modal-title'>Change Password</h4>
+                </div>
+                <div class="modal-body">
+                    <form data-dojo-attach-point='form'>
+                        <div class="form-group">
+                            <label>Current Password</label>
+                            <input data-dojo-attach-point='currentPassTxt'
+                                data-dojo-attach-event='onkeyup: validate'
+                                type='password' class='form-control' tabindex="1">
+                        </div>
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <input data-dojo-attach-point='newPassTxt'
+                                data-dojo-attach-event='onkeyup: validate'
+                                type='password' class='form-control'>
+                        </div>
+                        <div class="form-group last">
+                            <label>Confirm New Password</label>
+                            <input data-dojo-attach-point='newPassConfirmTxt'
+                                data-dojo-attach-event='onkeyup: validate'
+                                type='password' class='form-control'>
+                        </div>
+                        <div data-dojo-attach-point='errorDiv' class="alert alert-danger">
+                            test message
+                        </div>
+                    </form>
+                    <div class="alert alert-success" data-dojo-attach-point="successDiv">
+                        Your password has been successfully changed!
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button data-dojo-attach-point='submitBtn'
+                        data-dojo-attach-event='onclick: onSubmitClick'
+                        type="button" class="btn btn-primary" disabled>Submit</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
