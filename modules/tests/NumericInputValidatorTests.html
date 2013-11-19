@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NumericInputValidator Tests</title>
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <style type='text/css'>
+        body {
+            padding: 20px;
+        }
+        .sizer {
+            width: 250px;
+        }
+    </style>
+
+    <script type='text/javascript'>
+        var projectUrl = location.pathname.replace(/\/[^\/]+$/, "") + '/';
+        var dojoConfig = {
+            packages: [{
+                name: 'ijit',
+                location: projectUrl + '../../'
+            }]
+        };
+    </script>
+    <script type="text/javascript" src="http://js.arcgis.com/3.7"></script>
+
+    <script type="text/javascript">
+        require([
+            'ijit/modules/NumericInputValidator'
+        ],
+
+        function (
+            NumericInputValidator
+            ) {
+            var validator = new NumericInputValidator();
+            validator.init();
+        });
+    </script>
+</head> 
+<body>
+    <div class="sizer">
+        <div class="form-group">
+            <label class='control-label'>Min: 1 / Max: 10</label>
+            <input type="number" min="1" max="10" class='form-control'>
+            <p class="help-block"></p>
+        </div>
+        <div class="form-group">
+            <label class='control-label'>Min: 1.0 / Max: 10.5</label>
+            <input type="number" min="1.0" max="10.5" class='form-control'>
+            <p class="help-block"></p>
+        </div>
+    </div>
+    
+</body>
+</html>

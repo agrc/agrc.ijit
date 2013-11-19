@@ -8,11 +8,13 @@ module.exports = function(grunt) {
         'widgets/tests/spec/Spec_LoginRegisterForgotPane.js',
         'widgets/tests/spec/Spec_LoginRegisterLogout.js',
         'widgets/tests/spec/Spec_UserAdminUser.js',
-        'widgets/tests/spec/SpecUserAdmin.js'
+        'widgets/tests/spec/SpecUserAdmin.js',
+        'modules/tests/spec/SpecNumericInputValidator.js'
     ];
     var jsFiles = specs.concat([
         'widgets/tests/SetUpTests.js',
         'widgets/authentication/*.js',
+        'modules/NumericInputValidator.js',
         'GruntFile.js'
     ]);
     // Project configuration.
