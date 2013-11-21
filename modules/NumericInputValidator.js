@@ -36,6 +36,12 @@ define([
         //      Used to clean up events in destroy
         events: null,
 
+        // _domAttributeName: String
+        //      The name of the custom dom attribute used to store the validity
+        //      on the input element.
+        _domAttributeName: '_isValid',
+
+
         constructor: function() {
             console.log(this.declaredClass + '::constructor', arguments);
 
@@ -55,11 +61,15 @@ define([
                 var min = domAttr.get(el, 'min');
                 var max = domAttr.get(el, 'max');
                 that.events.push(on(el, 'change, keyup', function () {
-                    var value = el.value;
-                    if (value.length > 0) { // don't valid on empty values
-                        that.updateUI(el, that.isValid(value, min, max));
+                    var value = el.valueAsNumber || el.value;
+                    console.log('el.valueAsNumber', el.valueAsNumber);
+                    console.log('el.value', el.value);
+                    // console.log('el.validity.badInput', el.validity.badInput);
+                    if (value.toString().length > 0 || 
+                        (el.valueAsNumber !== el.valueAsNumber && el.validity && el.validity.badInput)) { // don't valid on empty values
+                        that.updateUI(el, that._isValid(value, min, max));
                     } else {
-                        that.resetUI(el);
+                        that.updateUI(el, true);
                     }
                 }));
             });
@@ -74,27 +84,22 @@ define([
             //      true if valid or error message if invalid
             console.log(this.declaredClass + '::updateUI', arguments);
         
+            var helpBlock = query('.help-block', node.parentNode)[0];
+            if (!helpBlock) {
+                helpBlock = domConstruct.create('p', {'class': 'help-block'}, node.parentNode);
+            }
             if (isValid !== true) {
                 domClass.add(node.parentNode, 'has-error');
-                var helpBlock = query('.help-block', node.parentNode)[0];
-                if (!helpBlock) {
-                    helpBlock = domConstruct.create('p', {'class': 'help-block'}, node.parentNode);
-                }
                 helpBlock.innerHTML = isValid;
             } else {
-                this.resetUI(node);
+                domClass.remove(node.parentNode, 'has-error');
+                helpBlock.innerHTML = '';
             }
+
+            // update dom prop
+            domAttr.set(node, this._domAttributeName, isValid === true);
         },
-        resetUI: function (node) {
-            // summary:
-            //      resets the UI
-            // node: DomNode
-            console.log(this.declaredClass + '::resetUI', arguments);
-        
-            domClass.remove(node.parentNode, 'has-error');
-            query('.help-block', node.parentNode)[0].innerHTML = '';
-        },
-        isValid: function (value, min, max) {
+        _isValid: function (value, min, max) {
             // summary:
             //      validates the value against the min and max
             // value: String
@@ -110,7 +115,8 @@ define([
             var mx = parseFloat(max, 10);
 
             // check for NaN
-            if (v !== v) { 
+            if (v !== v || !/^\d+(\.(\d+)?)?$/.test(value)) { 
+                // NaN is only thing that is not equal to itself
                 return this.notNumberMsg;
             }
 
@@ -122,12 +128,21 @@ define([
                 return this.noDecimalAllowedMsg;
             }
 
-            // check for range
-            if (v >= mn && v <= mx) {
+            // check for range or no range specified
+            if (min === null || max === null || v >= mn && v <= mx) {
                 return true;
             } else {
                 return lang.replace(this.notWithinRangeMsg, {min: min, max: max});
             }
+        },
+        isValid: function (node) {
+            // summary:
+            //      Returns the validity of the passed in node
+            // node: Input element
+            //      Must match one of the elements that this object queried for in init
+            console.log(this.declaredClass + '::isValid', arguments);
+        
+            return domAttr.get(node, this._domAttributeName);
         },
         destroy: function () {
             // summary:

@@ -54,11 +54,11 @@ require([
 
                 expect(testObject2.init('parent').length).toBe(1);
             });
-            it('wires events that sets isValid on the dom node', function () {
+            it('wires events', function () {
                 var value = 'blah';
-                var value2 = '2';
+                var value2 = 2;
                 spyOn(testObject, 'updateUI');
-                spyOn(testObject, 'isValid').andReturn(value);
+                spyOn(testObject, '_isValid').andReturn(value);
                 var el = dom.byId(elements[0][0]);
                 el.value = value2;
                 testObject.init();
@@ -74,12 +74,11 @@ require([
                 expect(testObject.updateUI.callCount).toBe(2);
                 expect(testObject.updateUI)
                     .toHaveBeenCalledWith(el, value);
-                expect(testObject.isValid.callCount).toBe(2);
-                expect(testObject.isValid).toHaveBeenCalledWith(value2, elements[0][1], elements[0][2]);
+                expect(testObject._isValid.callCount).toBe(2);
+                expect(testObject._isValid).toHaveBeenCalledWith(value2, elements[0][1], elements[0][2]);
             });
-            it('doesnt fire updateUI if the value is empty', function () {
+            it('passes true for valid if the value is empty', function () {
                 spyOn(testObject, 'updateUI');
-                spyOn(testObject, 'resetUI');
                 var el = dom.byId(elements[0][0]);
                 testObject.init();
                 on.emit(el, 'change', {
@@ -87,15 +86,14 @@ require([
                     cancelable: true
                 });
 
-                expect(testObject.updateUI).not.toHaveBeenCalled();
-                expect(testObject.resetUI).toHaveBeenCalled();
+                expect(testObject.updateUI).toHaveBeenCalledWith(el, true);
             });
         });
-        describe('isValid', function () {
+        describe('_isValid', function () {
             var checks;
             afterEach(function () {
                 array.forEach(checks, function (chk) {
-                    expect(testObject.isValid(chk[0], chk[1], chk[2])).toBe(chk[3]);
+                    expect(testObject._isValid(chk[0], chk[1], chk[2])).toBe(chk[3]);
                 });
             });
             it('check if number is within min and max', function () {
@@ -103,13 +101,23 @@ require([
                     // [value, min, max, expected]
                     ['1', '1', '10', true],
                     ['11', '1', '10', lang.replace(testObject.notWithinRangeMsg, 
-                        {min: '1', max: '10'})],
-                    ['a', '1', '10', testObject.notNumberMsg]
+                        {min: '1', max: '10'})]
+                ];
+            });
+            it('checks for non-number values', function () {
+                checks = [
+                    ['a', '1', '10', testObject.notNumberMsg],
+                    ['1a', null, null, testObject.notNumberMsg]
                 ];
             });
             it('check for decimal places', function () {
                 checks = [
                     ['1.5', '1', '10', testObject.noDecimalAllowedMsg]
+                ];
+            });
+            it('if not max or min then dont worry about range validation', function () {
+                checks = [
+                    ['10', null, null, true]
                 ];
             });
         });
@@ -129,12 +137,15 @@ require([
 
                 expect(dom.byId('helpone').innerHTML).toBe(value);
             });
-            it('calls resetUI if valid', function () {
-                spyOn(testObject, 'resetUI');
+            it('removes parent css and clears help text if valid', function () {
+                var el = dom.byId(elements[0][0]);
+                domClass.add(el.parentNode, 'has-error');
+                dom.byId('helpone').innerHTML = 'blah';
 
                 testObject.updateUI(el, true);
 
-                expect(testObject.resetUI).toHaveBeenCalled();
+                expect(domClass.contains('groupone', 'has-error')).toBe(false);
+                expect(dom.byId('helpone').innerHTML).toBe('');
             });
             it('creates the help block if its not their', function () {
                 affix('#grouphelp.form-group label.control-label+' +
@@ -147,17 +158,27 @@ require([
                 testObject.updateUI(helpEl, txt);
                 expect(dom.byId('grouphelp').children[2].innerHTML).toBe(txt);
             });
+            it('sets the custom valid dom property', function () {
+                testObject.updateUI(el, true);
+
+                expect(domAttr.get(el, testObject._domAttributeName)).toBe(true);
+
+                testObject.updateUI(el, 'blah');
+
+                expect(domAttr.get(el, testObject._domAttributeName)).toBe(false);
+            });
         });
-        describe('resetUI', function () {
-            it('removes parent css and clears help text', function () {
-                var el = dom.byId(elements[0][0]);
-                domClass.add(el.parentNode, 'has-error');
-                dom.byId('helpone').innerHTML = 'blah';
+        describe('isValid', function () {
+            it('returns the value of the custom dom attribute', function () {
+                var el = dom.byId('one');
+                testObject._isValid(el);
+                domAttr.set(el, testObject._domAttributeName, true);
 
-                testObject.resetUI(el);
+                expect(testObject.isValid(el)).toBe(true);
 
-                expect(domClass.contains('groupone', 'has-error')).toBe(false);
-                expect(dom.byId('helpone').innerHTML).toBe('');
+                domAttr.set(el, testObject._domAttributeName, false);
+
+                expect(testObject.isValid(el)).toBe(false);
             });
         });
     });
