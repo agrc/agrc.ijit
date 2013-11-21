@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>LoginRegister Widget Tests</title>
+        <title>UserAdmin Widget Tests</title>
 
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
         <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/dijit.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="../../resources/authentication/LoginRegister.css">
+        <link rel="stylesheet" href="../../resources/authentication/UserAdmin.css">
 
         <script type="text/javascript">
             var projectUrl = location.pathname.replace(/\/[^\/]+$/, "") + '/';
@@ -30,26 +30,33 @@
 
         <script type="text/javascript">
             require([
-                'ijit/widgets/authentication/LoginRegister',
-                
-                'dojo/on'
-            ],
+                    'ijit/widgets/authentication/UserAdmin'
+                ],
 
-            function (
-                LoginRegister,
-
-                on
+                function(
+                    UserAdmin
                 ) {
-                testWidget = new LoginRegister({
-                    appName: 'unitTests',
-                    logoutDiv: 'testdiv',
-                    showOnLoad: true
-                });
+                    testWidget = new UserAdmin({
+                        title: 'PEL',
+                        appName: 'pel'
+                    }, 'testdiv');
 
-                on(testWidget, 'sign-in-success', function(stuff){
-                    console.log(stuff);
-                });
-            });
+                    // fake login so that I don't have to type in my password every time
+                    // setTimeout(function() {
+                    //     testWidget.login.signInPane.onSubmitReturn({
+                    //         result: {
+                    //             user: {
+                    //                 name: 'Scott Davis',
+                    //                 adminToken: 'admin-token-value'
+                    //             },
+                    //             token: {
+                    //                 token: 'tokenstring',
+                    //                 expires: 1381415260000
+                    //             }
+                    //         }
+                    //     });
+                    // }, 500);
+                }); 
         </script>
     </head>
     <body>

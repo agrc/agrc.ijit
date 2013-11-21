@@ -7,8 +7,7 @@
 
         <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/dijit.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="../resources/LoginRegister.css">
-        <link rel="stylesheet" href="../resources/_LoginRegisterLogout.css">
+        <link rel="stylesheet" href="../../resources/authentication/LoginRegister.css">
 
         <script type="text/javascript">
             var projectUrl = location.pathname.replace(/\/[^\/]+$/, "") + '/';
@@ -24,15 +23,20 @@
         <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.js"></script>
         <script type="text/javascript">
             require([
-                'ijit/widgets/_LoginRegisterLogout',
-
+                'ijit/widgets/authentication/_LoginRegisterLogout'
             ],
 
             function (
                 _LoginRegisterLogout
                 ) {
                 testWidget = new _LoginRegisterLogout({
-                    name: 'Scott Davis'
+                    name: 'Scott Davis',
+                    email: 'stdavis@utah.gov',
+                    role: 'admin',
+                    url: 'change/password/url',
+                    parentWidget: {
+                        appName: 'appName'
+                    }
                 }, 'testdiv');
             });
         </script>

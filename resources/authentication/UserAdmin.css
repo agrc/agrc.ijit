@@ -1,0 +1,14 @@
+@import 'LoginRegister.css';
+@import '_UserAdminUser.css';
+
+.user-admin {
+    padding: 0 20px 20px 20px;
+}
+.user-admin .input-group {
+    width: 300px;
+}
+.user-admin .alert {
+    margin-top: 10px;
+    display: none;
+    width: 600px;
+}

@@ -1,273 +1,291 @@
 require([
-    'dojo/dom-construct',
-    'dojo/_base/window',
-    'dojo/Deferred',
-    'dojo/dom-style',
+        'dojo/dom-construct',
+        'dojo/_base/window',
+        'dojo/Deferred',
+        'dojo/dom-style',
 
-    'ijit/widgets/_LoginRegisterPaneMixin',
-    'ijit/widgets/_LoginRegisterSignInPane',
-    'ijit/widgets/_LoginRegisterForgotPane',
+        'ijit/widgets/authentication/_LoginRegisterPaneMixin',
+        'ijit/widgets/authentication/_LoginRegisterSignInPane',
+        'ijit/widgets/authentication/_LoginRegisterForgotPane',
 
-    'stubmodule/StubModule'
-],
+        'stubmodule/StubModule'
+    ],
 
-function (
-    domConstruct,
-    win,
-    Deferred,
-    domStyle,
+    function(
+        domConstruct,
+        win,
+        Deferred,
+        domStyle,
 
-    _LoginRegisterPaneMixin,
-    _LoginRegisterSignInPane,
-    _LoginRegisterForgotPane,
+        _LoginRegisterPaneMixin,
+        _LoginRegisterSignInPane,
+        _LoginRegisterForgotPane,
 
-    StubModule
+        StubModule
     ) {
-    describe('ijit/widgets/_LoginRegisterPaneMixin', function () {
-        var testWidget;
-        var destroy = function (widget) {
-            widget.destroyRecursive();
-            widget = null;
-        };
-        var hideDialogSpy = jasmine.createSpy('hideDialog');
-        var goToPaneSpy = jasmine.createSpy('goToPane');
-        var parentWidget = {
-            hideDialog: hideDialogSpy,
-            goToPane: goToPaneSpy,
-            appName: 'appNameTest'
-        };
-        beforeEach(function () {
-            testWidget = new _LoginRegisterSignInPane({
-                parentWidget: parentWidget
-            }, domConstruct.create('div', {}, win.body()));
-            testWidget.startup();
-        });
-        afterEach(function () {
-            destroy(testWidget);
-        });
-        it('create a valid object', function () {
-            expect(testWidget).toEqual(jasmine.any(_LoginRegisterPaneMixin));
-        });
-        describe('validate', function () {
-            it("returns false if there is a value missing", function () {
-                testWidget.emailTxt.value = 'blah';
-
-                expect(testWidget.validate()).toBe(false);
-
-                testWidget.passwordTxt.value = 'blah';
-
-                expect(testWidget.validate()).toBe(true);
-
-                testWidget.emailTxt.value = '';
-
-                expect(testWidget.validate()).toBe(false);
-            });
-            it('enables and disables the sign in button', function () {
-                testWidget.emailTxt.value = 'blah';
-                testWidget.validate();
-
-                expect(testWidget.submitBtn.disabled).toBe(true);
-
-                testWidget.passwordTxt.value = 'blah';
-                testWidget.validate();
-
-                expect(testWidget.submitBtn.disabled).toBe(false);
-
-                testWidget.emailTxt.value = '';
-                testWidget.validate();
-
-                expect(testWidget.submitBtn.disabled).toBe(true);
-            });
-        });
-        describe('onSubmitClick', function () {
-            var def;
-            var xhr;
-            var url;
-            var email;
-            var password;
-            var testWidget2;
-            beforeEach(function () {
-                def = new Deferred();
-                xhr = jasmine.createSpy('xhr').andReturn(def);
-                url = 'blah';
-                email = 'blah1';
-                password = 'blah2';
-                var StubbedWidget = StubModule('ijit/widgets/_LoginRegisterSignInPane', {
-                    'dojo/request': xhr
-                }, ['ijit/widgets/_LoginRegisterPaneMixin']);
-                testWidget2 = new StubbedWidget({
-                    url: url,
+        describe('ijit/widgets/authentication/_LoginRegisterPaneMixin', function() {
+            var testWidget;
+            var destroy = function(widget) {
+                widget.destroyRecursive();
+                widget = null;
+            };
+            var hideDialogSpy = jasmine.createSpy('hideDialog');
+            var goToPaneSpy = jasmine.createSpy('goToPane');
+            var parentWidget = {
+                hideDialog: hideDialogSpy,
+                goToPane: goToPaneSpy,
+                appName: 'appNameTest'
+            };
+            beforeEach(function() {
+                testWidget = new _LoginRegisterSignInPane({
                     parentWidget: parentWidget
                 }, domConstruct.create('div', {}, win.body()));
-                testWidget2.startup();
+                testWidget.startup();
             });
-            afterEach(function () {
-                testWidget2.destroy();
+            afterEach(function() {
+                destroy(testWidget);
             });
-            it("disable the sign in button", function () {
-                testWidget2.submitBtn.disabled = false;
-                testWidget2.onSubmitClick();
-
-                expect(testWidget2.submitBtn.disabled).toBe(true);
+            it('create a valid object', function() {
+                expect(testWidget).toEqual(jasmine.any(_LoginRegisterPaneMixin));
             });
-            it("enable the sign in button after the xhr returns", function () {
-                testWidget2.onSubmitClick();
+            describe('validate', function() {
+                it("returns false if there is a value missing", function() {
+                    testWidget.emailTxt.value = 'blah';
 
-                expect(testWidget2.submitBtn.disabled).toBe(true);
+                    expect(testWidget.validate({
+                        charCode: 0
+                    })).toBe(false);
 
-                def.resolve();
+                    testWidget.passwordTxt.value = 'blah';
 
-                expect(testWidget2.submitBtn.disabled).toBe(false);
-            });
-            it("fire the xhr request", function () {
-                testWidget2.emailTxt.value = email;
-                testWidget2.passwordTxt.value = password;
+                    expect(testWidget.validate({
+                        charCode: 0
+                    })).toBe(true);
 
-                testWidget2.onSubmitClick();
+                    testWidget.emailTxt.value = '';
 
-                expect(xhr).toHaveBeenCalled();
-                expect(xhr.mostRecentCall.args[0]).toEqual(url);
-                var data = xhr.mostRecentCall.args[1].data;
-                expect(data).toEqual(JSON.stringify({
-                    email: email,
-                    password: password,
-                    application: parentWidget.appName
-                }));
-
-                testWidget2.destroy();
-            });
-            describe("wires the callbacks", function () {
-                beforeEach(function () {
-                    testWidget2.onSubmitClick();
-                    spyOn(testWidget2, 'onSubmitReturn');
-                    spyOn(testWidget2, 'onSubmitError');
+                    expect(testWidget.validate({
+                        charCode: 0
+                    })).toBe(false);
                 });
-                it("success", function () {
+                it('enables and disables the sign in button', function() {
+                    testWidget.emailTxt.value = 'blah';
+                    testWidget.validate({
+                        charCode: 0
+                    });
+
+                    expect(testWidget.submitBtn.disabled).toBe(true);
+
+                    testWidget.passwordTxt.value = 'blah';
+                    testWidget.validate({
+                        charCode: 0
+                    });
+
+                    expect(testWidget.submitBtn.disabled).toBe(false);
+
+                    testWidget.emailTxt.value = '';
+                    testWidget.validate({
+                        charCode: 0
+                    });
+
+                    expect(testWidget.submitBtn.disabled).toBe(true);
+                });
+            });
+            describe('onSubmitClick', function() {
+                var def;
+                var xhr;
+                var url;
+                var email;
+                var password;
+                var testWidget2;
+                beforeEach(function() {
+                    def = new Deferred();
+                    xhr = jasmine.createSpy('xhr').andReturn(def);
+                    url = 'blah';
+                    email = 'blah1';
+                    password = 'blah2';
+                    var StubbedWidget = StubModule('ijit/widgets/authentication/_LoginRegisterSignInPane', {
+                        'dojo/request': xhr
+                    }, ['ijit/widgets/authentication/_LoginRegisterPaneMixin']);
+                    testWidget2 = new StubbedWidget({
+                        url: url,
+                        parentWidget: parentWidget
+                    }, domConstruct.create('div', {}, win.body()));
+                    testWidget2.startup();
+                });
+                afterEach(function() {
+                    testWidget2.destroy();
+                });
+                it("disable the sign in button", function() {
+                    testWidget2.submitBtn.disabled = false;
+                    testWidget2.onSubmitClick();
+
+                    expect(testWidget2.submitBtn.disabled).toBe(true);
+                });
+                it("enable the sign in button after the xhr returns", function() {
+                    testWidget2.onSubmitClick();
+
+                    expect(testWidget2.submitBtn.disabled).toBe(true);
+
                     def.resolve();
 
-                    expect(testWidget2.onSubmitReturn).toHaveBeenCalled();
+                    expect(testWidget2.submitBtn.disabled).toBe(false);
                 });
-                it("error", function () {
-                    def.reject();
+                it("fire the xhr request", function() {
+                    testWidget2.emailTxt.value = email;
+                    testWidget2.passwordTxt.value = password;
 
-                    expect(testWidget2.onSubmitError).toHaveBeenCalled();
+                    testWidget2.onSubmitClick();
+
+                    expect(xhr).toHaveBeenCalled();
+                    expect(xhr.mostRecentCall.args[0]).toEqual(url);
+                    var data = xhr.mostRecentCall.args[1].data;
+                    expect(data).toEqual(JSON.stringify({
+                        email: email,
+                        password: password,
+                        application: parentWidget.appName
+                    }));
+
+                    testWidget2.destroy();
+                });
+                describe("wires the callbacks", function() {
+                    beforeEach(function() {
+                        testWidget2.onSubmitClick();
+                        spyOn(testWidget2, 'onSubmitReturn');
+                        spyOn(testWidget2, 'onSubmitError');
+                    });
+                    it("success", function() {
+                        def.resolve();
+
+                        expect(testWidget2.onSubmitReturn).toHaveBeenCalled();
+                    });
+                    it("error", function() {
+                        def.reject();
+
+                        expect(testWidget2.onSubmitError).toHaveBeenCalled();
+                    });
+                });
+                it("clears the error message", function() {
+                    spyOn(testWidget, 'hideError');
+
+                    testWidget.onSubmitClick();
+
+                    expect(testWidget.hideError).toHaveBeenCalled();
+                });
+                it("handles exception thrown from getData and shows error message", function() {
+                    var txt = 'blah';
+                    spyOn(testWidget2, 'showError');
+                    spyOn(testWidget2, 'getData').andThrow(txt);
+
+                    testWidget2.onSubmitClick();
+
+                    expect(testWidget2.showError).toHaveBeenCalledWith(txt);
+                    expect(xhr).not.toHaveBeenCalled();
                 });
             });
-            it("clears the error message", function () {
-                spyOn(testWidget, 'hideError');
+            describe('showError', function() {
+                it("set the div innerHTML and display style", function() {
+                    var txt = 'blah';
+                    testWidget.showError(txt);
 
-                testWidget.onSubmitClick();
-
-                expect(testWidget.hideError).toHaveBeenCalled();
+                    expect(testWidget.errorDiv.innerHTML).toEqual(txt);
+                    expect(domStyle.get(testWidget.errorDiv, 'display')).toBe('block');
+                });
             });
-            it("handles exception thrown from getData and shows error message", function () {
-                var txt = 'blah';
-                spyOn(testWidget2, 'showError');
-                spyOn(testWidget2, 'getData').andThrow(txt);
+            describe('onSubmitError', function() {
+                it("pass the error message to the showError function", function() {
+                    var msg = 'blah';
+                    spyOn(testWidget, 'showError');
 
-                testWidget2.onSubmitClick();
+                    testWidget.onSubmitError({
+                        response: {
+                            data: {
+                                message: msg
+                            }
+                        }
+                    });
 
-                expect(testWidget2.showError).toHaveBeenCalledWith(txt);
-                expect(xhr).not.toHaveBeenCalled();
+                    expect(testWidget.showError).toHaveBeenCalledWith(msg);
+                });
             });
-        });
-        describe('showError', function () {
-            it("set the div innerHTML and display style", function () {
-                var txt = 'blah';
-                testWidget.showError(txt);
+            describe('hideError', function() {
+                it("hide the error div", function() {
+                    domStyle.set(testWidget.errorDiv, 'display', 'block');
 
-                expect(testWidget.errorDiv.innerHTML).toEqual(txt);
-                expect(domStyle.get(testWidget.errorDiv, 'display')).toBe('block');
+                    testWidget.hideError();
+
+                    expect(domStyle.get(testWidget.errorDiv, 'display')).toBe('none');
+                });
             });
-        });
-        describe('onSubmitError', function () {
-            it("pass the error message to the showError function", function () {
-                var msg = 'blah';
-                spyOn(testWidget, 'showError');
+            describe('focusFirstInput', function() {
+                it("focuses the first text box", function() {
+                    testWidget.focusFirstInput();
 
-                testWidget.onSubmitError({response: {data: {message: msg}}});
-
-                expect(testWidget.showError).toHaveBeenCalledWith(msg);
+                    expect(document.activeElement).toBe(testWidget.emailTxt);
+                });
             });
-        });
-        describe('hideError', function () {
-            it("hide the error div", function () {
-                domStyle.set(testWidget.errorDiv, 'display', 'block');
+            describe('goToRequestPane', function() {
+                var evt = {
+                    preventDefault: jasmine.createSpy('preventDefault')
+                };
+                it("calls prevent default on the click event", function() {
+                    testWidget.goToRequestPane(evt);
 
-                testWidget.hideError();
+                    expect(evt.preventDefault).toHaveBeenCalled();
+                });
+                it("calls goToPane", function() {
+                    testWidget.goToRequestPane(evt);
 
-                expect(domStyle.get(testWidget.errorDiv, 'display')).toBe('none');
+                    expect(goToPaneSpy).toHaveBeenCalledWith(testWidget.parentWidget.requestPane);
+                });
             });
-        });
-        describe('focusFirstInput', function () {
-            it("focuses the first text box", function () {
-                testWidget.focusFirstInput();
+            describe('goToForgotPane', function() {
+                var evt = {
+                    preventDefault: jasmine.createSpy('preventDefault')
+                };
+                it("calls prevent default on the click event", function() {
+                    testWidget.goToForgotPane(evt);
 
-                expect(document.activeElement).toBe(testWidget.emailTxt);
+                    expect(evt.preventDefault).toHaveBeenCalled();
+                });
+                it("calls goToPane", function() {
+                    testWidget.goToForgotPane(evt);
+
+                    expect(goToPaneSpy).toHaveBeenCalledWith(testWidget.parentWidget.forgotPane);
+                });
             });
-        });
-        describe('goToRequestPane', function () {
-            var evt = {
-                preventDefault: jasmine.createSpy('preventDefault')
-            };
-            it("calls prevent default on the click event", function () {
-                testWidget.goToRequestPane(evt);
+            describe('goToSignInPane', function() {
+                var evt = {
+                    preventDefault: jasmine.createSpy('preventDefault')
+                };
+                it("calls prevent default on the click event", function() {
+                    testWidget.goToSignInPane(evt);
 
-                expect(evt.preventDefault).toHaveBeenCalled();
+                    expect(evt.preventDefault).toHaveBeenCalled();
+                });
+                it("calls goToPane", function() {
+                    testWidget.goToSignInPane(evt);
+
+                    expect(goToPaneSpy).toHaveBeenCalledWith(testWidget.parentWidget.signInPane);
+                });
             });
-            it("calls goToPane", function () {
-                testWidget.goToRequestPane(evt);
+            describe('showSuccessMsg', function() {
+                it("hides the form and displays the success alert", function() {
+                    var testWidget2 = new _LoginRegisterForgotPane({
+                        parentWidget: {
+                            hideDialog: hideDialogSpy,
+                            goToPane: goToPaneSpy
+                        }
+                    }, domConstruct.create('div', {}, win.body()));
+                    testWidget2.startup();
 
-                expect(goToPaneSpy).toHaveBeenCalledWith(testWidget.parentWidget.requestPane);
-            });
-        });
-        describe('goToForgotPane', function () {
-            var evt = {
-                preventDefault: jasmine.createSpy('preventDefault')
-            };
-            it("calls prevent default on the click event", function () {
-                testWidget.goToForgotPane(evt);
+                    testWidget2.showSuccessMsg();
 
-                expect(evt.preventDefault).toHaveBeenCalled();
-            });
-            it("calls goToPane", function () {
-                testWidget.goToForgotPane(evt);
+                    expect(domStyle.get(testWidget2.form, 'display')).toBe('none');
+                    expect(domStyle.get(testWidget2.successDiv, 'display')).toBe('block');
 
-                expect(goToPaneSpy).toHaveBeenCalledWith(testWidget.parentWidget.forgotPane);
-            });
-        });
-        describe('goToSignInPane', function () {
-            var evt = {
-                preventDefault: jasmine.createSpy('preventDefault')
-            };
-            it("calls prevent default on the click event", function () {
-                testWidget.goToSignInPane(evt);
-
-                expect(evt.preventDefault).toHaveBeenCalled();
-            });
-            it("calls goToPane", function () {
-                testWidget.goToSignInPane(evt);
-
-                expect(goToPaneSpy).toHaveBeenCalledWith(testWidget.parentWidget.signInPane);
-            });
-        });
-        describe('showSuccessMsg', function () {
-            it("hides the form and displays the success alert", function () {
-                var testWidget2 = new _LoginRegisterForgotPane({
-                    parentWidget: {
-                        hideDialog: hideDialogSpy,
-                        goToPane: goToPaneSpy
-                    }
-                }, domConstruct.create('div', {}, win.body()));
-                testWidget2.startup();
-                
-                testWidget2.showSuccessMsg();
-
-                expect(domStyle.get(testWidget2.form, 'display')).toBe('none');
-                expect(domStyle.get(testWidget2.successDiv, 'display')).toBe('block');
-
-                destroy(testWidget2);
+                    destroy(testWidget2);
+                });
             });
         });
     });
-});
