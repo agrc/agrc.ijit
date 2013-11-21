@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TEST: ChangeRequest</title>
+    
+    <!-- META -->
+    <meta name="description" content="agrc/widgets/map/BaseMap Test" />
+    <meta name="keywords" content="agrc.widgets.map.BaseMap, esri.map, basemap, map, tests, test, javascript" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css">
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link rel="stylesheet" href='../../../resources/map/BaseMap.css'>
+    <link rel="stylesheet" href='../../../resources/notify/ChangeRequest.css'>
+
+    <!-- JAVASCRIPT -->
+    <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>
+    <script type="text/javascript">
+    var projectUrl = location.pathname.replace(/\/[^\/]+$/, "") + '/';
+    var baseMap, widgetUnderTest;
+
+    require({
+        packages: [{
+            name: 'ijit',
+            location: projectUrl + '../../../agrc.ijit'
+        }, {
+            name: 'agrc',
+            location: projectUrl + '../../../agrc.widgets'
+        }]
+    }, [
+    'agrc/widgets/map/BaseMap',
+    'ijit/widgets/notify/ChangeRequest',
+    'dojo/domReady!'
+    ],
+    function(
+        BaseMap, Module
+        ) {
+                // take all defaults
+                baseMap = new BaseMap('basemap-div');
+                widgetUnderTest = new Module({map: baseMap}, 'div');
+            });
+    </script>
+</head>
+<body>
+    <h3>
+        ijit/widgets/notify/ChangeRequest
+    </h3>
+    Defaults
+    <div id='basemap-div' class='basemap' style="height:100px;widgth:100px"></div>
+    <br>
+    <div id='div'></div>
+</body>
+</html>
