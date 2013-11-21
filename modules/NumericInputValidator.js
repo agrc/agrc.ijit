@@ -6,7 +6,8 @@ define([
     'dojo/query',
     'dojo/on',
     'dojo/dom-attr',
-    'dojo/dom-class'
+    'dojo/dom-class',
+    'dojo/dom-construct'
 
 ], function(
     declare,
@@ -16,7 +17,8 @@ define([
     query,
     on,
     domAttr,
-    domClass
+    domClass,
+    domConstruct
 ) {
     // summary:
     //      A module that adds automated validation to <input type='number'> elements.
@@ -74,7 +76,11 @@ define([
         
             if (isValid !== true) {
                 domClass.add(node.parentNode, 'has-error');
-                query('.help-block', node.parentNode)[0].innerHTML = isValid;
+                var helpBlock = query('.help-block', node.parentNode)[0];
+                if (!helpBlock) {
+                    helpBlock = domConstruct.create('p', {'class': 'help-block'}, node.parentNode);
+                }
+                helpBlock.innerHTML = isValid;
             } else {
                 this.resetUI(node);
             }

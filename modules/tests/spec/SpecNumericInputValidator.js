@@ -136,6 +136,17 @@ require([
 
                 expect(testObject.resetUI).toHaveBeenCalled();
             });
+            it('creates the help block if its not their', function () {
+                affix('#grouphelp.form-group label.control-label+' +
+                    'input#help.form-control[type="number"][min="' + 
+                    el[1] + '"][max="' + el[2] + '"]');
+
+                var txt = 'blah';
+                var helpEl = dom.byId('help');
+
+                testObject.updateUI(helpEl, txt);
+                expect(dom.byId('grouphelp').children[2].innerHTML).toBe(txt);
+            });
         });
         describe('resetUI', function () {
             it('removes parent css and clears help text', function () {
