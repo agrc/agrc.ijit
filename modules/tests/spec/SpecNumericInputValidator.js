@@ -24,13 +24,14 @@ require([
         beforeEach(function() {
             testObject = new NumericInputValidator();
             elements = [
-                ['one', '1', '10'],
-                ['two', '1.0', '10.0']
+                // [name, min, max, step]
+                ['one', '1', '10', '1'],
+                ['two', '1.0', '10.0', '0.1']
             ];
             array.forEach(elements, function (el) {
                 affix('#group' + el[0] + '.form-group label.control-label+' +
                     'input#' + el[0] + '.form-control[type="number"][min="' + 
-                    el[1] + '"][max="' + el[2] + '"]+' + 
+                    el[1] + '"][max="' + el[2] + '"][step="' + el[3] + '"]+' + 
                     'p#help' + el[0] + '.help-block');
             });
         });
@@ -75,7 +76,8 @@ require([
                 expect(testObject.updateUI)
                     .toHaveBeenCalledWith(el, value);
                 expect(testObject._isValid.callCount).toBe(2);
-                expect(testObject._isValid).toHaveBeenCalledWith(value2, elements[0][1], elements[0][2]);
+                expect(testObject._isValid)
+                    .toHaveBeenCalledWith(value2, elements[0][1], elements[0][2], elements[0][3]);
             });
             it('passes true for valid if the value is empty', function () {
                 spyOn(testObject, 'updateUI');
@@ -93,31 +95,32 @@ require([
             var checks;
             afterEach(function () {
                 array.forEach(checks, function (chk) {
-                    expect(testObject._isValid(chk[0], chk[1], chk[2])).toBe(chk[3]);
+                    expect(testObject._isValid(chk[0], chk[1], chk[2], chk[3])).toBe(chk[4]);
                 });
             });
             it('check if number is within min and max', function () {
                 checks = [
-                    // [value, min, max, expected]
-                    ['1', '1', '10', true],
-                    ['11', '1', '10', lang.replace(testObject.notWithinRangeMsg, 
-                        {min: '1', max: '10'})]
+                    // [value, min, max, step, expected]
+                    ['1', '1', '10', null, true],
+                    ['11', '1', '10', null, lang.replace(testObject.notWithinRangeMsg, 
+                        {min: '1', max: '10'})],
+                    ['1.4', '1', '10', '0.1', true]
                 ];
             });
             it('checks for non-number values', function () {
                 checks = [
-                    ['a', '1', '10', testObject.notNumberMsg],
-                    ['1a', null, null, testObject.notNumberMsg]
+                    ['a', '1', '10', null, testObject.notNumberMsg],
+                    ['1a', null, null, null, testObject.notNumberMsg]
                 ];
             });
             it('check for decimal places', function () {
                 checks = [
-                    ['1.5', '1', '10', testObject.noDecimalAllowedMsg]
+                    ['1.5', '1', '10', null, testObject.noDecimalAllowedMsg]
                 ];
             });
             it('if not max or min then dont worry about range validation', function () {
                 checks = [
-                    ['10', null, null, true]
+                    ['10', null, null, null, true]
                 ];
             });
         });

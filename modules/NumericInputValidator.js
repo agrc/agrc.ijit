@@ -22,7 +22,15 @@ define([
 ) {
     // summary:
     //      A module that adds automated validation to <input type='number'> elements.
-    return declare('modules/NumericInputValidator', null, {
+    //
+    // description:
+    //      Uses `min` and `max` to validate that the value is within a range.
+    //      Uses `step` to validate if the value is a whole number or not. Does not
+    //      take into account the number of decimal places at the moment.
+    //
+    //      See NumericInputValidatorTests.html for examples.
+
+    return declare(null, {
         // notWithinRangeMsg: String
         notWithinRangeMsg: 'Value must in within {min} and {max}!',
 
@@ -60,6 +68,7 @@ define([
             elements.forEach(function (el) {
                 var min = domAttr.get(el, 'min');
                 var max = domAttr.get(el, 'max');
+                var step = domAttr.get(el, 'step');
                 that.events.push(on(el, 'change, keyup', function () {
                     var value = el.valueAsNumber || el.value;
                     console.log('el.valueAsNumber', el.valueAsNumber);
@@ -67,7 +76,7 @@ define([
                     // console.log('el.validity.badInput', el.validity.badInput);
                     if (value.toString().length > 0 || 
                         (el.valueAsNumber !== el.valueAsNumber && el.validity && el.validity.badInput)) { // don't valid on empty values
-                        that.updateUI(el, that._isValid(value, min, max));
+                        that.updateUI(el, that._isValid(value, min, max, step));
                     } else {
                         that.updateUI(el, true);
                     }
@@ -99,12 +108,13 @@ define([
             // update dom prop
             domAttr.set(node, this._domAttributeName, isValid === true);
         },
-        _isValid: function (value, min, max) {
+        _isValid: function (value, min, max, step) {
             // summary:
             //      validates the value against the min and max
-            // value: String
-            // min: Number
-            // max: Number
+            // value: Number
+            // min: String
+            // max: String
+            // step: String
             // returns: Boolean | String
             //      returns true if valid or error message otherwise
             console.log(this.declaredClass + '::isValid', arguments);
@@ -113,6 +123,7 @@ define([
             var v = parseFloat(value, 10);
             var mn = parseFloat(min, 10);
             var mx = parseFloat(max, 10);
+            var st = parseFloat(step, 10);
 
             // check for NaN
             if (v !== v || !/^\d+(\.(\d+)?)?$/.test(value)) { 
@@ -124,7 +135,7 @@ define([
             var isInteger = function (num) {
                 return num % 1 === 0;
             };
-            if (isInteger(mn) && isInteger(mx) && !isInteger(v)) {
+            if (((step && isInteger(st)) || !step) && !isInteger(v)) {
                 return this.noDecimalAllowedMsg;
             }
 
