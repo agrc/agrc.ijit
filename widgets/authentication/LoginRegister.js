@@ -120,6 +120,12 @@ define([
             //      The flag to show the login thing on creation or wait to trigger it.
             showOnLoad: true,
 
+            // securedServicesBaseUrl: String
+            //      The base url for which you would like all matching requests to have 
+            //      the token sent with. If none is specified, all requests will have
+            //      the token appended.
+            securedServicesBaseUrl: null,
+
             postCreate: function() {
                 // summary:
                 //      dom is ready
@@ -210,7 +216,10 @@ define([
                 //      the data that will be sent with the request
                 console.log(this.declaredClass + "::onRequestPreCallback", arguments);
 
-                ioArgs.content.token = this.token;
+                if (!this.securedServicesBaseUrl || 
+                    ioArgs.url.toUpperCase().indexOf(this.securedServicesBaseUrl.toUpperCase()) !== -1) {
+                    ioArgs.content.token = this.token;
+                }
                 return ioArgs;
             }
         });

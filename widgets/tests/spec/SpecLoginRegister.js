@@ -31,6 +31,7 @@ require([
     ) {
         describe('ijit/widgets/authentication/LoginRegister', function() {
             var testWidget;
+            var baseUrl = 'baseUrl';
             // mock query stuff because I'm too cool to include jquery in my tests :)
             window.$ = function() {
                 return {
@@ -45,7 +46,9 @@ require([
                 widget = null;
             };
             beforeEach(function() {
-                testWidget = new LoginRegister({}, domConstruct.create('div', {}, win.body()));
+                testWidget = new LoginRegister({
+                    securedServicesBaseUrl: baseUrl
+                }, domConstruct.create('div', {}, win.body()));
                 testWidget.startup();
             });
             afterEach(function() {
@@ -138,15 +141,39 @@ require([
                 });
             });
             describe('onRequestPreCallback', function() {
-                it("adds the token to the content", function() {
+                it("adds the token to the content only for services that match the baseUrl", function() {
                     var ioArgs = {
-                        content: {}
+                        content: {},
+                        url: baseUrl.toLowerCase() + '/blah/blah'
                     };
                     var token = 'blah';
                     testWidget.token = token;
 
                     expect(testWidget.onRequestPreCallback(ioArgs).content.token)
                         .toBe(token);
+
+                    ioArgs.url = 'blah';
+                    delete ioArgs.content.token;
+
+                    expect(testWidget.onRequestPreCallback(ioArgs).content.token)
+                        .toBeUndefined();
+                });
+                it('adds the token to all requests if no baseUrl is specified', function () {
+                    var ioArgs = {
+                        content: {},
+                        url: 'blah'
+                    };
+
+                    var testWidget2 = new LoginRegister({}, domConstruct.create('div', {}, win.body()));
+                    testWidget2.startup();
+
+                    var token = 'blah';
+                    testWidget2.token = token;
+
+                    expect(testWidget2.onRequestPreCallback(ioArgs).content.token)
+                        .toBe(token);
+
+                    destroy(testWidget2);
                 });
             });
         });
