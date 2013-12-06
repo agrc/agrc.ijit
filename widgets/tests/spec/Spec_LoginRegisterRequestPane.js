@@ -1,14 +1,16 @@
 require([
         'ijit/widgets/authentication/_LoginRegisterRequestPane',
         'dojo/dom-construct',
-        'dojo/_base/window'
+        'dojo/_base/window',
+        'dojo/dom-style'
 
     ],
 
     function(
         _LoginRegisterRequestPane,
         domConstruct,
-        win
+        win,
+        domStyle
     ) {
         describe('ijit/widgets/authentication/_LoginRegisterRequestPane', function() {
             var testWidget;
@@ -73,6 +75,11 @@ require([
                     testWidget.onSubmitReturn();
 
                     expect(testWidget.showSuccessMsg).toHaveBeenCalled();
+                });
+                it('hides the request button', function () {
+                    testWidget.onSubmitReturn();
+
+                    expect(domStyle.get(testWidget.submitBtn, 'display')).toEqual('none');
                 });
             });
         });

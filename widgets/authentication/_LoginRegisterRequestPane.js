@@ -3,6 +3,8 @@ define([
 
         'dojo/_base/declare',
 
+        'dojo/dom-style',
+
         'ijit/widgets/authentication/_LoginRegisterPaneMixin'
     ],
 
@@ -10,6 +12,8 @@ define([
         template,
 
         declare,
+
+        domStyle,
 
         _LoginRegisterPaneMixin
     ) {
@@ -47,6 +51,8 @@ define([
                 // summary:
                 //      callback for xhr
                 console.log(this.declaredClass + "::onSubmitReturn", arguments);
+
+                domStyle.set(this.submitBtn, 'display', 'none');
 
                 this.showSuccessMsg();
             }

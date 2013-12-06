@@ -25,8 +25,7 @@ define([
         // no params
         'dijit/layout/StackContainer',
         'dijit/layout/ContentPane',
-        'jquery',
-        'bootstrap'
+        'jquery'
     ],
 
     function(
