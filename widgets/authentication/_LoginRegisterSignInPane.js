@@ -51,6 +51,15 @@ define([
                 //this emits a buttugly object. change it to on.emit to see the other
                 //pretty option. It breaks the tests though.
                 this.emit('sign-in-success', returnValue.result);
+            },
+            onSubmitError: function () {
+                // summary:
+                //      description
+                console.log(this.declaredClass + '::onSubmitError', arguments);
+            
+                this.parentWidget.forgotPane.emailTxt.value = this.emailTxt.value;
+
+                this.inherited(arguments);
             }
         });
     });
