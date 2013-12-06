@@ -2,13 +2,17 @@ define([
     'dojo/_base/declare',
     'dojo/text!./templates/_LoginRegisterLogout.html',
     'dojo/dom-style',
-    'ijit/widgets/authentication/_LoginRegisterPaneMixin'
+    'ijit/widgets/authentication/_LoginRegisterPaneMixin',
+    'dojo/dom-construct',
+    'dojo/_base/window'
 
 ], function(
     declare,
     template,
     domStyle,
-    _LoginRegisterPaneMixin
+    _LoginRegisterPaneMixin,
+    domContstruct,
+    win
 ) {
     // summary:
     //      A widget that provides log out and user name display for Lthe LoginRegister widget.
@@ -50,6 +54,8 @@ define([
             if (this.role === 'admin') {
                 domStyle.set(this.adminLink, 'display', 'list-item');
             }
+
+            domContstruct.place(this.modalDiv, win.body());
         },
         onSignOutClick: function(evt) {
             // summary:
