@@ -4,7 +4,8 @@ define([
     'dojo/dom-style',
     'ijit/widgets/authentication/_LoginRegisterPaneMixin',
     'dojo/dom-construct',
-    'dojo/_base/window'
+    'dojo/_base/window',
+    'bootstrap'
 
 ], function(
     declare,
