@@ -1,3 +1,8 @@
+require({
+    aliases: [
+        ['spin', '../../resources/libs/ladda-bootstrap/spin.js']
+    ]
+});
 define([
         'dojo/_base/declare',
         'dojo/_base/lang',
@@ -8,6 +13,8 @@ define([
         'dojo/query',
         'dojo/request',
         'dojo/keys',
+
+        '../../resources/libs/ladda-bootstrap/ladda',
 
         'dijit/_WidgetBase',
         'dijit/_TemplatedMixin',
@@ -25,13 +32,15 @@ define([
         xhr,
         keys,
 
+        Ladda,
+
         _WidgetBase,
         _TemplatedMixin,
         _WidgetsInTemplateMixin
     ) {
         // summary:
         //      A mixin for shared code between the panes in LoginRegistration
-        return declare('ijit/widgets/authentication/_LoginRegisterPaneMixin', [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+        return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             widgetsInTemplate: true,
 
             // parameters passed in via the constructor
@@ -45,13 +54,22 @@ define([
             //      a reference to the parent widget
             parentWidget: null,
 
+            // status: Ladda
+            //      Ladda reference to button for stopping and starting loading indicator
+            status: null,
+
+            postCreate: function () {
+                // summary:
+                //      dom is ready
+                console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:postCreate', arguments);
+            
+                this.status = Ladda.create(this.submitBtn);
+            },
             validate: function(evt) {
                 // summary:
                 //      validates email and password values on keyup event
                 // returns: Boolean
-                console.log(this.declaredClass + '::validate', arguments);
-
-                this.submitBtn.disabled = true;
+                console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:validate', arguments);
 
                 var valid = query(
                     "input[type='text'], input[type='password'], input[type='email']",
@@ -73,25 +91,24 @@ define([
                 // summary:
                 //      shows an alert with the passed in message
                 // txt: String
-                console.log(this.declaredClass + '::showError', arguments);
+                console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:showError', arguments);
 
                 this.errorDiv.innerHTML = txt;
                 domStyle.set(this.errorDiv, 'display', 'block');
-                // domStyle.set(this.progressBar, 'display', 'none'); // see template
+                this.status.stop();
             },
             hideError: function() {
                 // summary:
                 //      hides the error message div
-                console.log(this.declaredClass + '::hideError', arguments);
+                console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:hideError', arguments);
 
                 domStyle.set(this.errorDiv, 'display', 'none');
-                // domStyle.set(this.progressBar, 'display', 'block'); // see template
             },
             goToRequestPane: function(evt) {
                 // summary:
                 //      fires when the user clicks on the Request pane
                 // evt: Event
-                console.log(this.declaredClass + '::goToRequestPane', arguments);
+                console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:goToRequestPane', arguments);
 
                 evt.preventDefault();
 
@@ -101,7 +118,7 @@ define([
                 // summary:
                 //      fires when the user clicks on the "forgot password" link
                 // evt: Click Event
-                console.log(this.declaredClass + '::goToForgotPane', arguments);
+                console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:goToForgotPane', arguments);
 
                 evt.preventDefault();
 
@@ -111,7 +128,7 @@ define([
                 // summary:
                 //      fires when the user click on the "Sign In" link
                 // evt: Click Event Object
-                console.log(this.declaredClass + '::goToSignInPane', arguments);
+                console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:goToSignInPane', arguments);
 
                 evt.preventDefault();
 
@@ -120,9 +137,10 @@ define([
             onSubmitClick: function() {
                 // summary:
                 //      fires when the user clicks the sign in button
-                console.log(this.declaredClass + '::onSubmitClick', arguments);
+                console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:onSubmitClick', arguments);
 
                 domAttr.set(this.submitBtn, 'disabled', true);
+                this.status.start();
 
                 this.hideError();
 
@@ -152,24 +170,25 @@ define([
                 // summary:
                 //      error callback for xhr
                 // err: Error Object
-                console.log(this.declaredClass + '::onSubmitError', arguments);
+                console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:onSubmitError', arguments);
 
                 this.showError(err.response.data.message);
             },
             focusFirstInput: function() {
                 // summary:
                 //      focuses the first input in the form
-                console.log(this.declaredClass + '::focusFirstInput', arguments);
+                console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:focusFirstInput', arguments);
 
                 query('input', this.domNode)[0].focus();
             },
             showSuccessMsg: function() {
                 // summary:
                 //      shows the successDiv
-                console.log(this.declaredClass + '::showSuccessMsg', arguments);
+                console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:showSuccessMsg', arguments);
 
                 domStyle.set(this.form, 'display', 'none');
                 domStyle.set(this.successDiv, 'display', 'block');
+                this.status.stop();
             }
         });
     });

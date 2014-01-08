@@ -58,6 +58,7 @@ define([
                 console.log(this.declaredClass + '::onSubmitError', arguments);
             
                 this.parentWidget.forgotPane.emailTxt.value = this.emailTxt.value;
+                this.parentWidget.forgotPane.submitBtn.disabled = false;
 
                 this.inherited(arguments);
             }
