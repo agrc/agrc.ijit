@@ -2,6 +2,7 @@ define([
         'dojo/text!./templates/_LoginRegisterForgotPane.html',
 
         'dojo/_base/declare',
+        'dojo/dom-style',
 
         'ijit/widgets/authentication/_LoginRegisterPaneMixin'
     ],
@@ -10,6 +11,7 @@ define([
         template,
 
         declare,
+        domStyle,
 
         _LoginRegisterPaneMixin
     ) {
@@ -36,6 +38,8 @@ define([
                 console.log(this.declaredClass + "::onSubmitReturn", arguments);
 
                 this.showSuccessMsg();
+
+                domStyle.set(this.submitBtn, 'display', 'none');
             }
         });
     });

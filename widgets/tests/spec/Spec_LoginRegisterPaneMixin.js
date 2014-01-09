@@ -34,7 +34,11 @@ require([
             var parentWidget = {
                 hideDialog: hideDialogSpy,
                 goToPane: goToPaneSpy,
-                appName: 'appNameTest'
+                appName: 'appNameTest',
+                forgotPane: {
+                    emailTxt: {},
+                    submitBtn: {}
+                }
             };
             beforeEach(function() {
                 testWidget = new _LoginRegisterSignInPane({

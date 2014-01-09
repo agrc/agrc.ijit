@@ -2,6 +2,7 @@
 @import '_LoginRegisterRequestPane.css';
 @import '_LoginRegisterForgotPane.css';
 @import '_LoginRegisterLogout.css';
+@import '../libs/ladda-bootstrap/ladda-themeless.css';
 
 .login-register .dijitStackContainer-child {
     /* required or else these are set to 0 for some reason
@@ -22,13 +23,12 @@
     margin: 10px 0 0 0;
     display: none;
 }
-.login-register .progress-bar {
-    width: 100%;
-}
-.login-register .progress {
-    margin: 10px 0;
-    display: none;
-}
 .login-register .form-group.last {
     margin-bottom: 0
+}
+.login-register .ladda-button[data-loading] {
+    padding-left: 33px;
+}
+.login-register .ladda-button .ladda-spinner {
+    left: 0;
 }
