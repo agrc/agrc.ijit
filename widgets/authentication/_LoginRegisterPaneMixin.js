@@ -1,6 +1,6 @@
 require({
     aliases: [
-        ['spin', '../../resources/libs/ladda-bootstrap/spin.js']
+        ['spin', 'ijit/resources/libs/ladda-bootstrap/spin.js']
     ]
 });
 define([
