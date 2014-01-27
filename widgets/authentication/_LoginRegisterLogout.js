@@ -28,9 +28,13 @@ define([
 
         // passed in via the constructor
 
-        // name: String
-        //      The user's name as displayed in the dropdown link
-        name: null,
+        // firstName: String
+        //      The user's first name as displayed in the dropdown link
+        firstName: null,
+
+        // lastName: String
+        //      The user's last name as displayed in the dropdown link
+        lastName: null,
 
         // role: String
         //      The user's role. Determines the visibility of the user admin link

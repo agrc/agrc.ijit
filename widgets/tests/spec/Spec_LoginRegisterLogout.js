@@ -21,7 +21,8 @@ require([
             var email = 'blah3';
             beforeEach(function() {
                 testWidget = new _LoginRegisterLogout({
-                    name: 'scott',
+                    firstName: 'scott',
+                    lastName: 'davis',
                     role: 'some-role',
                     email: email
                 }, domConstruct.create('div', {}, win.body()));
@@ -37,7 +38,8 @@ require([
             describe('postCreate', function () {
                 it('display the user admin link if the user is an admin', function () {
                     var testWidget2 = new _LoginRegisterLogout({
-                        name: 'scott',
+                        firstName: 'scott',
+                        lastName: 'davis',
                         role: 'admin'
                     }, domConstruct.create('div', {}, win.body()));
                     testWidget2.startup();
