@@ -12,11 +12,11 @@ define([
     template,
     domStyle,
     _LoginRegisterPaneMixin,
-    domContstruct,
+    domConstruct,
     win
 ) {
     // summary:
-    //      A widget that provides log out and user name display for Lthe LoginRegister widget.
+    //      A widget that provides log out and user name display for the LoginRegister widget.
     return declare('ijit/widget/authentication/_LoginRegisterLogout', [_LoginRegisterPaneMixin], {
         widgetsInTemplate: false,
         templateString: template,
@@ -56,7 +56,7 @@ define([
                 domStyle.set(this.adminLink, 'display', 'list-item');
             }
 
-            domContstruct.place(this.modalDiv, win.body());
+            domConstruct.place(this.modalDiv, win.body());
         },
         onSignOutClick: function(evt) {
             // summary:
@@ -111,6 +111,15 @@ define([
             domStyle.set(this.form, 'display', 'none');
             domStyle.set(this.successDiv, 'display', 'block');
             domStyle.set(this.submitBtn, 'display', 'none');
+        },
+        destroy: function () {
+            // summary:
+            //      overridden for unit test clean up
+            console.log('ijit/widgets/authentication/_LoginRegisterLogout:destroy', arguments);
+        
+            domConstruct.destroy(this.modalDiv);
+
+            this.inherited(arguments);
         }
     });
 });

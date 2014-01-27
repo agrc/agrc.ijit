@@ -20,16 +20,21 @@
         <script type="text/javascript">
             var projectUrl = location.pathname.replace(/\/[^\/]+$/, "") + '/';
             var dojoConfig = {
-                packages: [{
-                    name: 'ijit',
-                    location: projectUrl + '../../'
-                }],
+                packages: [
+                    {
+                        name: 'ijit',
+                        location: projectUrl + '../../'
+                    },{
+                        name: 'bootstrap',
+                        location: "http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/",
+                        main: "bootstrap"
+                    }
+                ],
                 parseOnLoad: true
             };
         </script>
         <script type="text/javascript" src="http://js.arcgis.com/3.7"></script>
         <script type="text/javascript" src='http://code.jquery.com/jquery-1.10.2.js'></script>
-        <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.js"></script>
         <script type="text/javascript">
             require([
                 'ijit/widgets/authentication/_LoginRegisterLogout',
