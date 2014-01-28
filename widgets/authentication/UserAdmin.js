@@ -13,6 +13,7 @@ define([
         'dijit/_TemplatedMixin',
         'dijit/_WidgetsInTemplateMixin',
 
+        'jquery',
         './LoginRegister',
         './_UserAdminUser'
     ],
@@ -32,6 +33,7 @@ define([
         _TemplatedMixin,
         _WidgetsInTemplateMixin,
 
+        jquery,
         LoginRegister,
         _UserAdminUser
     ) {

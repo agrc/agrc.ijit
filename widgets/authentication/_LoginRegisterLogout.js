@@ -48,6 +48,10 @@ define([
         //      the url to the change password
         url: null,
 
+        // xhrMethod: String
+        //      The method to use with the xhr request for change password
+        xhrMethod: 'PUT',
+
         // parentWidget: LoginRegister
         parentWidget: null,
 

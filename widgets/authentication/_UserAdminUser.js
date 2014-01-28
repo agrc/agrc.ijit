@@ -53,9 +53,13 @@ define([
             // appName: String
             appName: null,
 
-            // name: String
-            //      user's name
-            name: null,
+            // first: String
+            //      User's first name
+            first: null,
+
+            // last: String
+            //      User's last name
+            last: null,
 
             // email: String
             //      user's email

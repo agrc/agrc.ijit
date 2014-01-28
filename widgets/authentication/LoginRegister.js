@@ -196,10 +196,11 @@ define([
                 console.log(this.declaredClass + "::onSignInSuccess", arguments);
 
                 this.logout = new _LoginRegisterLogout({
-                    name: loginResult.user.name,
+                    firstName: loginResult.user.first,
+                    lastName: loginResult.user.last,
                     role: loginResult.user.role,
                     email: loginResult.user.email,
-                    url: this.urls.change,
+                    url: this.urls.base + this.urls.change,
                     parentWidget: this
                 }, this.logoutDiv);
 
