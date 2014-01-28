@@ -61,6 +61,8 @@ define([
             }
 
             domConstruct.place(this.modalDiv, win.body());
+
+            this.inherited(arguments);
         },
         onSignOutClick: function(evt) {
             // summary:
@@ -89,6 +91,8 @@ define([
             evt.preventDefault();
 
             $(this.modalDiv).modal('show');
+
+            this.focusFirstInput();
         },
         getData: function () {
             // summary:
