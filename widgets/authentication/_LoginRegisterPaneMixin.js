@@ -172,14 +172,28 @@ define([
                 // err: Error Object
                 console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:onSubmitError', arguments);
 
-                this.showError(err.response.data.message);
+                if (err.response.data && err.response.data.message) {
+                    this.showError(err.response.data.message);
+                } else {
+                    this.showError('There was an error with the request. <br>(Status code: ' + 
+                        err.response.status + ')');
+                }
             },
             focusFirstInput: function() {
                 // summary:
                 //      focuses the first input in the form
                 console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:focusFirstInput', arguments);
 
-                query('input', this.domNode)[0].focus();
+                var that = this;
+                var focus = function () {
+                    query('input', that.modalDiv)[0].focus();
+                };
+
+                if (domStyle.get(this.modalDiv, 'display') === 'none') {
+                    $(this.modalDiv).one('shown.bs.modal', focus);
+                } else {
+                    focus();
+                }
             },
             showSuccessMsg: function() {
                 // summary:

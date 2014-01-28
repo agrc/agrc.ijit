@@ -33,12 +33,14 @@ require([
                 expect(testWidget).toEqual(jasmine.any(_LoginRegisterRequestPane));
             });
             describe('getData', function() {
-                var name = 'blah1';
+                var fName = 'blah1';
+                var lName = 'blah5';
                 var agency = 'blah2';
                 var email = 'blah3';
                 var password = 'blah4';
                 beforeEach(function() {
-                    testWidget.nameTxt.value = name;
+                    testWidget.fNameTxt.value = fName;
+                    testWidget.lNameTxt.value = lName;
                     testWidget.agencyTxt.value = agency;
                     testWidget.emailTxt.value = email;
                     testWidget.emailConfirmTxt.value = email;
@@ -47,7 +49,8 @@ require([
                 });
                 it("return the appopriate values", function() {
                     expect(testWidget.getData()).toEqual({
-                        name: name,
+                        first: fName,
+                        last: lName,
                         agency: agency,
                         email: email,
                         password: password

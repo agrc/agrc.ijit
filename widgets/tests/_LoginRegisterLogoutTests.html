@@ -47,12 +47,13 @@
                 _LoginRegisterLogout
                 ) {
                 testWidget = new _LoginRegisterLogout({
-                    name: 'Scott Davis',
+                    firstName: 'Scott',
+                    lastName: 'Davis',
                     email: 'stdavis@utah.gov',
                     role: 'admin',
-                    url: 'change/password/url',
+                    url: '/permissionproxy/api/user/changepassword',
                     parentWidget: {
-                        appName: 'appName'
+                        appName: 'unitTests'
                     }
                 }, 'testdiv');
             });
