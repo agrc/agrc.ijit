@@ -9,9 +9,16 @@
         <div class="modal-body" data-dojo-attach-point='modalDiv'>
             <form role="form" data-dojo-attach-point='form'>
                 <div class="form-group">
-                    <label>Full name</label>
+                    <label>First name</label>
                     <input type='text'
-                        data-dojo-attach-point='nameTxt'
+                        data-dojo-attach-point='fNameTxt'
+                        data-dojo-attach-event='onkeyup: validate'
+                        class='form-control'>
+                </div>
+                <div class="form-group">
+                    <label>Last name</label>
+                    <input type='text'
+                        data-dojo-attach-point='lNameTxt'
                         data-dojo-attach-event='onkeyup: validate'
                         class='form-control'>
                 </div>
