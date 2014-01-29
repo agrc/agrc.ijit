@@ -17,6 +17,9 @@ define([
 
         'esri/request',
 
+        'jquery',
+        'bootstrap',
+
         'ijit/widgets/authentication/_LoginRegisterSignInPane',
         'ijit/widgets/authentication/_LoginRegisterRequestPane',
         'ijit/widgets/authentication/_LoginRegisterForgotPane',
@@ -25,7 +28,6 @@ define([
         // no params
         'dijit/layout/StackContainer',
         'dijit/layout/ContentPane',
-        'jquery'
     ],
 
     function(
@@ -46,6 +48,9 @@ define([
         _WidgetsInTemplateMixin,
 
         esriRequest,
+
+        jquery,
+        bootstrap,
 
         _LoginRegisterSignInPane,
         _LoginRegisterRequestPane,
@@ -150,19 +155,16 @@ define([
 
                 domConstruct.place(this.domNode, win.body());
 
-                // this is to make sure that bootstrap is loaded after jQuery
-                require(['bootstrap'], function() {
-                    that.modal = $(that.modalDiv).modal({
-                        backdrop: 'static',
-                        keyboard: false,
-                        show: that.showOnLoad
-                    });
-
-                    // focus email text box when form is shown
-                    if (that.showOnLoad) {
-                        that.signInPane.emailTxt.focus();
-                    }
+                that.modal = $(that.modalDiv).modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: that.showOnLoad
                 });
+
+                // focus email text box when form is shown
+                if (that.showOnLoad) {
+                    that.signInPane.emailTxt.focus();
+                }
             },
             goToPane: function(pane) {
                 // summary:
