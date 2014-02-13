@@ -1,7 +1,8 @@
 <div>
     <div class="modal-content" data-dojo-type='dijit/layout/ContentPane'>
         <div class="modal-header">
-            <h4>Sign In or 
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class='modal-title'>Sign In or 
                 <!-- this is easier to style as an anchor tag rather than a button -->
                 <a href="#" data-dojo-attach-event='onclick: goToRequestPane'>Request Access</a>
             </h4>
@@ -12,15 +13,20 @@
                     <label>Email address</label>
                     <input data-dojo-attach-point='emailTxt'
                         data-dojo-attach-event='onkeyup: validate'
-                        type="email" class="form-control" tabindex="1">
+                        type="email" class="form-control" tabindex="1" name='emailAddress'>
                 </div>
                 <div class="form-group last">
                     <label>Password</label>
                     <input data-dojo-attach-point='passwordTxt' 
                         data-dojo-attach-event='onkeyup: validate'
-                        type="password" class='form-control' tabindex="2">
+                        type="password" class='form-control' tabindex="2" name='userPassword'>
                     <button type="button" class="btn btn-link forgot-btn"
                         data-dojo-attach-event='onclick: goToForgotPane'>Forgot your password?</button>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" data-dojo-attach-point="rememberMeChbx" tabindex="3" name='rememberMeChbx'> Remember me
+                    </label>
                 </div>
                 <div data-dojo-attach-point='errorDiv' class="alert alert-danger">
                     test message
@@ -33,7 +39,7 @@
                 type="button" 
                 data-style='expand-left' 
                 data-spinner-size='32' 
-                class="btn btn-primary ladda-button" disabled tabindex="3">
+                class="btn btn-primary ladda-button" disabled tabindex="4">
                 <span class="ladda-label">Sign In</span>
             </button>
         </div>

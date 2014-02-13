@@ -186,7 +186,9 @@ define([
 
                 var that = this;
                 var focus = function () {
-                    query('input', that.modalDiv)[0].focus();
+                    setTimeout(function () {
+                        query('input', that.modalDiv)[0].focus();
+                    }, 200);
                 };
 
                 if (domStyle.get(this.modalDiv, 'display') === 'none') {

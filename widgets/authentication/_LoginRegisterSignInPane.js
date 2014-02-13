@@ -32,7 +32,8 @@ define([
 
                 return {
                     email: this.emailTxt.value,
-                    password: this.passwordTxt.value
+                    password: this.passwordTxt.value,
+                    persist: this.rememberMeChbx.checked
                 };
             },
             onSubmitReturn: function(returnValue) {

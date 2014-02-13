@@ -32,6 +32,8 @@
             require([
                 'jquery',
                 'ijit/widgets/authentication/LoginRegister',
+                'esri/Map',
+                'esri/layers/ArcGISDynamicMapServiceLayer',
                 
                 'dojo/on'
             ],
@@ -39,6 +41,7 @@
             function (
                 jQuery,
                 LoginRegister,
+                Map,
 
                 on
                 ) {
@@ -49,12 +52,19 @@
                 });
 
                 on(testWidget, 'sign-in-success', function(stuff){
-                    console.log(stuff);
+                    console.log('signed in');
+                    map = new Map('map-div');
+
+                    testWidget.addMap(map);
+                    
+                    lyr = new ArcGISDynamicMapServiceLayer('/arcgis/rest/services/Roadkill/MapService/MapServer');
+                    map.addLayer(lyr);
                 });
             });
         </script>
     </head>
     <body>
         <div id="testdiv"></div>
+        <div id="map-div"></div>
     </body>
 </html>

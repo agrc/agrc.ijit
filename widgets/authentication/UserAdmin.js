@@ -74,8 +74,9 @@ define([
                 var that = this;
 
                 this.login = new LoginRegister({
-                    appName: 'pel',
-                    logoutDiv: this.logoutDiv
+                    appName: this.appName,
+                    logoutDiv: this.logoutDiv,
+                    isAdminPage: true
                 });
 
                 this.login.on('sign-in-success', function() {
@@ -188,7 +189,8 @@ define([
                 request(this.urls.base + service, {
                     data: JSON.stringify({
                         email: textBox.value,
-                        application: this.appName
+                        application: this.appName,
+                        adminToken: this.login.user.adminToken
                     }),
                     handleAs: 'json',
                     method: verb,

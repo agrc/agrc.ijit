@@ -2,6 +2,7 @@ define([
         'dojo/_base/declare',
         'dojo/_base/lang',
         'dojo/_base/window',
+        'dojo/Deferred',
 
         'dojo/request',
         'dojo/dom-style',
@@ -16,6 +17,8 @@ define([
         'dijit/_WidgetsInTemplateMixin',
 
         'esri/request',
+        'esri/IdentityManagerBase',
+        'esri/kernel',
 
         'jquery',
         'bootstrap',
@@ -34,6 +37,7 @@ define([
         declare,
         lang,
         win,
+        Deferred,
 
         xhr,
         domStyle,
@@ -48,6 +52,8 @@ define([
         _WidgetsInTemplateMixin,
 
         esriRequest,
+        IdentityManagerBase,
+        kernel,
 
         jquery,
         bootstrap,
@@ -61,7 +67,8 @@ define([
         //      Works with agrc/ArcGisServerPermissionsProxy to allow users to register or login.
         // requires:
         //      jquery and bootstrap.js
-        return declare('widgets/authentication/LoginRegister', [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+        return declare('widgets/authentication/LoginRegister', 
+            [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, IdentityManagerBase], {
             widgetsInTemplate: true,
             templateString: template,
             baseClass: 'login-register',
@@ -87,6 +94,12 @@ define([
                 request: '/user/register',
                 reset: '/user/resetpassword',
                 change: '/user/changepassword'
+            },
+
+            // topics: {<name>: String}
+            //      topic strings associated with this widget
+            topics: {
+                signInSuccess: 'LoginRegister/sign-in-success'
             },
 
             // token: String
@@ -130,12 +143,22 @@ define([
             //      the token appended.
             securedServicesBaseUrl: null,
 
+            // isAdminPage: Boolean
+            //      disabled esri token stuff because we are not interacting with 
+            //      arcgis server
+            isAdminPage: false,
+
+            constructor: function () {
+                // summary:
+                //      constructor
+                console.log('ijit/authentication/LoginRegister:constructor', arguments);
+            
+                kernel.id = this;
+            },
             postCreate: function() {
                 // summary:
                 //      dom is ready
                 console.log(this.declaredClass + '::postCreate', arguments);
-
-                var that = this;
 
                 // create panes
                 this.signInPane = new _LoginRegisterSignInPane({
@@ -155,16 +178,25 @@ define([
 
                 domConstruct.place(this.domNode, win.body());
 
-                that.modal = $(that.modalDiv).modal({
+                this.modal = $(this.modalDiv).modal({
                     backdrop: 'static',
                     keyboard: false,
-                    show: that.showOnLoad
+                    show: this.showOnLoad
                 });
 
                 // focus email text box when form is shown
-                if (that.showOnLoad) {
-                    that.signInPane.emailTxt.focus();
+                if (this.showOnLoad) {
+                    this.signInPane.emailTxt.focus();
                 }
+
+                domConstruct.create('a', {
+                    innerHTML: 'Sign in', 
+                    href: '#',
+                    onclick: lang.hitch(this, function () {
+                        this.show();
+                        this.goToPane(this.signInPane);
+                    })
+                }, this.logoutDiv);
             },
             goToPane: function(pane) {
                 // summary:
@@ -190,6 +222,16 @@ define([
 
                 $(this.modalDiv).modal('show');
             },
+            signIn: function () {
+                // summary:
+                //      overridden from IdentityManagerBase
+                console.log('ijit/authentication/LoginRegister:signIn', arguments);
+            
+                this.def = new Deferred();
+                this.show();
+                this.goToPane(this.signInPane);
+                return this.def;
+            },
             onSignInSuccess: function(loginResult) {
                 // summary:
                 //      called when the user has successfully signed in
@@ -206,10 +248,26 @@ define([
                     parentWidget: this
                 }, this.logoutDiv);
 
-                topic.publish('LoginRegister/sign-in-success', loginResult);
-
                 // add token to all future requests
                 esriRequest.setRequestPreCallback(lang.hitch(this, 'onRequestPreCallback'));
+
+                var c = new IdentityManagerBase.Credential({
+                    userId: loginResult.user.userId,
+                    server: this.securedServicesBaseUrl,
+                    ssl: false,
+                    isAdmin: false,
+                    token: loginResult.token.token,
+                    expires: loginResult.token.expires
+                });
+                if (!this.isAdminPage) {
+                    this.registerToken(c);
+                }
+
+                if (this.def) {
+                    this.def.resolve(c);
+                }
+                
+                topic.publish(this.topics.signInSuccess, loginResult);
             },
             onRequestPreCallback: function(ioArgs) {
                 // summary:
