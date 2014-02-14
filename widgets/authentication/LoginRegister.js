@@ -93,7 +93,8 @@ define([
                 signIn: '/authenticate/user',
                 request: '/user/register',
                 reset: '/user/resetpassword',
-                change: '/user/changepassword'
+                change: '/user/changepassword',
+                rememberme: '/authenticate/rememberme'
             },
 
             // topics: {<name>: String}
@@ -176,27 +177,55 @@ define([
                 }, this.forgotPaneDiv);
                 this.stackContainer.startup();
 
-                domConstruct.place(this.domNode, win.body());
-
                 this.modal = $(this.modalDiv).modal({
                     backdrop: 'static',
                     keyboard: false,
-                    show: this.showOnLoad
+                    show: false
                 });
 
-                // focus email text box when form is shown
-                if (this.showOnLoad) {
-                    this.signInPane.emailTxt.focus();
+                domConstruct.place(this.domNode, win.body());
+
+                this.rememberMe();
+            },
+            rememberMe: function () {
+                // summary:
+                //      Hits the rememberme service to check if we have a good cookie
+                console.log('ijit/widgets/authenticate/LoginRegister:rememberMe', arguments);
+
+                var unsuccessful = lang.hitch(this, function () {
+                    // focus email text box when form is shown
+                    if (this.showOnLoad) {
+                        this.show();
+                        this.signInPane.emailTxt.focus();
+                    }
+
+                    domConstruct.create('a', {
+                        innerHTML: 'Sign in', 
+                        href: '#',
+                        onclick: lang.hitch(this, function () {
+                            this.show();
+                            this.goToPane(this.signInPane);
+                        })
+                    }, this.logoutDiv);
+                });
+
+                var def;
+                try {
+                    def = xhr(this.urls.base + this.urls.rememberme, {
+                        handleAs: 'json',
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(
+                        lang.hitch(this.signInPane, this.signInPane.onSubmitReturn),
+                        unsuccessful
+                    );
+                } catch (e) {
+                    unsuccessful();
                 }
 
-                domConstruct.create('a', {
-                    innerHTML: 'Sign in', 
-                    href: '#',
-                    onclick: lang.hitch(this, function () {
-                        this.show();
-                        this.goToPane(this.signInPane);
-                    })
-                }, this.logoutDiv);
+                return def;
             },
             goToPane: function(pane) {
                 // summary:
@@ -253,7 +282,7 @@ define([
 
                 var c = new IdentityManagerBase.Credential({
                     userId: loginResult.user.userId,
-                    server: this.securedServicesBaseUrl,
+                    server: this.securedServicesBaseUrl || document.location.origin,
                     ssl: false,
                     isAdmin: false,
                     token: loginResult.token.token,
@@ -281,6 +310,16 @@ define([
                     ioArgs.content.token = this.token;
                 }
                 return ioArgs;
+            },
+            generateToken: function () {
+                // summary:
+                //      overriden from IdentityManagerBase
+                //      attempt at auto generating a new token when your token is invalid
+                //      I believe that IdentityManagerBase automatically calls this when you
+                //      token is about to expire
+                console.log('ijit/widgets/authentication/LoginRegister:generateToken', arguments);
+            
+                return this.rememberMe();
             }
         });
     });
