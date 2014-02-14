@@ -17,7 +17,7 @@ define([
 ) {
     // summary:
     //      A widget that provides log out and user name display for the LoginRegister widget.
-    return declare('ijit/widget/authentication/_LoginRegisterLogout', [_LoginRegisterPaneMixin], {
+    return declare([_LoginRegisterPaneMixin], {
         widgetsInTemplate: false,
         templateString: template,
         baseClass: 'login-register-logout',
@@ -58,7 +58,7 @@ define([
         postCreate: function() {
             // summary:
             //      description
-            console.log(this.declaredClass + '::postCreate', arguments);
+            console.log('ijit/widgets/authentication/_LoginRegisterLogout:postCreate', arguments);
 
             if (this.role === 'admin') {
                 domStyle.set(this.adminLink, 'display', 'list-item');
@@ -72,7 +72,7 @@ define([
             // summary:
             //      fires when the user clicks the "Sign out" menu item
             // evt: Click Event
-            console.log(this.declaredClass + "::onSignOutClick", arguments);
+            console.log('ijit/widgets/authentication/_LoginRegisterLogout:onSignOutClick', arguments);
 
             evt.preventDefault();
 
@@ -82,7 +82,7 @@ define([
             // summary:
             //      wrapper around window.location.reload to enable testing since 
             //      it's immutable
-            console.log(this.declaredClass + "::refreshPage", arguments);
+            console.log('ijit/widgets/authentication/_LoginRegisterLogout:refreshPage', arguments);
 
             window.location.reload();
         },
@@ -90,7 +90,7 @@ define([
             // summary:
             //      description
             // evt: Click Event
-            console.log(this.declaredClass + '::onChangePasswordClick', arguments);
+            console.log('ijit/widgets/authentication/_LoginRegisterLogout:onChangePasswordClick', arguments);
         
             evt.preventDefault();
 
@@ -102,7 +102,7 @@ define([
             // summary:
             //      returns data suitable for submission to the change password service
             //      also validates that the new password fields match
-            console.log(this.declaredClass + '::getData', arguments);
+            console.log('ijit/widgets/authentication/_LoginRegisterLogout:getData', arguments);
 
             if (this.newPassTxt.value !== this.newPassConfirmTxt.value) {
                 throw this.mismatchedErrMsg;
@@ -118,7 +118,7 @@ define([
         onSubmitReturn: function () {
             // summary:
             //      callback for successful xhr request
-            console.log(this.declaredClass + '::onSubmitReturn', arguments);
+            console.log('ijit/widgets/authentication/_LoginRegisterLogout:onSubmitReturn', arguments);
         
             domStyle.set(this.form, 'display', 'none');
             domStyle.set(this.successDiv, 'display', 'block');

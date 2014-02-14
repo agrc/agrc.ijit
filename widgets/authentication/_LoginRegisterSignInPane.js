@@ -19,7 +19,7 @@ define([
     ) {
         // summary:
         //      The sign in pane for the LoginRegistration widget.
-        return declare('ijit/widgets/authentication/_LoginRegisterSignInPane', [_LoginRegisterPaneMixin], {
+        return declare([_LoginRegisterPaneMixin], {
             templateString: template,
             baseClass: 'login-register-sign-in-pane',
             xhrMethod: 'POST',
@@ -28,7 +28,7 @@ define([
                 // summary:
                 //      gets the data from the form as an object suitable for
                 //      submission to the web service
-                console.log(this.declaredClass + '::getData', arguments);
+                console.log('ijit/widgets/authentication/_LoginRegisterSignInPane:getData', arguments);
 
                 return {
                     email: this.emailTxt.value,
@@ -40,7 +40,7 @@ define([
                 // summary:
                 //      callback for sign in xhr
                 // returnValue: JSON Object
-                console.log(this.declaredClass + '::onSubmitReturn', arguments);
+                console.log('ijit/widgets/authentication/_LoginRegisterSignInPane:onSubmitReturn', arguments);
 
                 this.parentWidget.token = returnValue.result.token.token;
                 this.parentWidget.tokenExpireDate = new Date(returnValue.result.token.expires);
@@ -56,7 +56,7 @@ define([
             onSubmitError: function () {
                 // summary:
                 //      description
-                console.log(this.declaredClass + '::onSubmitError', arguments);
+                console.log('ijit/widgets/authentication/_LoginRegisterSignInPane:onSubmitError', arguments);
             
                 this.parentWidget.forgotPane.emailTxt.value = this.emailTxt.value;
                 this.parentWidget.forgotPane.submitBtn.disabled = false;

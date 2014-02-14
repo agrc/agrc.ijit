@@ -18,7 +18,7 @@ define([
 ) {
     // summary:
     //      The request access pane in the LoginRegistration widget.
-    return declare('ijit/widgets/authentication/_LoginRegisterRequestPane', [_LoginRegisterPaneMixin], {
+    return declare([_LoginRegisterPaneMixin], {
         templateString: template,
         baseClass: 'login-register-request-pane',
 
@@ -31,7 +31,7 @@ define([
             // summary:
             //      returns the data from the form as an object suitable
             //      for submission to the web service
-            console.log(this.declaredClass + "::getData", arguments);
+            console.log('ijit/widgets/authentication/_LoginRegisterRequestPane:getData', arguments);
 
             if (this.emailTxt.value !== this.emailConfirmTxt.value) {
                 throw this.mismatchedEmailMsg;
@@ -50,7 +50,7 @@ define([
         onSubmitReturn: function() {
             // summary:
             //      callback for xhr
-            console.log(this.declaredClass + "::onSubmitReturn", arguments);
+            console.log('ijit/widgets/authentication/_LoginRegisterRequestPane:onSubmitReturn', arguments);
 
             domStyle.set(this.submitBtn, 'display', 'none');
 

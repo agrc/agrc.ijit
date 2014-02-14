@@ -1,3 +1,11 @@
+require({
+    // this is so that the 'spin' import in ladda resolves correctly
+    map: {
+        'ijit/resources/libs': {
+            'spin': 'ijit/resources/libs/ladda-bootstrap/spin'
+        }
+    }
+});
 define([
         'dojo/_base/declare',
         'dojo/_base/lang',
@@ -67,8 +75,7 @@ define([
         //      Works with agrc/ArcGisServerPermissionsProxy to allow users to register or login.
         // requires:
         //      jquery and bootstrap.js
-        return declare('widgets/authentication/LoginRegister', 
-            [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, IdentityManagerBase], {
+        return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, IdentityManagerBase], {
             widgetsInTemplate: true,
             templateString: template,
             baseClass: 'login-register',
@@ -152,14 +159,14 @@ define([
             constructor: function () {
                 // summary:
                 //      constructor
-                console.log('ijit/authentication/LoginRegister:constructor', arguments);
+                console.log('ijit/widgets/authentication/LoginRegister:constructor', arguments);
             
                 kernel.id = this;
             },
             postCreate: function() {
                 // summary:
                 //      dom is ready
-                console.log(this.declaredClass + '::postCreate', arguments);
+                console.log('ijit/widgets/authentication/LoginRegister:postCreate', arguments);
 
                 // create panes
                 this.signInPane = new _LoginRegisterSignInPane({
@@ -231,7 +238,7 @@ define([
                 // summary:
                 //      fires when the user clicks the "Request Access" link
                 // pane: _LoginRegisterPane
-                console.log(this.declaredClass + '::goToPane', arguments);
+                console.log('ijit/widgets/authentication/LoginRegister:goToPane', arguments);
 
                 this.stackContainer.selectChild(pane);
                 pane.focusFirstInput();
@@ -239,7 +246,7 @@ define([
             hideDialog: function() {
                 // summary:
                 //      hides the modal dialog
-                console.log(this.declaredClass + '::hideDialog', arguments);
+                console.log('ijit/widgets/authentication/LoginRegister:hideDialog', arguments);
 
                 $(this.modalDiv).modal('hide');
             },
@@ -247,14 +254,14 @@ define([
                 // summary:
                 //      shows the login modal
                 // 
-                console.log(this.declaredClass + '::show', arguments);
+                console.log('ijit/widgets/authentication/LoginRegister:show', arguments);
 
                 $(this.modalDiv).modal('show');
             },
             signIn: function () {
                 // summary:
                 //      overridden from IdentityManagerBase
-                console.log('ijit/authentication/LoginRegister:signIn', arguments);
+                console.log('ijit/widgets/authentication/LoginRegister:signIn', arguments);
             
                 this.def = new Deferred();
                 this.show();
@@ -266,7 +273,7 @@ define([
                 //      called when the user has successfully signed in
                 // loginResult: Object
                 //      result object as returned from the server
-                console.log(this.declaredClass + "::onSignInSuccess", arguments);
+                console.log('ijit/widgets/authentication/LoginRegister:onSignInSuccess', arguments);
 
                 this.logout = new _LoginRegisterLogout({
                     firstName: loginResult.user.first,
@@ -303,7 +310,7 @@ define([
                 //      fires just before each request to the server
                 // ioArgs: {}
                 //      the data that will be sent with the request
-                console.log(this.declaredClass + "::onRequestPreCallback", arguments);
+                console.log('ijit/widgets/authentication/LoginRegister:onRequestPreCallback', arguments);
 
                 if (!this.securedServicesBaseUrl || 
                     ioArgs.url.toUpperCase().indexOf(this.securedServicesBaseUrl.toUpperCase()) !== -1) {

@@ -39,7 +39,7 @@ define([
     ) {
         // summary:
         //      Provides controls to allow admins to do things like acceept users, delete users and reset passwords.
-        return declare('ijit/widgets/authentication/UserAdmin', [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+        return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             widgetsInTemplate: true,
             templateString: template,
             baseClass: 'user-admin',
@@ -69,7 +69,7 @@ define([
             postCreate: function() {
                 // summary:
                 //      dom is ready
-                console.log(this.declaredClass + "::postCreate", arguments);
+                console.log('ijit/widgets/authentication/UserAdmin:postCreate', arguments);
 
                 var that = this;
 
@@ -86,7 +86,7 @@ define([
             getRoles: function() {
                 // summary:
                 //      gets roles for app
-                console.log(this.declaredClass + "::getRoles", arguments);
+                console.log('ijit/widgets/authentication/UserAdmin:getRoles', arguments);
 
                 var def = request(this.urls.base + this.urls.getroles, {
                     query: {
@@ -103,7 +103,7 @@ define([
             getUsers: function() {
                 // summary:
                 //      calls getallwaiting
-                console.log(this.declaredClass + "::getUsers", arguments);
+                console.log('ijit/widgets/authentication/UserAdmin:getUsers', arguments);
 
                 request(this.urls.base + this.urls.getallwaiting, {
                     query: {
@@ -117,7 +117,7 @@ define([
                 //      error callback for xhr
                 // response: {}
                 //      response object from server
-                console.log(this.declaredClass + "::onError", arguments);
+                console.log('ijit/widgets/authentication/UserAdmin:onError', arguments);
 
                 this.errMsgDiv.innerHTML = response.message;
                 domStyle.set(this.errMsgDiv, 'display', 'block');
@@ -128,7 +128,7 @@ define([
                 //      builds user widgets
                 // response: {}
                 //      response object from server
-                console.log(this.declaredClass + "::showUsers", arguments);
+                console.log('ijit/widgets/authentication/UserAdmin:showUsers', arguments);
 
                 var users = response.result;
 
@@ -147,7 +147,7 @@ define([
             destroyRecursive: function() {
                 // summary:
                 //      mostly for tear down during tests
-                console.log(this.declaredClass + "::destroyRecursive", arguments);
+                console.log('ijit/widgets/authentication/UserAdmin:destroyRecursive', arguments);
 
                 this.login.destroyRecursive();
                 this.inherited(arguments);
@@ -155,7 +155,7 @@ define([
             deleteUser: function() {
                 // summary:
                 //      fires when the user clicks the delete button
-                console.log(this.declaredClass + "::deleteUser", arguments);
+                console.log('ijit/widgets/authentication/UserAdmin:deleteUser', arguments);
 
                 this.sendRequest(
                     this.deleteSuccessMsgDiv,
@@ -168,7 +168,7 @@ define([
             resetPassword: function() {
                 // summary:
                 //      fires when the user clicks on the reset button
-                console.log(this.declaredClass + "::resetPassword", arguments);
+                console.log('ijit/widgets/authentication/UserAdmin:resetPassword', arguments);
 
                 this.sendRequest(
                     this.resetSuccessMsgDiv,
@@ -181,7 +181,7 @@ define([
             sendRequest: function(successMsg, service, textBox, verb, userSpan, errDiv) {
                 // summary:
                 //      send reset or delete request
-                console.log(this.declaredClass + "::sendRequest", arguments);
+                console.log('ijit/widgets/authentication/UserAdmin:sendRequest', arguments);
 
                 domStyle.set(successMsg, 'display', 'none');
                 domStyle.set(errDiv, 'display', 'none');
