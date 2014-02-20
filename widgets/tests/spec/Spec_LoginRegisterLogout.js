@@ -24,9 +24,11 @@ require([
                     firstName: 'scott',
                     lastName: 'davis',
                     role: 'some-role',
-                    email: email
+                    email: email,
+                    parentWidget: {urls: {forgetme: 'blah'}}
                 }, domConstruct.create('div', {}, win.body()));
                 testWidget.startup();
+                testWidget.refreshPage = function () {};
                 spyOn(testWidget, 'refreshPage');
             });
             afterEach(function() {
@@ -62,9 +64,16 @@ require([
                     expect(evt.preventDefault).toHaveBeenCalled();
                 });
                 it("reloads the current window", function() {
-                    testWidget.onSignOutClick(evt);
-
-                    expect(testWidget.refreshPage).toHaveBeenCalled();
+                    var def;
+                    runs(function () {
+                        def = testWidget.onSignOutClick(evt);
+                    });
+                    waitsFor(function () {
+                        return def.isFulfilled();
+                    });
+                    runs(function () {
+                        expect(testWidget.refreshPage).toHaveBeenCalled();
+                    });
                 });
             });
             describe('onChangePasswordClick', function () {

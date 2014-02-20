@@ -1,19 +1,28 @@
 define([
     'dojo/_base/declare',
-    'dojo/text!./templates/_LoginRegisterLogout.html',
-    'dojo/dom-style',
-    'ijit/widgets/authentication/_LoginRegisterPaneMixin',
-    'dojo/dom-construct',
     'dojo/_base/window',
+    'dojo/_base/lang',
+    'dojo/dom-style',
+    'dojo/dom-construct',
+    'dojo/request',
+
+    'dojo/text!./templates/_LoginRegisterLogout.html',
+
+    'ijit/widgets/authentication/_LoginRegisterPaneMixin',
+
     'bootstrap'
 
 ], function(
     declare,
-    template,
+    win,
+    lang,
     domStyle,
-    _LoginRegisterPaneMixin,
     domConstruct,
-    win
+    xhr,
+
+    template,
+
+    _LoginRegisterPaneMixin
 ) {
     // summary:
     //      A widget that provides log out and user name display for the LoginRegister widget.
@@ -76,7 +85,7 @@ define([
 
             evt.preventDefault();
 
-            this.refreshPage();
+            return xhr(this.parentWidget.urls.base + this.parentWidget.urls.forgetme).always(lang.hitch(this, 'refreshPage'));
         },
         refreshPage: function() {
             // summary:

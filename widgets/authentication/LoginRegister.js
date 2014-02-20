@@ -101,7 +101,8 @@ define([
                 request: '/user/register',
                 reset: '/user/resetpassword',
                 change: '/user/changepassword',
-                rememberme: '/authenticate/rememberme'
+                rememberme: '/authenticate/rememberme',
+                forgetme: '/authenticate/forgetme'
             },
 
             // topics: {<name>: String}
