@@ -6,6 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
         <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/dijit.css">
+        <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/esri/css/esri.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="../../resources/authentication/LoginRegister.css">
 
@@ -29,36 +30,50 @@
         <script type="text/javascript" src="http://js.arcgis.com/3.7"></script>
 
         <script type="text/javascript">
-            require([
-                'jquery',
-                'ijit/widgets/authentication/LoginRegister',
-                'esri/Map',
-                'esri/layers/ArcGISDynamicMapServiceLayer',
-                
-                'dojo/on'
-            ],
-
-            function (
-                jQuery,
-                LoginRegister,
-                Map,
-
-                on
-                ) {
-                testWidget = new LoginRegister({
-                    appName: 'unitTests',
-                    logoutDiv: 'testdiv',
-                    showOnLoad: true
-                });
-
-                on(testWidget, 'sign-in-success', function(stuff){
-                    console.log('signed in');
-                    map = new Map('map-div');
-
-                    testWidget.addMap(map);
+            require(['jquery'], function () {
+                require([
+                    'jquery',
+                    'ijit/widgets/authentication/LoginRegister',
+                    'esri/map',
+                    'esri/layers/ArcGISDynamicMapServiceLayer',
+                    'esri/geometry/Extent',
                     
-                    lyr = new ArcGISDynamicMapServiceLayer('/arcgis/rest/services/Roadkill/MapService/MapServer');
-                    map.addLayer(lyr);
+                    'dojo/on'
+                ],
+
+                function (
+                    jQuery,
+                    LoginRegister,
+                    Map,
+                    ArcGISDynamicMapServiceLayer,
+                    Extent,
+
+                    on
+                    ) {
+                    testWidget = new LoginRegister({
+                        appName: 'roadkill',
+                        logoutDiv: 'testdiv',
+                        showOnLoad: true
+                    });
+
+                    on(testWidget, 'sign-in-success', function(stuff){
+                        console.log('signed in');
+                        map = new Map('map-div', {
+                            defaultExtent: new Extent({
+                                xmin: 81350,
+                                ymin: 3962431,
+                                xmax: 800096,
+                                ymax: 4785283,
+                                spatialReference: {
+                                    wkid: 26912
+                                }
+                            })
+                        });
+                        
+                        lyr = new ArcGISDynamicMapServiceLayer('/arcgis/rest/services/Roadkill/MapService/MapServer');
+                        map.addLayer(lyr);
+                        lyr.setVisibleLayers([0,1]);
+                    });
                 });
             });
         </script>

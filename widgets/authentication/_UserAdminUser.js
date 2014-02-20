@@ -33,7 +33,7 @@ define([
     ) {
         // summary:
         //      A widget associated with a user that is awaiting approval that allows an admin to accept and assign a role or reject.
-        return declare('ijit/widgets/authentication/_UserAdminUser', [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+        return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             widgetsInTemplate: false,
             templateString: template,
             baseClass: 'user-admin-user',
@@ -77,12 +77,12 @@ define([
             adminToken: null,
 
             constructor: function() {
-                console.log(this.declaredClass + "::constructor", arguments);
+                console.log('ijit/widgets/authentication/_UserAdminUser:constructor', arguments);
             },
             postCreate: function() {
                 // summary:
                 //      dom is ready
-                console.log(this.declaredClass + "::postCreate", arguments);
+                console.log('ijit/widgets/authentication/_UserAdminUser:postCreate', arguments);
 
                 var that = this;
                 array.forEach(this.roles, function(role) {
@@ -99,7 +99,7 @@ define([
                 // summary:
                 //      fires the accept service with the passed in role
                 // role: String
-                console.log(this.declaredClass + "::assignRole", arguments);
+                console.log('ijit/widgets/authentication/_UserAdminUser:assignRole', arguments);
 
                 request(this.urls.base + this.urls.accept, {
                     data: JSON.stringify({
@@ -118,7 +118,7 @@ define([
             onSuccess: function() {
                 // summary:
                 //      description
-                console.log(this.declaredClass + "::onSuccess", arguments);
+                console.log('ijit/widgets/authentication/_UserAdminUser:onSuccess', arguments);
 
                 domStyle.set(this.wellDiv, 'backgroundColor', this.successColor);
 
@@ -137,7 +137,7 @@ define([
                 //      error callback for xhr request
                 // response: {}
                 //      response object returned by server
-                console.log(this.declaredClass + "::onError", arguments);
+                console.log('ijit/widgets/authentication/_UserAdminUser:onError', arguments);
 
                 this.errMsgDiv.innerHTML = response.message;
                 domStyle.set(this.errMsgDiv, 'display', 'block');
@@ -145,7 +145,7 @@ define([
             reject: function() {
                 // summary:
                 //      calls the reject service
-                console.log(this.declaredClass + "::reject", arguments);
+                console.log('ijit/widgets/authentication/_UserAdminUser:reject', arguments);
 
                 request(this.urls.base + this.urls.reject, {
                     data: JSON.stringify({

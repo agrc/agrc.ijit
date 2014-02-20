@@ -147,6 +147,26 @@ require([
                     expect(data).toEqual(JSON.stringify({
                         email: email,
                         password: password,
+                        persist: false,
+                        application: parentWidget.appName
+                    }));
+
+                    testWidget2.destroy();
+                });
+                it("wire the remember me checkbox to persist parameter", function() {
+                    testWidget2.emailTxt.value = email;
+                    testWidget2.passwordTxt.value = password;
+                    testWidget2.rememberMeChbx.checked = true;
+
+                    testWidget2.onSubmitClick();
+
+                    expect(xhr).toHaveBeenCalled();
+                    expect(xhr.mostRecentCall.args[0]).toEqual(url);
+                    var data = xhr.mostRecentCall.args[1].data;
+                    expect(data).toEqual(JSON.stringify({
+                        email: email,
+                        password: password,
+                        persist: true,
                         application: parentWidget.appName
                     }));
 
@@ -219,13 +239,6 @@ require([
                     testWidget.hideError();
 
                     expect(domStyle.get(testWidget.errorDiv, 'display')).toBe('none');
-                });
-            });
-            describe('focusFirstInput', function() {
-                it("focuses the first text box", function() {
-                    testWidget.focusFirstInput();
-
-                    expect(document.activeElement).toBe(testWidget.emailTxt);
                 });
             });
             describe('goToRequestPane', function() {

@@ -65,6 +65,30 @@ require([
 
                     expect(testWidget.onSignInSuccess).toHaveBeenCalled();
                 });
+                it('calls rememberMe', function () {
+                    spyOn(testWidget, 'rememberMe');
+
+                    testWidget.postCreate();
+
+                    expect(testWidget.rememberMe).toHaveBeenCalled();
+                });
+            });
+            describe('rememberMe', function () {
+                it('calls rememberme service', function () {
+                    var xhrSpy = jasmine.createSpy('xhr');
+                    var StubbedModule = StubModule('ijit/widgets/authentication/LoginRegister', {
+                        'dojo/request': xhrSpy
+                    });
+                    var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, win.body()));
+                    testWidget2.startup();
+
+                    testWidget2.rememberMe();
+
+                    expect(xhrSpy.callCount).toBe(2);
+                    expect(xhrSpy.calls[0].args[0]).toEqual(testWidget2.urls.base + testWidget2.urls.rememberme);
+
+                    destroy(testWidget2);
+                });
             });
             describe('startup options:', function() {
                 beforeEach(function() {

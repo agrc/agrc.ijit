@@ -1,3 +1,11 @@
+require({
+    // this is so that the 'spin' import in ladda resolves correctly
+    map: {
+        'ijit/resources/libs': {
+            'spin': 'ijit/resources/libs/ladda-bootstrap/spin'
+        }
+    }
+});
 define([
         'dojo/_base/declare',
         'dojo/_base/lang',
@@ -67,8 +75,7 @@ define([
         //      Works with agrc/ArcGisServerPermissionsProxy to allow users to register or login.
         // requires:
         //      jquery and bootstrap.js
-        return declare('widgets/authentication/LoginRegister', 
-            [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, IdentityManagerBase], {
+        return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, IdentityManagerBase], {
             widgetsInTemplate: true,
             templateString: template,
             baseClass: 'login-register',
@@ -93,7 +100,9 @@ define([
                 signIn: '/authenticate/user',
                 request: '/user/register',
                 reset: '/user/resetpassword',
-                change: '/user/changepassword'
+                change: '/user/changepassword',
+                rememberme: '/authenticate/rememberme',
+                forgetme: '/authenticate/forgetme'
             },
 
             // topics: {<name>: String}
@@ -151,14 +160,14 @@ define([
             constructor: function () {
                 // summary:
                 //      constructor
-                console.log('ijit/authentication/LoginRegister:constructor', arguments);
+                console.log('ijit/widgets/authentication/LoginRegister:constructor', arguments);
             
                 kernel.id = this;
             },
             postCreate: function() {
                 // summary:
                 //      dom is ready
-                console.log(this.declaredClass + '::postCreate', arguments);
+                console.log('ijit/widgets/authentication/LoginRegister:postCreate', arguments);
 
                 // create panes
                 this.signInPane = new _LoginRegisterSignInPane({
@@ -176,33 +185,61 @@ define([
                 }, this.forgotPaneDiv);
                 this.stackContainer.startup();
 
-                domConstruct.place(this.domNode, win.body());
-
                 this.modal = $(this.modalDiv).modal({
                     backdrop: 'static',
                     keyboard: false,
-                    show: this.showOnLoad
+                    show: false
                 });
 
-                // focus email text box when form is shown
-                if (this.showOnLoad) {
-                    this.signInPane.emailTxt.focus();
+                domConstruct.place(this.domNode, win.body());
+
+                this.rememberMe();
+            },
+            rememberMe: function () {
+                // summary:
+                //      Hits the rememberme service to check if we have a good cookie
+                console.log('ijit/widgets/authenticate/LoginRegister:rememberMe', arguments);
+
+                var unsuccessful = lang.hitch(this, function () {
+                    // focus email text box when form is shown
+                    if (this.showOnLoad) {
+                        this.show();
+                        this.signInPane.emailTxt.focus();
+                    }
+
+                    domConstruct.create('a', {
+                        innerHTML: 'Sign in', 
+                        href: '#',
+                        onclick: lang.hitch(this, function () {
+                            this.show();
+                            this.goToPane(this.signInPane);
+                        })
+                    }, this.logoutDiv);
+                });
+
+                var def;
+                try {
+                    def = xhr(this.urls.base + this.urls.rememberme, {
+                        handleAs: 'json',
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(
+                        lang.hitch(this.signInPane, this.signInPane.onSubmitReturn),
+                        unsuccessful
+                    );
+                } catch (e) {
+                    unsuccessful();
                 }
 
-                domConstruct.create('a', {
-                    innerHTML: 'Sign in', 
-                    href: '#',
-                    onclick: lang.hitch(this, function () {
-                        this.show();
-                        this.goToPane(this.signInPane);
-                    })
-                }, this.logoutDiv);
+                return def;
             },
             goToPane: function(pane) {
                 // summary:
                 //      fires when the user clicks the "Request Access" link
                 // pane: _LoginRegisterPane
-                console.log(this.declaredClass + '::goToPane', arguments);
+                console.log('ijit/widgets/authentication/LoginRegister:goToPane', arguments);
 
                 this.stackContainer.selectChild(pane);
                 pane.focusFirstInput();
@@ -210,7 +247,7 @@ define([
             hideDialog: function() {
                 // summary:
                 //      hides the modal dialog
-                console.log(this.declaredClass + '::hideDialog', arguments);
+                console.log('ijit/widgets/authentication/LoginRegister:hideDialog', arguments);
 
                 $(this.modalDiv).modal('hide');
             },
@@ -218,14 +255,14 @@ define([
                 // summary:
                 //      shows the login modal
                 // 
-                console.log(this.declaredClass + '::show', arguments);
+                console.log('ijit/widgets/authentication/LoginRegister:show', arguments);
 
                 $(this.modalDiv).modal('show');
             },
             signIn: function () {
                 // summary:
                 //      overridden from IdentityManagerBase
-                console.log('ijit/authentication/LoginRegister:signIn', arguments);
+                console.log('ijit/widgets/authentication/LoginRegister:signIn', arguments);
             
                 this.def = new Deferred();
                 this.show();
@@ -237,7 +274,7 @@ define([
                 //      called when the user has successfully signed in
                 // loginResult: Object
                 //      result object as returned from the server
-                console.log(this.declaredClass + "::onSignInSuccess", arguments);
+                console.log('ijit/widgets/authentication/LoginRegister:onSignInSuccess', arguments);
 
                 this.logout = new _LoginRegisterLogout({
                     firstName: loginResult.user.first,
@@ -253,7 +290,7 @@ define([
 
                 var c = new IdentityManagerBase.Credential({
                     userId: loginResult.user.userId,
-                    server: this.securedServicesBaseUrl,
+                    server: this.securedServicesBaseUrl || document.location.origin,
                     ssl: false,
                     isAdmin: false,
                     token: loginResult.token.token,
@@ -274,13 +311,23 @@ define([
                 //      fires just before each request to the server
                 // ioArgs: {}
                 //      the data that will be sent with the request
-                console.log(this.declaredClass + "::onRequestPreCallback", arguments);
+                console.log('ijit/widgets/authentication/LoginRegister:onRequestPreCallback', arguments);
 
                 if (!this.securedServicesBaseUrl || 
                     ioArgs.url.toUpperCase().indexOf(this.securedServicesBaseUrl.toUpperCase()) !== -1) {
                     ioArgs.content.token = this.token;
                 }
                 return ioArgs;
+            },
+            generateToken: function () {
+                // summary:
+                //      overriden from IdentityManagerBase
+                //      attempt at auto generating a new token when your token is invalid
+                //      I believe that IdentityManagerBase automatically calls this when you
+                //      token is about to expire
+                console.log('ijit/widgets/authentication/LoginRegister:generateToken', arguments);
+            
+                return this.rememberMe();
             }
         });
     });

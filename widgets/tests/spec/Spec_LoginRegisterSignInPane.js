@@ -46,7 +46,8 @@ require([
 
                     expect(testWidget.getData()).toEqual({
                         email: email,
-                        password: pass
+                        password: pass,
+                        persist: false
                     });
                 });
             });

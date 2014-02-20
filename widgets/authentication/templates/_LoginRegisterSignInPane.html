@@ -25,7 +25,10 @@
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" data-dojo-attach-point="rememberMeChbx" tabindex="3" name='rememberMeChbx'> Remember me
+                        <input type="checkbox" 
+                            data-dojo-attach-point="rememberMeChbx" 
+                            data-dojo-attach-event='onkeyup: validate'
+                            tabindex="3" name='rememberMeChbx'> Remember me
                     </label>
                 </div>
                 <div data-dojo-attach-point='errorDiv' class="alert alert-danger">
