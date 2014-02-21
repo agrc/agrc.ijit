@@ -1,0 +1,20 @@
+{
+  "name": "agrc-ijit",
+  "version": "2.0.0",
+  "homepage": "https://github.com/agrc/agrc.ijit",
+  "authors": [
+    "Scott Davis <stdavis@utah.gov>"
+  ],
+  "description": "AGRC Internal Widgets",
+  "keywords": [
+    "agrc"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
