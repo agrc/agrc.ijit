@@ -38,7 +38,7 @@ define([
 
         // no params
         'dijit/layout/StackContainer',
-        'dijit/layout/ContentPane',
+        'dijit/layout/ContentPane'
     ],
 
     function(
