@@ -35,7 +35,7 @@ define([
 
         jquery,
         LoginRegister,
-        _UserAdminUser
+        UserAdminUser
     ) {
         // summary:
         //      Provides controls to allow admins to do things like acceept users, delete users and reset passwords.
@@ -136,7 +136,7 @@ define([
                     domStyle.set(this.noUsersMsg, 'display', 'block');
                 } else {
                     array.forEach(users, function(u) {
-                        new _UserAdminUser(lang.mixin(u, {
+                        new UserAdminUser(lang.mixin(u, {
                             roles: this.roles,
                             adminToken: this.login.user.adminToken,
                             appName: this.appName

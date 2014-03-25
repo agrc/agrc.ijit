@@ -8,7 +8,7 @@ require([
     ],
 
     function(
-        _UserAdminUser,
+        UserAdminUser,
         domConstruct,
         domStyle,
         win,
@@ -23,7 +23,7 @@ require([
             var email = 'test@test.com';
             var roles = ['role1', 'role2', 'role3'];
             beforeEach(function() {
-                testWidget = new _UserAdminUser({
+                testWidget = new UserAdminUser({
                     name: 'blah',
                     agency: 'blah2',
                     email: email,
@@ -35,13 +35,13 @@ require([
                 destroy(testWidget);
             });
             it('create a valid object', function() {
-                expect(testWidget).toEqual(jasmine.any(_UserAdminUser));
+                expect(testWidget).toEqual(jasmine.any(UserAdminUser));
             });
             describe('postCreate', function() {
-                it("creates a button for each role", function() {
+                it('creates a button for each role', function() {
                     expect(query('.btn-group .btn', testWidget.domNode).length).toBe(3);
                 });
-                it("wires the buttons to the assignRole method", function() {
+                it('wires the buttons to the assignRole method', function() {
                     spyOn(testWidget, 'assignRole');
 
                     testWidget.roleBtnGroup.children[0].click();
@@ -50,7 +50,7 @@ require([
                 });
             });
             describe('onSuccess', function() {
-                it("turns background color to green and then fades out", function() {
+                it('turns background color to green and then fades out', function() {
                     testWidget.onSuccess();
 
                     expect(domStyle.get(testWidget.wellDiv, 'backgroundColor')).toBe(testWidget.successColor);

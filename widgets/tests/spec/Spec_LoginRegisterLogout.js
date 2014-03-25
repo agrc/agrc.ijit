@@ -7,7 +7,7 @@ require([
     ],
 
     function(
-        _LoginRegisterLogout,
+        LoginRegisterLogout,
         domConstruct,
         win,
         domStyle
@@ -20,7 +20,7 @@ require([
             };
             var email = 'blah3';
             beforeEach(function() {
-                testWidget = new _LoginRegisterLogout({
+                testWidget = new LoginRegisterLogout({
                     firstName: 'scott',
                     lastName: 'davis',
                     role: 'some-role',
@@ -35,11 +35,11 @@ require([
                 destroy(testWidget);
             });
             it('create a valid object', function() {
-                expect(testWidget).toEqual(jasmine.any(_LoginRegisterLogout));
+                expect(testWidget).toEqual(jasmine.any(LoginRegisterLogout));
             });
             describe('postCreate', function () {
                 it('display the user admin link if the user is an admin', function () {
-                    var testWidget2 = new _LoginRegisterLogout({
+                    var testWidget2 = new LoginRegisterLogout({
                         firstName: 'scott',
                         lastName: 'davis',
                         role: 'admin'
@@ -58,12 +58,12 @@ require([
                 var evt = {
                     preventDefault: jasmine.createSpy('preventDefault')
                 };
-                it("calls prevent default on the click event", function() {
+                it('calls prevent default on the click event', function() {
                     testWidget.onSignOutClick(evt);
 
                     expect(evt.preventDefault).toHaveBeenCalled();
                 });
-                it("reloads the current window", function() {
+                it('reloads the current window', function() {
                     var def;
                     runs(function () {
                         def = testWidget.onSignOutClick(evt);
@@ -80,7 +80,7 @@ require([
                 var evt = {
                     preventDefault: jasmine.createSpy('preventDefault')
                 };
-                it("calls prevent default on the click event", function() {
+                it('calls prevent default on the click event', function() {
                     testWidget.onChangePasswordClick(evt);
 
                     expect(evt.preventDefault).toHaveBeenCalled();

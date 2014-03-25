@@ -7,7 +7,7 @@ require([
     ],
 
     function(
-        _LoginRegisterRequestPane,
+        LoginRegisterRequestPane,
         domConstruct,
         win,
         domStyle
@@ -19,7 +19,7 @@ require([
                 widget = null;
             };
             beforeEach(function() {
-                testWidget = new _LoginRegisterRequestPane({
+                testWidget = new LoginRegisterRequestPane({
                     parentWidget: {
                         signInPane: {}
                     }
@@ -30,7 +30,7 @@ require([
                 destroy(testWidget);
             });
             it('create a valid object', function() {
-                expect(testWidget).toEqual(jasmine.any(_LoginRegisterRequestPane));
+                expect(testWidget).toEqual(jasmine.any(LoginRegisterRequestPane));
             });
             describe('getData', function() {
                 var fName = 'blah1';
@@ -47,7 +47,7 @@ require([
                     testWidget.passwordTxt.value = password;
                     testWidget.passwordConfirmTxt.value = password;
                 });
-                it("return the appopriate values", function() {
+                it('return the appopriate values', function() {
                     expect(testWidget.getData()).toEqual({
                         first: fName,
                         last: lName,
@@ -56,7 +56,7 @@ require([
                         password: password
                     });
                 });
-                it("validates that the emails and passwords match", function() {
+                it('validates that the emails and passwords match', function() {
                     testWidget.emailConfirmTxt.value = 'different';
 
                     expect(function() {
@@ -72,7 +72,7 @@ require([
                 });
             });
             describe('onSubmitReturn', function() {
-                it("shows the success msg", function() {
+                it('shows the success msg', function() {
                     spyOn(testWidget, 'showSuccessMsg');
 
                     testWidget.onSubmitReturn();

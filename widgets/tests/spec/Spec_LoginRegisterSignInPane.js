@@ -8,7 +8,7 @@ require([
     ],
 
     function(
-        _LoginRegisterSignInPane,
+        LoginRegisterSignInPane,
 
         domConstruct,
         domAttr,
@@ -22,7 +22,7 @@ require([
                 widget = null;
             };
             beforeEach(function() {
-                testWidget = new _LoginRegisterSignInPane({
+                testWidget = new LoginRegisterSignInPane({
                     parentWidget: {
                         requestPane: {},
                         hideDialog: jasmine.createSpy('hideDialog'),
@@ -35,7 +35,7 @@ require([
                 destroy(testWidget);
             });
             it('create a valid object', function() {
-                expect(testWidget).toEqual(jasmine.any(_LoginRegisterSignInPane));
+                expect(testWidget).toEqual(jasmine.any(LoginRegisterSignInPane));
             });
             describe('getData', function() {
                 it('return the correct data', function() {

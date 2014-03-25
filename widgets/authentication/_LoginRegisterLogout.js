@@ -85,7 +85,8 @@ define([
 
             evt.preventDefault();
 
-            return xhr(this.parentWidget.urls.base + this.parentWidget.urls.forgetme).always(lang.hitch(this, 'refreshPage'));
+            return xhr(this.parentWidget.urls.base + this.parentWidget.urls.forgetme)
+                .always(lang.hitch(this, 'refreshPage'));
         },
         refreshPage: function() {
             // summary:

@@ -1,4 +1,4 @@
-/*global module:false*/
+/* jshint camelcase:false */
 module.exports = function(grunt) {
     var specs = [
         'widgets/tests/spec/SpecLoginRegister.js',
@@ -51,7 +51,8 @@ module.exports = function(grunt) {
                 'modules/**/*.css',
                 'resources/**/*.css',
                 '!**/node_modules/**',
-                '!**/stubmodule/**'
+                '!**/stubmodule/**',
+                'Gruntfile.js'
             ],
             tasks: ['jasmine:app:build', 'jshint'],
             options: {

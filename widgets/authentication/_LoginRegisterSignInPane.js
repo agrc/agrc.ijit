@@ -15,11 +15,11 @@ define([
 
         on,
 
-        _LoginRegisterPaneMixin
+        LoginRegisterPaneMixin
     ) {
         // summary:
         //      The sign in pane for the LoginRegistration widget.
-        return declare([_LoginRegisterPaneMixin], {
+        return declare([LoginRegisterPaneMixin], {
             templateString: template,
             baseClass: 'login-register-sign-in-pane',
             xhrMethod: 'POST',

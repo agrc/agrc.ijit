@@ -25,7 +25,7 @@ require([
 
         Deferred,
 
-        StubModule,
+        stubModule,
 
         LoginRegister
     ) {
@@ -58,7 +58,7 @@ require([
                 expect(testWidget).toEqual(jasmine.any(LoginRegister));
             });
             describe('postCreate', function() {
-                it("wires up onSignInSuccess", function() {
+                it('wires up onSignInSuccess', function() {
                     spyOn(testWidget, 'onSignInSuccess');
 
                     testWidget.signInPane.emit('sign-in-success');
@@ -76,7 +76,7 @@ require([
             describe('rememberMe', function () {
                 it('calls rememberme service', function () {
                     var xhrSpy = jasmine.createSpy('xhr');
-                    var StubbedModule = StubModule('ijit/widgets/authentication/LoginRegister', {
+                    var StubbedModule = stubModule('ijit/widgets/authentication/LoginRegister', {
                         'dojo/request': xhrSpy
                     });
                     var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, win.body()));
@@ -149,9 +149,9 @@ require([
             describe('onSignInSuccess', function() {
                 // won't work until: https://github.com/agrc/StubModule/issues/3
                 // gets fixed
-                xit("should create the logout widget if not already created", function() {
+                xit('should create the logout widget if not already created', function() {
                     var logoutSpy = jasmine.createSpy('logoutSpy');
-                    var StubbedModule = StubModule('ijit/widgets/authentication/LoginRegister', {
+                    var StubbedModule = stubModule('ijit/widgets/authentication/LoginRegister', {
                         'ijit/widgets/authentication/_LoginRegisterLogout': logoutSpy
                     });
                     var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, win.body()));
@@ -165,7 +165,7 @@ require([
                 });
             });
             describe('onRequestPreCallback', function() {
-                it("adds the token to the content only for services that match the baseUrl", function() {
+                it('adds the token to the content only for services that match the baseUrl', function() {
                     var ioArgs = {
                         content: {},
                         url: baseUrl.toLowerCase() + '/blah/blah'
