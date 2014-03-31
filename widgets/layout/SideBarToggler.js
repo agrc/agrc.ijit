@@ -93,7 +93,9 @@ function (
                     width: width
                 },
                 onEnd: function(){
-                    that.mainContainer.layout();
+                    if (that.mainContainer) {
+                        that.mainContainer.layout();
+                    }
                     that.map.resize();
                 },
                 duration: 200
