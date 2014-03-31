@@ -2,7 +2,7 @@
     if (typeof exports === "object") {
         module.exports = factory();
     } else if (typeof define === "function" && define.amd) {
-        define([ "spin" ], factory);
+        define([ "./spin" ], factory);
     } else {
         root.Ladda = factory(root.Spinner);
     }
@@ -80,6 +80,9 @@
             },
             isLoading: function() {
                 return button.hasAttribute("data-loading");
+            },
+            getTarget: function() {
+                return button;
             }
         };
         ALL_INSTANCES.push(instance);
