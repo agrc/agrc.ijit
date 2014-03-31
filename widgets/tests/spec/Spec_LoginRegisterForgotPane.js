@@ -6,7 +6,7 @@ require([
     ],
 
     function(
-        _LoginRegisterForgotPane,
+        LoginRegisterForgotPane,
         domConstruct,
         win
     ) {
@@ -17,17 +17,17 @@ require([
                 widget = null;
             };
             beforeEach(function() {
-                testWidget = new _LoginRegisterForgotPane({}, domConstruct.create('div', {}, win.body()));
+                testWidget = new LoginRegisterForgotPane({}, domConstruct.create('div', {}, win.body()));
                 testWidget.startup();
             });
             afterEach(function() {
                 destroy(testWidget);
             });
             it('create a valid object', function() {
-                expect(testWidget).toEqual(jasmine.any(_LoginRegisterForgotPane));
+                expect(testWidget).toEqual(jasmine.any(LoginRegisterForgotPane));
             });
             describe('getData', function() {
-                it("returns the correct data", function() {
+                it('returns the correct data', function() {
                     var email = 'blah';
                     testWidget.emailTxt.value = email;
 
@@ -37,7 +37,7 @@ require([
                 });
             });
             describe('onSubmitReturn', function() {
-                it("shows the success msg", function() {
+                it('shows the success msg', function() {
                     spyOn(testWidget, 'showSuccessMsg');
 
                     testWidget.onSubmitReturn();

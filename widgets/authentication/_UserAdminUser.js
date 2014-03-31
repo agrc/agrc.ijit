@@ -32,7 +32,8 @@ define([
         template
     ) {
         // summary:
-        //      A widget associated with a user that is awaiting approval that allows an admin to accept and assign a role or reject.
+        //      A widget associated with a user that is awaiting approval that allows an 
+        //      admin to accept and assign a role or reject.
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             widgetsInTemplate: false,
             templateString: template,
@@ -87,7 +88,7 @@ define([
                 var that = this;
                 array.forEach(this.roles, function(role) {
                     domConstruct.create('button', {
-                        "class": 'btn btn-default',
+                        'class': 'btn btn-default',
                         innerHTML: role,
                         onclick: function() {
                             that.assignRole(role);

@@ -37,26 +37,26 @@ require([
             });
             describe('getUsers', function() {
                 // https://github.com/agrc/StubModule/issues/3
-                xit("gets all users from web service", function() {
-                    var def = new Deferred();
-                    var xhrSpy = jasmine.createSpy('xhr').andReturn(def);
-                    var StubbedModule = StubModule('ijit/widgets/authentication/UserAdmin', {
-                        'dojo/request': xhrSpy
-                    });
-                    var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, win.body()));
-                    spyOn(testWidget2, 'buildUsers');
+                // xit('gets all users from web service', function() {
+                //     var def = new Deferred();
+                //     var xhrSpy = jasmine.createSpy('xhr').andReturn(def);
+                //     var StubbedModule = StubModule('ijit/widgets/authentication/UserAdmin', {
+                //         'dojo/request': xhrSpy
+                //     });
+                //     var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, win.body()));
+                //     spyOn(testWidget2, 'buildUsers');
 
-                    testWidget2.getUsers();
+                //     testWidget2.getUsers();
 
-                    expect(xhrSpy).toHaveBeenCalled();
+                //     expect(xhrSpy).toHaveBeenCalled();
 
-                    def.resolve();
+                //     def.resolve();
 
-                    expect(testWidget2.buildUsers).toHaveBeenCalled();
-                });
+                //     expect(testWidget2.buildUsers).toHaveBeenCalled();
+                // });
             });
             describe('onError', function() {
-                it("show's the error message", function() {
+                it('show\'s the error message', function() {
                     var msg = 'blah';
                     testWidget.onError({
                         message: msg
@@ -67,7 +67,7 @@ require([
                 });
             });
             describe('showUsers', function() {
-                it("builds user object for each user", function() {
+                it('builds user object for each user', function() {
                     var users = [{
                         email: 'email1',
                         name: 'name1',
@@ -83,7 +83,7 @@ require([
 
                     expect(testWidget.userContainer.children.length).toBe(2);
                 });
-                it("show's a message when there are no users", function() {
+                it('show\'s a message when there are no users', function() {
                     domStyle.set(testWidget.noUsersMsg, 'display', 'none'); // in UserAdmin.css
                     testWidget.showUsers({
                         result: []

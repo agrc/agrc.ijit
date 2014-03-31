@@ -58,10 +58,10 @@ define([
         init: function (parentNode) {
             // summary:
             //      sets up callbacks for change events
-            // parentNode (optional): String | DomNode 
+            // parentNode (optional): String | DomNode
             //      The parent node within which you want to search
             console.log(this.declaredClass + '::init', arguments);
-        
+
             var elements = query('input[type="number"]', parentNode);
 
             var that = this;
@@ -74,8 +74,9 @@ define([
                     console.log('el.valueAsNumber', el.valueAsNumber);
                     console.log('el.value', el.value);
                     // console.log('el.validity.badInput', el.validity.badInput);
-                    if (value.toString().length > 0 || 
-                        (el.valueAsNumber !== el.valueAsNumber && el.validity && el.validity.badInput)) { // don't valid on empty values
+                    if (value.toString().length > 0 ||
+                        (el.valueAsNumber !== el.valueAsNumber && el.validity && el.validity.badInput))
+                    { // don't valid on empty values
                         that.updateUI(el, that._isValid(value, min, max, step));
                     } else {
                         that.updateUI(el, true);
@@ -92,7 +93,7 @@ define([
             // isValid: Boolean | String
             //      true if valid or error message if invalid
             console.log(this.declaredClass + '::updateUI', arguments);
-        
+
             var helpBlock = query('.help-block', node.parentNode)[0];
             if (!helpBlock) {
                 helpBlock = domConstruct.create('p', {'class': 'help-block'}, node.parentNode);
@@ -118,7 +119,7 @@ define([
             // returns: Boolean | String
             //      returns true if valid or error message otherwise
             console.log(this.declaredClass + '::isValid', arguments);
-        
+
             // convert values to numbers
             var v = parseFloat(value, 10);
             var mn = parseFloat(min, 10);
@@ -126,7 +127,7 @@ define([
             var st = parseFloat(step, 10);
 
             // check for NaN
-            if (v !== v || !/^\d+(\.(\d+)?)?$/.test(value)) { 
+            if (v !== v || !/^\d+(\.(\d+)?)?$/.test(value)) {
                 // NaN is only thing that is not equal to itself
                 return this.notNumberMsg;
             }
@@ -152,14 +153,14 @@ define([
             // node: Input element
             //      Must match one of the elements that this object queried for in init
             console.log(this.declaredClass + '::isValid', arguments);
-        
+
             return domAttr.get(node, this._domAttributeName);
         },
         destroy: function () {
             // summary:
             //      cleans up the events
             console.log(this.declaredClass + '::destroy', arguments);
-        
+
             array.forEach(this.events, function (e) {
                 e.remove();
             });

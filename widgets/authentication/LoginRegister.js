@@ -28,9 +28,6 @@ define([
         'esri/IdentityManagerBase',
         'esri/kernel',
 
-        'jquery',
-        'bootstrap',
-
         'ijit/widgets/authentication/_LoginRegisterSignInPane',
         'ijit/widgets/authentication/_LoginRegisterRequestPane',
         'ijit/widgets/authentication/_LoginRegisterForgotPane',
@@ -39,6 +36,9 @@ define([
         // no params
         'dijit/layout/StackContainer',
         'dijit/layout/ContentPane',
+
+        'jquery',
+        'bootstrap'
     ],
 
     function(
@@ -52,7 +52,7 @@ define([
         domConstruct,
         aspect,
         topic,
-        
+
         template,
 
         _TemplatedMixin,
@@ -63,13 +63,10 @@ define([
         IdentityManagerBase,
         kernel,
 
-        jquery,
-        bootstrap,
-
-        _LoginRegisterSignInPane,
-        _LoginRegisterRequestPane,
-        _LoginRegisterForgotPane,
-        _LoginRegisterLogout
+        LoginRegisterSignInPane,
+        LoginRegisterRequestPane,
+        LoginRegisterForgotPane,
+        LoginRegisterLogout
     ) {
         // summary:
         //      Works with agrc/ArcGisServerPermissionsProxy to allow users to register or login.
@@ -147,13 +144,13 @@ define([
             showOnLoad: true,
 
             // securedServicesBaseUrl: String
-            //      The base url for which you would like all matching requests to have 
+            //      The base url for which you would like all matching requests to have
             //      the token sent with. If none is specified, all requests will have
             //      the token appended.
             securedServicesBaseUrl: null,
 
             // isAdminPage: Boolean
-            //      disabled esri token stuff because we are not interacting with 
+            //      disabled esri token stuff because we are not interacting with
             //      arcgis server
             isAdminPage: false,
 
@@ -161,7 +158,7 @@ define([
                 // summary:
                 //      constructor
                 console.log('ijit/widgets/authentication/LoginRegister:constructor', arguments);
-            
+
                 kernel.id = this;
             },
             postCreate: function() {
@@ -170,16 +167,16 @@ define([
                 console.log('ijit/widgets/authentication/LoginRegister:postCreate', arguments);
 
                 // create panes
-                this.signInPane = new _LoginRegisterSignInPane({
+                this.signInPane = new LoginRegisterSignInPane({
                     url: this.urls.base + this.urls.signIn,
                     parentWidget: this
                 }, this.signInPaneDiv);
                 this.signInPane.on('sign-in-success', lang.hitch(this, 'onSignInSuccess'));
-                this.requestPane = new _LoginRegisterRequestPane({
+                this.requestPane = new LoginRegisterRequestPane({
                     url: this.urls.base + this.urls.request,
                     parentWidget: this
                 }, this.requestPaneDiv);
-                this.forgotPane = new _LoginRegisterForgotPane({
+                this.forgotPane = new LoginRegisterForgotPane({
                     url: this.urls.base + this.urls.reset,
                     parentWidget: this
                 }, this.forgotPaneDiv);
@@ -208,7 +205,7 @@ define([
                     }
 
                     domConstruct.create('a', {
-                        innerHTML: 'Sign in', 
+                        innerHTML: 'Sign in',
                         href: '#',
                         onclick: lang.hitch(this, function () {
                             this.show();
@@ -254,7 +251,7 @@ define([
             show: function() {
                 // summary:
                 //      shows the login modal
-                // 
+                //
                 console.log('ijit/widgets/authentication/LoginRegister:show', arguments);
 
                 $(this.modalDiv).modal('show');
@@ -263,7 +260,7 @@ define([
                 // summary:
                 //      overridden from IdentityManagerBase
                 console.log('ijit/widgets/authentication/LoginRegister:signIn', arguments);
-            
+
                 this.def = new Deferred();
                 this.show();
                 this.goToPane(this.signInPane);
@@ -276,7 +273,7 @@ define([
                 //      result object as returned from the server
                 console.log('ijit/widgets/authentication/LoginRegister:onSignInSuccess', arguments);
 
-                this.logout = new _LoginRegisterLogout({
+                this.logout = new LoginRegisterLogout({
                     firstName: loginResult.user.first,
                     lastName: loginResult.user.last,
                     role: loginResult.user.role,
@@ -303,7 +300,7 @@ define([
                 if (this.def) {
                     this.def.resolve(c);
                 }
-                
+
                 topic.publish(this.topics.signInSuccess, loginResult);
             },
             onRequestPreCallback: function(ioArgs) {
@@ -313,7 +310,7 @@ define([
                 //      the data that will be sent with the request
                 console.log('ijit/widgets/authentication/LoginRegister:onRequestPreCallback', arguments);
 
-                if (!this.securedServicesBaseUrl || 
+                if (!this.securedServicesBaseUrl ||
                     ioArgs.url.toUpperCase().indexOf(this.securedServicesBaseUrl.toUpperCase()) !== -1) {
                     ioArgs.content.token = this.token;
                 }
@@ -326,7 +323,7 @@ define([
                 //      I believe that IdentityManagerBase automatically calls this when you
                 //      token is about to expire
                 console.log('ijit/widgets/authentication/LoginRegister:generateToken', arguments);
-            
+
                 return this.rememberMe();
             }
         });

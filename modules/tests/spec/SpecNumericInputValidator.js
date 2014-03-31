@@ -30,8 +30,8 @@ require([
             ];
             array.forEach(elements, function (el) {
                 affix('#group' + el[0] + '.form-group label.control-label+' +
-                    'input#' + el[0] + '.form-control[type="number"][min="' + 
-                    el[1] + '"][max="' + el[2] + '"][step="' + el[3] + '"]+' + 
+                    'input#' + el[0] + '.form-control[type="number"][min="' +
+                    el[1] + '"][max="' + el[2] + '"][step="' + el[3] + '"]+' +
                     'p#help' + el[0] + '.help-block');
             });
         });
@@ -102,7 +102,7 @@ require([
                 checks = [
                     // [value, min, max, step, expected]
                     ['1', '1', '10', null, true],
-                    ['11', '1', '10', null, lang.replace(testObject.notWithinRangeMsg, 
+                    ['11', '1', '10', null, lang.replace(testObject.notWithinRangeMsg,
                         {min: '1', max: '10'})],
                     ['1.4', '1', '10', '0.1', true]
                 ];
@@ -152,7 +152,7 @@ require([
             });
             it('creates the help block if its not their', function () {
                 affix('#grouphelp.form-group label.control-label+' +
-                    'input#help.form-control[type="number"][min="' + 
+                    'input#help.form-control[type="number"][min="' +
                     el[1] + '"][max="' + el[2] + '"]');
 
                 var txt = 'blah';

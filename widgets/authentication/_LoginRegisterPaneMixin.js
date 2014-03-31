@@ -57,7 +57,7 @@ define([
                 // summary:
                 //      dom is ready
                 console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:postCreate', arguments);
-            
+
                 this.status = Ladda.create(this.submitBtn);
             },
             validate: function(evt) {
@@ -67,16 +67,16 @@ define([
                 console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:validate', arguments);
 
                 var valid = query(
-                    "input[type='text'], input[type='password'], input[type='email']",
+                    'input[type="text"], input[type="password"], input[type="email"]',
                     this.domNode
                 ).every(function(node) {
                     return node.value.length > 0;
                 });
-                
+
                 this.submitBtn.disabled = !valid;
 
                 var charOrCode = evt.charCode || evt.keyCode;
-                if (valid && charOrCode == keys.ENTER) {
+                if (valid && charOrCode === keys.ENTER) {
                     this.onSubmitClick();
                 }
 
@@ -111,7 +111,7 @@ define([
             },
             goToForgotPane: function(evt) {
                 // summary:
-                //      fires when the user clicks on the "forgot password" link
+                //      fires when the user clicks on the 'forgot password' link
                 // evt: Click Event
                 console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:goToForgotPane', arguments);
 
@@ -121,7 +121,7 @@ define([
             },
             goToSignInPane: function(evt) {
                 // summary:
-                //      fires when the user click on the "Sign In" link
+                //      fires when the user click on the 'Sign In' link
                 // evt: Click Event Object
                 console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:goToSignInPane', arguments);
 
@@ -170,7 +170,7 @@ define([
                 if (err.response.data && err.response.data.message) {
                     this.showError(err.response.data.message);
                 } else {
-                    this.showError('There was an error with the request. <br>(Status code: ' + 
+                    this.showError('There was an error with the request. <br>(Status code: ' +
                         err.response.status + ')');
                 }
             },
