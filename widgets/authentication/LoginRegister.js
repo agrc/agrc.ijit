@@ -207,7 +207,8 @@ define([
                     domConstruct.create('a', {
                         innerHTML: 'Sign in',
                         href: '#',
-                        onclick: lang.hitch(this, function () {
+                        onclick: lang.hitch(this, function (evt) {
+                            evt.preventDefault();
                             this.show();
                             this.goToPane(this.signInPane);
                         })
