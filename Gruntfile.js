@@ -9,19 +9,21 @@ module.exports = function(grunt) {
         'widgets/tests/spec/Spec_LoginRegisterLogout.js',
         'widgets/tests/spec/Spec_UserAdminUser.js',
         'widgets/tests/spec/SpecUserAdmin.js',
-        'modules/tests/spec/SpecNumericInputValidator.js'
+        'modules/tests/spec/SpecNumericInputValidator.js',
+        'modules/tests/spec/Spec_ErrorMessageMixin.js'
     ];
     var jsFiles = specs.concat([
         'widgets/tests/SetUpTests.js',
         'widgets/authentication/*.js',
         'modules/NumericInputValidator.js',
+        'modules/_ErrorMessageMixin.js',
         'GruntFile.js'
     ]);
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         jasmine: {
-            app: {
+            'default': {
                 options: {
                     vendor: [
                         'widgets/tests/SetUpTests.js',
@@ -61,6 +63,13 @@ module.exports = function(grunt) {
         },
         connect: {
             uses_defaults: {}
+        },
+        bump: {
+            options: {
+                files: ['package.json', 'bower.json'],
+                commitFiles: ['-a'],
+                push: false
+            }
         }
     });
 
@@ -69,7 +78,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-bump');
 
     // Default task.
-    grunt.registerTask('default', ['jasmine:app:build', 'jshint', 'connect', 'watch']);
+    grunt.registerTask('default', ['jasmine:default:build', 'jshint', 'connect', 'watch']);
+
+    grunt.registerTask('travis', ['jshint', 'connect', 'jasmine:default']);
 };
