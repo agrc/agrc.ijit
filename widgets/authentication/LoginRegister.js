@@ -52,7 +52,7 @@ define([
         domConstruct,
         aspect,
         topic,
-        
+
         template,
 
         _TemplatedMixin,
@@ -147,21 +147,21 @@ define([
             showOnLoad: true,
 
             // securedServicesBaseUrl: String
-            //      The base url for which you would like all matching requests to have 
+            //      The base url for which you would like all matching requests to have
             //      the token sent with. If none is specified, all requests will have
             //      the token appended.
             securedServicesBaseUrl: null,
 
             // isAdminPage: Boolean
-            //      disabled esri token stuff because we are not interacting with 
+            //      disabled esri token stuff because we are not interacting with
             //      arcgis server
             isAdminPage: false,
 
-            constructor: function () {
+            constructor: function() {
                 // summary:
                 //      constructor
                 console.log('ijit/widgets/authentication/LoginRegister:constructor', arguments);
-            
+
                 kernel.id = this;
             },
             postCreate: function() {
@@ -195,12 +195,12 @@ define([
 
                 this.rememberMe();
             },
-            rememberMe: function () {
+            rememberMe: function() {
                 // summary:
                 //      Hits the rememberme service to check if we have a good cookie
                 console.log('ijit/widgets/authenticate/LoginRegister:rememberMe', arguments);
 
-                var unsuccessful = lang.hitch(this, function () {
+                var unsuccessful = lang.hitch(this, function() {
                     // focus email text box when form is shown
                     if (this.showOnLoad) {
                         this.show();
@@ -208,9 +208,9 @@ define([
                     }
 
                     domConstruct.create('a', {
-                        innerHTML: 'Sign in', 
+                        innerHTML: 'Sign in',
                         href: '#',
-                        onclick: lang.hitch(this, function () {
+                        onclick: lang.hitch(this, function() {
                             this.show();
                             this.goToPane(this.signInPane);
                         })
@@ -222,6 +222,9 @@ define([
                     def = xhr(this.urls.base + this.urls.rememberme, {
                         handleAs: 'json',
                         method: 'GET',
+                        query: {
+                            appName: this.appName
+                        },
                         headers: {
                             'Content-Type': 'application/json'
                         }
@@ -254,16 +257,16 @@ define([
             show: function() {
                 // summary:
                 //      shows the login modal
-                // 
+                //
                 console.log('ijit/widgets/authentication/LoginRegister:show', arguments);
 
                 $(this.modalDiv).modal('show');
             },
-            signIn: function () {
+            signIn: function() {
                 // summary:
                 //      overridden from IdentityManagerBase
                 console.log('ijit/widgets/authentication/LoginRegister:signIn', arguments);
-            
+
                 this.def = new Deferred();
                 this.show();
                 this.goToPane(this.signInPane);
@@ -303,7 +306,7 @@ define([
                 if (this.def) {
                     this.def.resolve(c);
                 }
-                
+
                 topic.publish(this.topics.signInSuccess, loginResult);
             },
             onRequestPreCallback: function(ioArgs) {
@@ -313,20 +316,20 @@ define([
                 //      the data that will be sent with the request
                 console.log('ijit/widgets/authentication/LoginRegister:onRequestPreCallback', arguments);
 
-                if (!this.securedServicesBaseUrl || 
+                if (!this.securedServicesBaseUrl ||
                     ioArgs.url.toUpperCase().indexOf(this.securedServicesBaseUrl.toUpperCase()) !== -1) {
                     ioArgs.content.token = this.token;
                 }
                 return ioArgs;
             },
-            generateToken: function () {
+            generateToken: function() {
                 // summary:
                 //      overriden from IdentityManagerBase
                 //      attempt at auto generating a new token when your token is invalid
                 //      I believe that IdentityManagerBase automatically calls this when you
                 //      token is about to expire
                 console.log('ijit/widgets/authentication/LoginRegister:generateToken', arguments);
-            
+
                 return this.rememberMe();
             }
         });
