@@ -1,6 +1,4 @@
 require([
-    'dojo/_base/window',
-
     'dojo/dom-construct',
     'dojo/dom-style',
     'dojo/dom-class',
@@ -10,13 +8,13 @@ require([
     'stubmodule/StubModule',
 
     'ijit/widgets/authentication/LoginRegister',
+
+
     // have to preload these for tests since we are creating the widget programmatically
     'ijit/widgets/authentication/_LoginRegisterSignInPane',
     'ijit/widgets/authentication/_LoginRegisterRequestPane',
     'ijit/widgets/authentication/_LoginRegisterLogout'
 ], function(
-    win,
-
     domConstruct,
     domStyle,
     domClass,
@@ -46,7 +44,7 @@ require([
         beforeEach(function() {
             testWidget = new LoginRegister({
                 securedServicesBaseUrl: baseUrl
-            }, domConstruct.create('div', {}, win.body()));
+            }, domConstruct.create('div', {}, document.body));
             testWidget.startup();
         });
         afterEach(function() {
@@ -77,7 +75,7 @@ require([
                 var StubbedModule = stubModule('ijit/widgets/authentication/LoginRegister', {
                     'dojo/request': xhrSpy
                 });
-                var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, win.body()));
+                var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, document.body));
                 testWidget2.startup();
 
                 testWidget2.rememberMe();
@@ -95,7 +93,7 @@ require([
             it('will display after startup', function() {
                 testWidget = new LoginRegister({
                     showOnLoad: true
-                }, domConstruct.create('div', {}, win.body()));
+                }, domConstruct.create('div', {}, document.body));
                 testWidget.startup();
 
                 expect(domStyle.get(testWidget.modalDiv, 'display')).toBe('block');
@@ -108,7 +106,7 @@ require([
 
                 testWidget = new LoginRegister({
                     showOnLoad: false
-                }, domConstruct.create('div', {}, win.body()));
+                }, domConstruct.create('div', {}, document.body));
                 testWidget.startup();
 
                 expect(domClass.contains(testWidget.modalDiv, 'in')).toBeFalsy();
@@ -117,7 +115,7 @@ require([
 
                 testWidget = new LoginRegister({
                     showOnLoad: false
-                }, domConstruct.create('div', {}, win.body()));
+                }, domConstruct.create('div', {}, document.body));
                 testWidget.startup();
 
                 expect(domClass.contains(testWidget.modalDiv, 'in')).toBeFalsy();
@@ -152,7 +150,7 @@ require([
                 var StubbedModule = stubModule('ijit/widgets/authentication/LoginRegister', {
                     'ijit/widgets/authentication/_LoginRegisterLogout': logoutSpy
                 });
-                var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, win.body()));
+                var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, document.body));
 
                 testWidget2.onSignInSuccess();
                 testWidget2.onSignInSuccess();
@@ -186,7 +184,7 @@ require([
                     url: 'blah'
                 };
 
-                var testWidget2 = new LoginRegister({}, domConstruct.create('div', {}, win.body()));
+                var testWidget2 = new LoginRegister({}, domConstruct.create('div', {}, document.body));
                 testWidget2.startup();
 
                 var token = 'blah';
