@@ -295,6 +295,9 @@ define([
                 token: loginResult.token.token,
                 expires: loginResult.token.expires
             });
+
+            topic.publish(this.topics.signInSuccess, loginResult);
+
             if (!this.isAdminPage) {
                 this.registerToken(c);
             }
@@ -302,8 +305,6 @@ define([
             if (this.def) {
                 this.def.resolve(c);
             }
-
-            topic.publish(this.topics.signInSuccess, loginResult);
         },
         onRequestPreCallback: function(ioArgs) {
             // summary:
