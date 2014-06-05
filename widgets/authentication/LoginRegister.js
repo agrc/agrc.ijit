@@ -218,6 +218,9 @@ define([
                 def = xhr(this.urls.base + this.urls.rememberme, {
                     handleAs: 'json',
                     method: 'GET',
+                    query: {
+                        appName: this.appName
+                    },
                     headers: {
                         'Content-Type': 'application/json'
                     }
