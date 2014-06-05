@@ -27,7 +27,7 @@ require([
 ) {
     describe('ijit/widgets/authentication/LoginRegister', function() {
         var testWidget;
-        var baseUrl = 'baseUrl';
+        var baseUrl = 'http://base.url';
         // mock query stuff because I'm too cool to include jquery in my tests :)
         window.$ = function() {
             return {
@@ -194,6 +194,30 @@ require([
                     .toBe(token);
 
                 destroy(testWidget2);
+            });
+        });
+        describe('SecuredServicesBaseUrl', function() {
+            it('makes full url from relative', function() {
+                destroy(testWidget);
+                testWidget = new LoginRegister({
+                        securedServicesBaseUrl: 'blah'
+                    },
+                    domConstruct.create('div', {}, document.body));
+                testWidget.startup();
+
+                expect(testWidget.securedServicesBaseUrl).toEqual('http://localhost:8000/blah');
+            });
+            it('gives same url if qualified', function() {
+                destroy(testWidget);
+                var fullyQualified = 'http://mapserv.utah.gov/arcgis/rest';
+                testWidget = new LoginRegister({
+                        securedServicesBaseUrl: fullyQualified
+                    },
+                    domConstruct.create('div', {}, document.body));
+                testWidget.startup();
+
+
+                expect(testWidget.securedServicesBaseUrl).toEqual(fullyQualified);
             });
         });
     });

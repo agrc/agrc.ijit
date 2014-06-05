@@ -164,6 +164,12 @@ define([
             //      dom is ready
             console.log('ijit/widgets/authentication/LoginRegister:postCreate', arguments);
 
+            if (this.securedServicesBaseUrl) {
+                var parser = document.createElement('a');
+                parser.href = this.securedServicesBaseUrl;
+                this.securedServicesBaseUrl = parser.href;
+            }
+
             // create panes
             this.signInPane = new LoginRegisterSignInPane({
                 url: this.urls.base + this.urls.signIn,
