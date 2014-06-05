@@ -266,6 +266,7 @@ define([
             this.def = new Deferred();
             this.show();
             this.goToPane(this.signInPane);
+
             return this.def;
         },
         onSignInSuccess: function(loginResult) {
@@ -317,6 +318,7 @@ define([
                 ioArgs.url.toUpperCase().indexOf(this.securedServicesBaseUrl.toUpperCase()) !== -1) {
                 ioArgs.content.token = this.token;
             }
+
             return ioArgs;
         },
         generateToken: function() {
