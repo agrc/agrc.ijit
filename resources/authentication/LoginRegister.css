@@ -32,3 +32,10 @@
 .login-register .ladda-button .ladda-spinner {
     left: 0;
 }
+
+/* make work with bootstrap navbar */
+.nav.navbar-nav .login-register {
+    display: block;
+    margin: 15px;
+    color: #777;
+}

@@ -215,7 +215,8 @@ define([
                         evt.preventDefault();
                         this.show();
                         this.goToPane(this.signInPane);
-                    })
+                    }),
+                    'class': this.baseClass
                 }, this.logoutDiv);
             });
 
