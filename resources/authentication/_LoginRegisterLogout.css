@@ -1,3 +1,7 @@
 .login-register-logout .admin-link {
     display: none;
 }
+.nav .login-register-logout .open>a,
+.nav .login-register-logout .open>a:hover {
+    background-color: transparent;
+}

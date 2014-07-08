@@ -34,7 +34,8 @@
 }
 
 /* make work with bootstrap navbar */
-.nav.navbar-nav .login-register {
+.nav.navbar-nav .login-register,
+.nav.navbar-nav .login-register-logout {
     display: block;
     margin: 15px;
     color: #777;
