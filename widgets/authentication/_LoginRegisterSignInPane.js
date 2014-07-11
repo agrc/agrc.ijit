@@ -43,8 +43,8 @@ define([
             this.parentWidget.token = returnValue.result.token.token;
             this.parentWidget.tokenExpireDate = new Date(returnValue.result.token.expires);
 
-            returnValue.result.user.token = returnValue.result.token;
-            returnValue.result.user.tokenExpireDate = returnValue.result.tokenExpireDate;
+            returnValue.result.user.token = this.parentWidget.token;
+            returnValue.result.user.tokenExpireDate = this.parentWidget.tokenExpireDate;
             this.parentWidget.user = returnValue.result.user;
 
             this.parentWidget.hideDialog();
