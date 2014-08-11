@@ -3,7 +3,8 @@
   "version": "2.5.0",
   "homepage": "https://github.com/agrc/agrc.ijit",
   "authors": [
-    "Scott Davis <stdavis@utah.gov>"
+    "Scott Davis <stdavis@utah.gov>",
+    "Steve Gourley <sgourley@utah.gov>"
   ],
   "description": "AGRC Internal Widgets",
   "keywords": [
