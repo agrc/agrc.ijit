@@ -58,12 +58,20 @@ define([
     return declare([widgetBase, templatedMixin], {
         templateString: template,
         baseClass: 'change-request',
+        // a reference to the map
         map: null,
+        // the title to display on the widget
         title: 'Report Map Issue',
+        // a reference to the graphics layer
         graphicsLayer: null,
+        // a reference to the graphic on the map
         _graphic: null,
+        // the drawing toolbar
         toolbar: null,
+        // the redline symbol
         symbol: null,
+        // the base url to the redliner applicatin
+        redliner: null,
 
         constructor: function() {
             // summary:
@@ -140,8 +148,6 @@ define([
             this.graphicsLayer.add(this._graphic);
 
             this.toolbar.deactivate();
-
-            //this.txtDescription.focus();
         },
 
         submitRedline: function() {
@@ -245,8 +251,8 @@ define([
             };
 
             if (this._graphic && this._graphic.geometry) {
-                options.template.templateValues.link = 'http://localhost/experimental/GraphicViewer?' +
-                    'center={{center}}&level={{level}}&redline={{redline}}';
+                options.template.templateValues.link = this.redliner +
+                    '?center={{center}}&level={{level}}&redline={{redline}}';
                 options.template.templateValues.center = this.map.extent.getCenter().toJson();
                 options.template.templateValues.level = this.map.getLevel();
                 options.template.templateValues.redline = this._graphic.geometry.toJson();
