@@ -253,9 +253,9 @@ define([
             if (this._graphic && this._graphic.geometry) {
                 options.template.templateValues.link = this.redliner +
                     '?center={{center}}&level={{level}}&redline={{redline}}';
-                options.template.templateValues.center = this.map.extent.getCenter().toJson();
+                options.template.templateValues.center = JSON.stringify(this.map.extent.getCenter().toJson());
                 options.template.templateValues.level = this.map.getLevel();
-                options.template.templateValues.redline = this._graphic.geometry.toJson();
+                options.template.templateValues.redline = JSON.stringify(this._graphic.geometry.toJson());
             }
 
             //options.template = dojoJson.toJson(options.template);
