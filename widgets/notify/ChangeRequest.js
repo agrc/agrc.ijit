@@ -72,6 +72,8 @@ define([
         symbol: null,
         // the base url to the redliner applicatin
         redliner: null,
+        // the id's of the emails to notify
+        toIds: null,
 
         constructor: function() {
             // summary:
@@ -233,11 +235,16 @@ define([
             //     Deferred
             console.info('agrc.ijit.widgets.notify.ChangeRequest::_invokeWebService', arguments);
 
-            var url = '/sendemailservice/notify';
+            var url = '/sendemailservice/notify',
+                ids = this.toIds || [2];
+
+            if (ids.length < 1) {
+                ids = [2];
+            }
 
             var options = {
                 email: {
-                    toIds: [3],
+                    toIds: ids,
                     fromId: 2
                 },
                 template: {
