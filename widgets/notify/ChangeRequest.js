@@ -21,7 +21,7 @@ define([
     'dijit/_TemplatedMixin',
 
     'esri/toolbars/draw',
-    'esri/symbols/SimpleLineSymbol',
+    'esri/symbols/SimpleMarkerSymbol',
     'esri/graphic'
 ], function(
     template,
@@ -46,7 +46,7 @@ define([
     templatedMixin,
 
     Draw,
-    SimpleLineSymbol,
+    SimpleMarkerSymbol,
     Graphic
 ) {
     // summary:
@@ -104,8 +104,11 @@ define([
 
             // create symbol if none was provided in options
             if (!this.symbol && !!this.map) {
-                this.symbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
-                    new Color([255, 0, 0]), 1);
+                this.symbol = new SimpleMarkerSymbol()
+                    .setStyle(SimpleMarkerSymbol.STYLE_CIRCLE)
+                    .setColor(new Color([255, 0, 0, 0.5]))
+                    .setOutline(null)
+                    .setSize('32');
             }
 
             this.toolbar = new Draw(this.map);
@@ -140,7 +143,7 @@ define([
                 this.graphicsLayer.remove(this._graphic);
             }
 
-            this.toolbar.activate(Draw.FREEHAND_POLYLINE);
+            this.toolbar.activate(Draw.POINT);
         },
 
         onDrawEnd: function(geometry) {
@@ -168,8 +171,7 @@ define([
             var description = this.txtDescription.value;
 
             if (this.request) {
-                this.request.cancel('duplicate in flight');
-                this.request = null;
+                return;
             }
 
             this.btnSubmit.innerHTML = 'Submitting...';
@@ -252,7 +254,8 @@ define([
                     templateValues: {
                         description: args.description,
                         application: window.location.href,
-                        basemap: this.map.layerIds[0]
+                        basemap: this.map.layerIds[0],
+                        user: window.AGRC.user.email || 'anonymous'
                     }
                 }
             };
@@ -265,7 +268,6 @@ define([
                 options.template.templateValues.redline = JSON.stringify(this._graphic.geometry.toJson());
             }
 
-            //options.template = dojoJson.toJson(options.template);
             return request.post(url, {
                 data: dojoJson.toJson(options),
                 headers: {
@@ -278,6 +280,7 @@ define([
             console.info('agrc.ijit.widgets.notify.ChangeRequest::completed', arguments);
 
             this._graphic = null;
+            this.request = null;
             this.txtDescription.value = '';
             this.btnSubmit.innerHTML = 'Thanks!';
         },
@@ -294,6 +297,7 @@ define([
             console.info('agrc.ijit.widgets.notify.ChangeRequest::error', arguments);
 
             style.set(this.errorMsg, 'display', 'inline');
+            this.request = null;
             domClass.add(this.errorMsg.parentElement.parentElement, 'error');
             this.btnSubmit.innerHTML = 'Whoops.';
         }
