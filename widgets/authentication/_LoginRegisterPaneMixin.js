@@ -76,7 +76,7 @@ define([
                 this.submitBtn.disabled = !valid;
 
                 var charOrCode = evt.charCode || evt.keyCode;
-                if (valid && charOrCode === keys.ENTER) {
+                if (valid && charOrCode === keys.ENTER && evt.srcElement.type !== 'textarea') {
                     this.onSubmitClick();
                 }
 

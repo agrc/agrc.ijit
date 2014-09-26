@@ -102,7 +102,8 @@ require([
                     testWidget.passwordTxt.value = 'super_secret';
 
                     testWidget.validate({
-                        charCode: 13
+                        charCode: 13,
+                        srcElement: {}
                     });
 
                     expect(testWidget.onSubmitClick).toHaveBeenCalled();
