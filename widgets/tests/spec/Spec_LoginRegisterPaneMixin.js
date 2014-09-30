@@ -8,7 +8,7 @@ require([
         'ijit/widgets/authentication/_LoginRegisterSignInPane',
         'ijit/widgets/authentication/_LoginRegisterForgotPane',
 
-        'stubmodule/StubModule'
+        'stubmodule'
     ],
 
     function(
@@ -21,7 +21,7 @@ require([
         LoginRegisterSignInPane,
         LoginRegisterForgotPane,
 
-        stubModule
+        stubmodule
     ) {
         describe('ijit/widgets/authentication/_LoginRegisterPaneMixin', function() {
             var testWidget;
@@ -102,20 +102,22 @@ require([
                 var email;
                 var password;
                 var testWidget2;
-                beforeEach(function() {
+                beforeEach(function(done) {
                     def = new Deferred();
-                    xhr = jasmine.createSpy('xhr').andReturn(def);
+                    xhr = jasmine.createSpy('xhr').and.returnValue(def);
                     url = 'blah';
                     email = 'blah1';
                     password = 'blah2';
-                    var StubbedWidget = stubModule('ijit/widgets/authentication/_LoginRegisterSignInPane', {
+                    stubmodule('ijit/widgets/authentication/_LoginRegisterSignInPane', {
                         'dojo/request': xhr
-                    }, ['ijit/widgets/authentication/_LoginRegisterPaneMixin']);
-                    testWidget2 = new StubbedWidget({
-                        url: url,
-                        parentWidget: parentWidget
-                    }, domConstruct.create('div', {}, win.body()));
-                    testWidget2.startup();
+                    }).then(function (StubbedModule) {
+                        testWidget2 = new StubbedModule({
+                            url: url,
+                            parentWidget: parentWidget
+                        }, domConstruct.create('div', {}, win.body()));
+                        testWidget2.startup();
+                        done();
+                    });
                 });
                 afterEach(function() {
                     testWidget2.destroy();
@@ -142,8 +144,8 @@ require([
                     testWidget2.onSubmitClick();
 
                     expect(xhr).toHaveBeenCalled();
-                    expect(xhr.mostRecentCall.args[0]).toEqual(url);
-                    var data = xhr.mostRecentCall.args[1].data;
+                    expect(xhr.calls.mostRecent().args[0]).toEqual(url);
+                    var data = xhr.calls.mostRecent().args[1].data;
                     expect(data).toEqual(JSON.stringify({
                         email: email,
                         password: password,
@@ -161,8 +163,8 @@ require([
                     testWidget2.onSubmitClick();
 
                     expect(xhr).toHaveBeenCalled();
-                    expect(xhr.mostRecentCall.args[0]).toEqual(url);
-                    var data = xhr.mostRecentCall.args[1].data;
+                    expect(xhr.calls.mostRecent().args[0]).toEqual(url);
+                    var data = xhr.calls.mostRecent().args[1].data;
                     expect(data).toEqual(JSON.stringify({
                         email: email,
                         password: password,
@@ -199,11 +201,11 @@ require([
                 it('handles exception thrown from getData and shows error message', function() {
                     var txt = 'blah';
                     spyOn(testWidget2, 'showError');
-                    spyOn(testWidget2, 'getData').andThrow(txt);
+                    spyOn(testWidget2, 'getData').and.throwError(txt);
 
                     testWidget2.onSubmitClick();
 
-                    expect(testWidget2.showError).toHaveBeenCalledWith(txt);
+                    expect(testWidget2.showError.calls.mostRecent().args[0].message).toEqual(txt);
                     expect(xhr).not.toHaveBeenCalled();
                 });
             });

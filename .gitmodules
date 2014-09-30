@@ -1,3 +1,0 @@
-[submodule "widgets/tests/stubmodule"]
-	path = widgets/tests/stubmodule
-	url = https://github.com/agrc/StubModule.git

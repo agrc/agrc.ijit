@@ -63,16 +63,10 @@ require([
 
                     expect(evt.preventDefault).toHaveBeenCalled();
                 });
-                it('reloads the current window', function() {
-                    var def;
-                    runs(function () {
-                        def = testWidget.onSignOutClick(evt);
-                    });
-                    waitsFor(function () {
-                        return def.isFulfilled();
-                    });
-                    runs(function () {
+                it('reloads the current window', function(done) {
+                    testWidget.onSignOutClick(evt).then(function () {
                         expect(testWidget.refreshPage).toHaveBeenCalled();
+                        done();
                     });
                 });
             });
@@ -85,13 +79,13 @@ require([
 
                     expect(evt.preventDefault).toHaveBeenCalled();
                 });
-                xit('shows the dialog', function () {
-                    // couldn't get this spy to work
-                    spyOn($(this.modalDiv), 'modal');
-                    testWidget.onChangePasswordClick(evt);
+                // xit('shows the dialog', function () {
+                //     // couldn't get this spy to work
+                //     spyOn($(this.modalDiv), 'modal');
+                //     testWidget.onChangePasswordClick(evt);
 
-                    expect($(this.modalDiv).modal).toHaveBeenCalled();
-                });
+                //     expect($(this.modalDiv).modal).toHaveBeenCalled();
+                // });
             });
             describe('getData', function () {
                 var cur = 'blah';
@@ -114,7 +108,7 @@ require([
 
                     expect(function () {
                         testWidget.getData();
-                    }).toThrow(testWidget.mismatchedPasswordErrMsg);
+                    }).toThrow(testWidget.mismatchedErrMsg);
                 });
             });
             describe('onSubmitReturn', function () {

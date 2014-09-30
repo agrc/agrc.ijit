@@ -5,15 +5,15 @@ require([
 
     'dojo/Deferred',
 
-    'stubmodule/StubModule',
+    'stubmodule',
 
-    'ijit/widgets/authentication/LoginRegister',
+    'ijit/widgets/authentication/LoginRegister'
 
 
     // have to preload these for tests since we are creating the widget programmatically
-    'ijit/widgets/authentication/_LoginRegisterSignInPane',
-    'ijit/widgets/authentication/_LoginRegisterRequestPane',
-    'ijit/widgets/authentication/_LoginRegisterLogout'
+    // 'ijit/widgets/authentication/_LoginRegisterSignInPane',
+    // 'ijit/widgets/authentication/_LoginRegisterRequestPane',
+    // 'ijit/widgets/authentication/_LoginRegisterLogout'
 ], function(
     domConstruct,
     domStyle,
@@ -21,22 +21,14 @@ require([
 
     Deferred,
 
-    stubModule,
+    stubmodule,
 
     LoginRegister
 ) {
     describe('ijit/widgets/authentication/LoginRegister', function() {
         var testWidget;
         var baseUrl = 'http://base.url';
-        // mock query stuff because I'm too cool to include jquery in my tests :)
-        window.$ = function() {
-            return {
-                modal: function() {
-                    return this;
-                },
-                on: function() {}
-            };
-        };
+        
         var destroy = function(widget) {
             widget.destroyRecursive();
             widget = null;
@@ -70,20 +62,23 @@ require([
             });
         });
         describe('rememberMe', function() {
-            it('calls rememberme service', function() {
+            it('calls rememberme service', function(done) {
                 var xhrSpy = jasmine.createSpy('xhr');
-                var StubbedModule = stubModule('ijit/widgets/authentication/LoginRegister', {
+                stubmodule('ijit/widgets/authentication/LoginRegister', {
                     'dojo/request': xhrSpy
+                }).then(function (StubbedModule) {
+                    var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, document.body));
+                    testWidget2.startup();
+
+                    testWidget2.rememberMe();
+
+                    expect(xhrSpy.calls.count()).toBe(2);
+                    expect(xhrSpy.calls.mostRecent().args[0])
+                        .toEqual(testWidget2.urls.base + testWidget2.urls.rememberme);
+
+                    destroy(testWidget2);
+                    done();
                 });
-                var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, document.body));
-                testWidget2.startup();
-
-                testWidget2.rememberMe();
-
-                expect(xhrSpy.callCount).toBe(2);
-                expect(xhrSpy.calls[0].args[0]).toEqual(testWidget2.urls.base + testWidget2.urls.rememberme);
-
-                destroy(testWidget2);
             });
         });
         describe('startup options:', function() {
@@ -143,21 +138,21 @@ require([
             });
         });
         describe('onSignInSuccess', function() {
-            // won't work until: https://github.com/agrc/StubModule/issues/3
-            // gets fixed
-            xit('should create the logout widget if not already created', function() {
+            it('should create the logout widget if not already created', function(done) {
                 var logoutSpy = jasmine.createSpy('logoutSpy');
-                var StubbedModule = stubModule('ijit/widgets/authentication/LoginRegister', {
+                stubmodule('ijit/widgets/authentication/LoginRegister', {
                     'ijit/widgets/authentication/_LoginRegisterLogout': logoutSpy
+                }).then(function (StubbedModule) {
+                    var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, document.body));
+                    spyOn(testWidget2, 'registerToken');
+
+                    testWidget2.onSignInSuccess({user: {}, token: ''});
+
+                    expect(logoutSpy.calls.count()).toBe(1);
+
+                    destroy(testWidget2);
+                    done();
                 });
-                var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, document.body));
-
-                testWidget2.onSignInSuccess();
-                testWidget2.onSignInSuccess();
-
-                expect(logoutSpy.numCalls).toBe(1);
-
-                destroy(testWidget2);
             });
         });
         describe('onRequestPreCallback', function() {

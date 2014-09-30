@@ -2,7 +2,7 @@ require([
         'ijit/widgets/authentication/UserAdmin',
         'dojo/dom-construct',
         'dojo/_base/window',
-        'stubmodule/StubModule',
+        'stubmodule',
         'dojo/Deferred',
         'dojo/dom-style'
 
@@ -12,7 +12,7 @@ require([
         UserAdmin,
         domConstruct,
         win,
-        StubModule,
+        stubmodule,
         Deferred,
         domStyle
     ) {
@@ -37,23 +37,28 @@ require([
             });
             describe('getUsers', function() {
                 // https://github.com/agrc/StubModule/issues/3
-                // xit('gets all users from web service', function() {
-                //     var def = new Deferred();
-                //     var xhrSpy = jasmine.createSpy('xhr').andReturn(def);
-                //     var StubbedModule = StubModule('ijit/widgets/authentication/UserAdmin', {
-                //         'dojo/request': xhrSpy
-                //     });
-                //     var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, win.body()));
-                //     spyOn(testWidget2, 'buildUsers');
+                it('gets all users from web service', function(done) {
+                    var def = new Deferred();
+                    var xhrSpy = jasmine.createSpy('xhr').and.returnValue(def);
+                    stubmodule('ijit/widgets/authentication/UserAdmin', {
+                        'dojo/request': xhrSpy
+                    }).then(function (StubbedModule) {
+                        var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, win.body()));
+                        spyOn(testWidget2, 'showUsers');
 
-                //     testWidget2.getUsers();
+                        testWidget2.getUsers();
 
-                //     expect(xhrSpy).toHaveBeenCalled();
+                        expect(xhrSpy).toHaveBeenCalled();
 
-                //     def.resolve();
+                        def.resolve();
 
-                //     expect(testWidget2.buildUsers).toHaveBeenCalled();
-                // });
+                        expect(testWidget2.showUsers).toHaveBeenCalled();
+
+                        destroy(testWidget2);
+
+                        done();
+                    });
+                });
             });
             describe('onError', function() {
                 it('show\'s the error message', function() {

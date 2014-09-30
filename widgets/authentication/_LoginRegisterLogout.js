@@ -1,6 +1,5 @@
 define([
     'dojo/_base/declare',
-    'dojo/_base/window',
     'dojo/_base/lang',
     'dojo/dom-style',
     'dojo/dom-construct',
@@ -14,7 +13,6 @@ define([
 
 ], function(
     declare,
-    win,
     lang,
     domStyle,
     domConstruct,
@@ -73,7 +71,7 @@ define([
                 domStyle.set(this.adminLink, 'display', 'list-item');
             }
 
-            domConstruct.place(this.modalDiv, win.body());
+            domConstruct.place(this.modalDiv, document.body);
 
             this.inherited(arguments);
         },

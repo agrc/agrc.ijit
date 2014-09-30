@@ -17,5 +17,13 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "devDependencies": {
+    "stubmodule": "~0.6.0",
+    "dojo": "1.9.3",
+    "dijit": "1.9.3",
+    "dojox": "1.9.3",
+    "jquery": "1.11.1",
+    "bootstrap": "~3.2.0"
+  }
 }

@@ -57,11 +57,12 @@ require([
             });
             it('wires events', function() {
                 var value = 'blah';
-                var value2 = 2;
                 spyOn(testObject, 'updateUI');
-                spyOn(testObject, '_isValid').andReturn(value);
+                spyOn(testObject, '_isValid').and.returnValue(value);
                 var el = dom.byId(elements[0][0]);
+                var value2 = 2;
                 el.value = value2;
+                value2 = (el.valueAsNumber) ? 2 : '2';
                 testObject.init();
                 on.emit(el, 'change', {
                     bubbles: true,
@@ -72,10 +73,10 @@ require([
                     cancelable: true
                 });
 
-                expect(testObject.updateUI.callCount).toBe(2);
+                expect(testObject.updateUI.calls.count()).toBe(2);
                 expect(testObject.updateUI)
                     .toHaveBeenCalledWith(el, value);
-                expect(testObject._isValid.callCount).toBe(2);
+                expect(testObject._isValid.calls.count()).toBe(2);
                 expect(testObject._isValid)
                     .toHaveBeenCalledWith(value2, elements[0][1], elements[0][2], elements[0][3]);
             });
