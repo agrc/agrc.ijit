@@ -23,14 +23,16 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         jasmine: {
-            'default': {
+            main: {
                 options: {
                     vendor: [
                         'widgets/tests/SetUpTests.js',
-                        'http://js.arcgis.com/3.7/'
+                        'bower_components/dojo/dojo.js',
+                        'bower_components/jquery/dist/jquery.js',
+                        'widgets/tests/jasmineAMDErrorChecking.js'
                     ],
-                    helpers: ['http://code.jquery.com/jquery-1.10.2.js'],
-                    specs: specs
+                    specs: specs,
+                    host: 'http://localhost:8000'
                 }
             }
         },
@@ -56,7 +58,11 @@ module.exports = function(grunt) {
                 '!**/stubmodule/**',
                 'Gruntfile.js'
             ],
-            tasks: ['jasmine:app:build', 'jshint'],
+            tasks: [
+                'jasmine:main:build',
+                'amdcheck',
+                'jshint'
+            ],
             options: {
                 livereload: true
             }
@@ -70,18 +76,57 @@ module.exports = function(grunt) {
                 commitFiles: ['-a'],
                 push: false
             }
+        },
+        esri_slurp: {
+            options: {
+                version: '3.10'
+            },
+            dev: {
+                options: {
+                    beautify: true
+                },
+                dest: 'vendor/esri'
+            },
+            travis: {
+                dest: 'vendor/esri'
+            }
+        },
+        amdcheck: {
+            main: {
+                options: {
+                    removeUnusedDependencies: false
+                },
+                files: [{
+                    src: [
+                        'widgets/**/*.js',
+                        'modules/**/*.js'
+                    ]
+                }]
+            }
         }
     });
 
     // Register tasks.
-    grunt.loadNpmTasks('grunt-contrib-jasmine');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-connect');
-    grunt.loadNpmTasks('grunt-bump');
+    for (var key in grunt.file.readJSON('package.json').devDependencies) {
+        if (key !== 'grunt' && key.indexOf('grunt') === 0) {
+            grunt.loadNpmTasks(key);
+        }
+    }
 
     // Default task.
-    grunt.registerTask('default', ['jasmine:default:build', 'jshint', 'connect', 'watch']);
+    grunt.registerTask('default', [
+        'if-missing:esri_slurp:dev',
+        'amdcheck',
+        'jshint',
+        'connect',
+        'jasmine:main:build',
+        'watch'
+    ]);
 
-    grunt.registerTask('travis', ['jshint', 'connect', 'jasmine:default']);
+    grunt.registerTask('travis', [
+        'esri_slurp:travis',
+        'jshint',
+        'connect',
+        'jasmine:main'
+    ]);
 };

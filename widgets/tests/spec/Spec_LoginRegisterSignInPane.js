@@ -3,8 +3,9 @@ require([
 
         'dojo/dom-construct',
         'dojo/dom-attr',
+        'dojo/Deferred',
 
-        'dojo/_base/window'
+        'stubmodule'
     ],
 
     function(
@@ -12,8 +13,9 @@ require([
 
         domConstruct,
         domAttr,
+        Deferred,
 
-        win
+        stubmodule
     ) {
         describe('ijit/widgets/authentication/_LoginRegisterSignInPane', function() {
             var testWidget;
@@ -28,7 +30,7 @@ require([
                         hideDialog: jasmine.createSpy('hideDialog'),
                         forgotPane: {}
                     }
-                }, domConstruct.create('div', {}, win.body()));
+                }, domConstruct.create('div', {}, document.body));
                 testWidget.startup();
             });
             afterEach(function() {
@@ -111,9 +113,24 @@ require([
             });
             describe('onSubmitClick', function() {
                 it('submit button is disabled', function() {
-                    testWidget.onSubmitClick();
+                    spyOn(testWidget, 'showError');
+                    stubmodule('ijit/widgets/authentication/_LoginRegisterSignInPane', {
+                        'dojo/request': function() {
+                            return {
+                                then: function() {
+                                    return {
+                                        always: function() {}
+                                    };
+                                }
+                            };
+                        }
+                    }).then(function(StubbedModule) {
+                        var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, document.body));
+                        testWidget2.onSubmitClick();
+                        destroy(testWidget2);
 
-                    expect(domAttr.has(testWidget.submitBtn, 'disabled')).toBe(true);
+                        expect(testWidget2.submitBtn.disabled).toBe(true);
+                    });
                 });
             });
         });

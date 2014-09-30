@@ -141,7 +141,7 @@ define([
 
                 var that = this;
                 try {
-                    var def = xhr(this.url, {
+                    xhr(this.url, {
                         data: JSON.stringify(lang.mixin(this.getData(), {
                             application: this.parentWidget.appName
                         })),
@@ -153,8 +153,7 @@ define([
                     }).then(
                         lang.hitch(this, 'onSubmitReturn'),
                         lang.hitch(this, 'onSubmitError')
-                    );
-                    def.always(function() {
+                    ).always(function() {
                         domAttr.remove(that.submitBtn, 'disabled');
                     });
                 } catch (e) {

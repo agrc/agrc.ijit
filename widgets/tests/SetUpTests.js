@@ -1,18 +1,38 @@
 window.dojoConfig = {
-    packages: [{
-        name: 'ijit',
-        location: 'http://localhost:8000/'
-    },{
-        name: 'stubmodule',
-        location: 'http://localhost:8000/widgets/tests/stubmodule'
-    },{
-        name: 'jquery',
-        location: 'http://code.jquery.com/',
-        main: 'jquery-1.10.2'
-    },{
-        name: 'bootstrap',
-        location: 'http://netdna.bootstrapcdn.com/bootstrap/',
-        main: '3.0.0/js/bootstrap'
-    }],
+    baseUrl: './',
+    packages: [
+        {
+            name: 'ijit',
+            location: '.'
+        }, {
+            name: 'dojo',
+            location: 'bower_components/dojo'
+        }, {
+            name: 'dijit',
+            location: 'bower_components/dijit'
+        }, {
+            name: 'dojox',
+            location: 'bower_components/dojox'
+        }, {
+            name: 'esri',
+            location: 'vendor/esri'
+        }, {
+            name: 'stubmodule',
+            location: 'bower_components/stubmodule/src',
+            main: 'stub-module'
+        }, {
+            name: 'spin',
+            location: 'bower_components/spinjs',
+            main: 'spin'
+        }, {
+            name: 'jquery',
+            location: 'bower_components/jquery/dist',
+            main: 'jquery'
+        },{
+            name: 'bootstrap',
+            location: 'bower_components/bootstrap/dist/js',
+            main: 'bootstrap'
+        }
+    ],
     has: {'dojo-undef-api': true}
 };
