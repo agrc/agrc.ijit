@@ -8,10 +8,14 @@ define([
         'dojo/request',
         'dojo/dom-style',
         'dojo/dom-construct',
+        'dojo/store/Memory',
+        'dojo/topic',
 
         'dijit/_WidgetBase',
         'dijit/_TemplatedMixin',
         'dijit/_WidgetsInTemplateMixin',
+
+        'dgrid/OnDemandGrid',
 
         'jquery',
         './LoginRegister',
@@ -28,10 +32,14 @@ define([
         request,
         domStyle,
         domConstruct,
+        Memory,
+        topic,
 
         _WidgetBase,
         _TemplatedMixin,
         _WidgetsInTemplateMixin,
+
+        Grid,
 
         jquery,
         LoginRegister,
@@ -47,9 +55,19 @@ define([
             urls: {
                 base: '/permissionproxy/api',
                 getallwaiting: '/admin/getallwaiting',
+                getallapproved: '/admin/getallapproved',
                 getroles: '/admin/getroles',
                 del: '/admin/reject',
                 reset: '/user/resetpassword'
+            },
+
+            fieldNames: {
+                email: 'email',
+                role: 'role',
+                lastLogin: 'lastLogin',
+                first: 'first',
+                last: 'last',
+                agency: 'agency'
             },
 
             // roles: String[]
@@ -82,6 +100,12 @@ define([
                 this.login.on('sign-in-success', function() {
                     that.getRoles();
                 });
+
+                this.own(
+                    topic.subscribe(UserAdminUser.prototype.successTopic, function () {
+                        that.getUsers(true);
+                    })
+                );
             },
             getRoles: function() {
                 // summary:
@@ -100,17 +124,72 @@ define([
                     that.getUsers();
                 }, lang.hitch(this, 'onError'));
             },
-            getUsers: function() {
+            getUsers: function(approvedOnly) {
                 // summary:
-                //      calls getallwaiting
+                //      calls getallwaiting & getallapproved
                 console.log('ijit/widgets/authentication/UserAdmin:getUsers', arguments);
 
-                request(this.urls.base + this.urls.getallwaiting, {
-                    query: {
-                        application: this.appName
-                    },
-                    handleAs: 'json'
-                }).then(lang.hitch(this, 'showUsers'), lang.hitch(this, 'onError'));
+                var that = this;
+                var makeRequest = function (url, callback) {
+                    request(that.urls.base + url, {
+                        query: {
+                            application: that.appName,
+                            adminToken: that.login.user.adminToken
+                        },
+                        handleAs: 'json'
+                    }).then(lang.hitch(that, callback), lang.hitch(that, 'onError'));
+                };
+
+                if (!approvedOnly) {
+                    makeRequest(this.urls.getallwaiting, 'showWaitingUsers');
+                }
+                makeRequest(this.urls.getallapproved, 'showApprovedUsers');
+            },
+            showApprovedUsers: function (response) {
+                // summary:
+                //      builds the approved users grid
+                // response: {}
+                //      response object from getallapproved service
+                console.log('ijit/widgets/authentication/UserAdmin:showApprovedUsers', arguments);
+            
+                var that = this;
+                var grid = new Grid({
+                    store: new Memory({
+                        data: response.result,
+                        idProperty: this.fieldNames.email
+                    }),
+                    columns: [
+                        {
+                            label: 'Edit',
+                            field: 'edit',
+                            renderCell: function (object) {
+                                return domConstruct.create('button', {
+                                    value: object[that.fieldNames.email],
+                                    innerHTML: '...',
+                                    'class': 'btn btn-default btn-xs'
+                                });
+                            }
+                        },
+                        {label: 'Email', field: this.fieldNames.email},
+                        {label: 'First Name', field: this.fieldNames.first},
+                        {label: 'Last Name', field: this.fieldNames.last},
+                        {label: 'Agency', field: this.fieldNames.agency},
+                        {label: 'Role', field: this.fieldNames.role},
+                        {
+                            label: 'Last Login',
+                            field: this.fieldNames.lastLogin,
+                            formatter: function (value) {
+                                if (value > 0) {
+                                    return new Date(value).toLocaleString();
+                                } else {
+                                    return '';
+                                }
+                            }
+                        }
+                    ]
+                }, this.userGrid);
+                grid.set('sort', 'email');
+                grid.startup();
             },
             onError: function(response) {
                 // summary:
@@ -122,13 +201,13 @@ define([
                 this.errMsgDiv.innerHTML = response.message;
                 domStyle.set(this.errMsgDiv, 'display', 'block');
             },
-            showUsers: function(response) {
+            showWaitingUsers: function(response) {
                 // summary:
                 //      callback from getallwaiting
                 //      builds user widgets
                 // response: {}
                 //      response object from server
-                console.log('ijit/widgets/authentication/UserAdmin:showUsers', arguments);
+                console.log('ijit/widgets/authentication/UserAdmin:showWaitingUsers', arguments);
 
                 var users = response.result;
 

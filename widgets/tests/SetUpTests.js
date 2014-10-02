@@ -32,6 +32,15 @@ window.dojoConfig = {
             name: 'bootstrap',
             location: 'bower_components/bootstrap/dist/js',
             main: 'bootstrap'
+        },{
+            name: 'dgrid',
+            location: 'bower_components/dgrid'
+        },{
+            name: 'put-selector',
+            location: 'bower_components/put-selector'
+        },{
+            name: 'xstyle',
+            location: 'bower_components/xstyle'
         }
     ],
     has: {'dojo-undef-api': true}

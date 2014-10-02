@@ -12,3 +12,14 @@
     display: none;
     width: 600px;
 }
+.user-admin .login-register-logout {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+.user-admin .dgrid .dgrid-column-0 {
+    width: 35px;
+}
+.user-admin .dgrid td.dgrid-column-0 {
+    text-align: center;
+}

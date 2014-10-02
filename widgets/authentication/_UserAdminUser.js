@@ -7,6 +7,7 @@ define([
         'dojo/dom-construct',
         'dojo/dom-style',
         'dojo/request',
+        'dojo/topic',
 
         'dijit/_WidgetBase',
         'dijit/_TemplatedMixin',
@@ -24,6 +25,7 @@ define([
         domConstruct,
         domStyle,
         request,
+        topic,
 
         _WidgetBase,
         _TemplatedMixin,
@@ -47,6 +49,10 @@ define([
 
             // successColor: String
             successColor: 'rgb(223, 240, 216)',
+
+            // successTopic: String
+            //      topic fired when action is successfully completed
+            successTopic: '_UserAdminUser.success',
 
 
             // parameters passed into constructor
@@ -132,6 +138,8 @@ define([
                         that.destroy();
                     }
                 }).play();
+
+                topic.publish(this.successTopic);
             },
             onError: function(response) {
                 // summary:

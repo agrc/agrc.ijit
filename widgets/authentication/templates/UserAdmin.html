@@ -2,9 +2,7 @@
     <div class="page-header">
         <h1>${title} User Administration</h1>
     </div>
-    <div class="pull-right">
-        <div data-dojo-attach-point="logoutDiv"></div>
-    </div>
+    <div data-dojo-attach-point="logoutDiv"></div>
 
     <div data-dojo-attach-point='errMsgDiv' class="alert alert-danger"></div>
 
@@ -13,6 +11,9 @@
         There are no users awaiting approval.
     </div>
     <div data-dojo-attach-point="userContainer"></div>
+
+    <h3>Approved Users</h3>
+    <div data-dojo-attach-point="userGrid"></div>
 
     <h3>Delete User</h3>
     <label>Email address</label>

@@ -44,7 +44,10 @@ require([
                         'dojo/request': xhrSpy
                     }).then(function (StubbedModule) {
                         var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, win.body()));
-                        spyOn(testWidget2, 'showUsers');
+                        spyOn(testWidget2, 'showWaitingUsers');
+                        testWidget2.login.user = {
+                            adminToken: 'blah'
+                        };
 
                         testWidget2.getUsers();
 
@@ -52,7 +55,7 @@ require([
 
                         def.resolve();
 
-                        expect(testWidget2.showUsers).toHaveBeenCalled();
+                        expect(testWidget2.showWaitingUsers).toHaveBeenCalled();
 
                         destroy(testWidget2);
 
@@ -71,7 +74,7 @@ require([
                     expect(domStyle.get(testWidget.errMsgDiv, 'display')).toBe('block');
                 });
             });
-            describe('showUsers', function() {
+            describe('showWaitingUsers', function() {
                 it('builds user object for each user', function() {
                     var users = [{
                         email: 'email1',
@@ -82,7 +85,7 @@ require([
                         name: 'name2',
                         agency: 'name2'
                     }];
-                    testWidget.showUsers({
+                    testWidget.showWaitingUsers({
                         result: users
                     });
 
@@ -90,7 +93,7 @@ require([
                 });
                 it('show\'s a message when there are no users', function() {
                     domStyle.set(testWidget.noUsersMsg, 'display', 'none'); // in UserAdmin.css
-                    testWidget.showUsers({
+                    testWidget.showWaitingUsers({
                         result: []
                     });
 
