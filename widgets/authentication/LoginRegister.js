@@ -13,9 +13,7 @@ define([
     'dojo/Deferred',
 
     'dojo/request',
-    'dojo/dom-style',
     'dojo/dom-construct',
-    'dojo/aspect',
     'dojo/topic',
 
     'dojo/text!./templates/LoginRegister.html',
@@ -46,9 +44,7 @@ define([
     Deferred,
 
     xhr,
-    domStyle,
     domConstruct,
-    aspect,
     topic,
 
     template,
