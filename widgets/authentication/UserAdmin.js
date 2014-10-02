@@ -19,7 +19,7 @@ define([
 
         'jquery',
         './LoginRegister',
-        './_UserAdminUser'
+        './_UserAdminPendingUser'
     ],
 
     function(
@@ -43,7 +43,7 @@ define([
 
         jquery,
         LoginRegister,
-        UserAdminUser
+        UserAdminPendingUser
     ) {
         // summary:
         //      Provides controls to allow admins to do things like acceept users, delete users and reset passwords.
@@ -102,7 +102,7 @@ define([
                 });
 
                 this.own(
-                    topic.subscribe(UserAdminUser.prototype.successTopic, function () {
+                    topic.subscribe(UserAdminPendingUser.prototype.successTopic, function () {
                         that.getUsers(true);
                     })
                 );
@@ -215,7 +215,7 @@ define([
                     domStyle.set(this.noUsersMsg, 'display', 'block');
                 } else {
                     array.forEach(users, function(u) {
-                        new UserAdminUser(lang.mixin(u, {
+                        new UserAdminPendingUser(lang.mixin(u, {
                             roles: this.roles,
                             adminToken: this.login.user.adminToken,
                             appName: this.appName

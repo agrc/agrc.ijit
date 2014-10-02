@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>_UserAdminUser Widget Tests</title>
+        <title>_UserAdminPendingUser Widget Tests</title>
 
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
         <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/dijit.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="../../resources/authentication/_UserAdminUser.css">
+        <link rel="stylesheet" href="../../resources/authentication/_UserAdminPendingUser.css">
 
         <script type="text/javascript">
             var projectUrl = location.pathname.replace(/\/[^\/]+$/, "") + '/';
@@ -30,13 +30,13 @@
 
         <script type="text/javascript">
             require([
-                    'ijit/widgets/authentication/_UserAdminUser'
+                    'ijit/widgets/authentication/_UserAdminPendingUser'
                 ],
 
                 function(
-                    _UserAdminUser
+                    _UserAdminPendingUser
                 ) {
-                    testWidget = new _UserAdminUser({
+                    testWidget = new _UserAdminPendingUser({
                         name: 'Scott Davis',
                         agency: 'AGRC',
                         email: 'stdavis@utah.gov',

@@ -13,7 +13,7 @@ define([
         'dijit/_TemplatedMixin',
         'dijit/_WidgetsInTemplateMixin',
 
-        'dojo/text!./templates/_UserAdminUser.html'
+        'dojo/text!./templates/_UserAdminPendingUser.html'
     ],
 
     function(
@@ -52,7 +52,7 @@ define([
 
             // successTopic: String
             //      topic fired when action is successfully completed
-            successTopic: '_UserAdminUser.success',
+            successTopic: '_UserAdminPendingUser.success',
 
 
             // parameters passed into constructor
@@ -84,12 +84,12 @@ define([
             adminToken: null,
 
             constructor: function() {
-                console.log('ijit/widgets/authentication/_UserAdminUser:constructor', arguments);
+                console.log('ijit/widgets/authentication/_UserAdminPendingUser:constructor', arguments);
             },
             postCreate: function() {
                 // summary:
                 //      dom is ready
-                console.log('ijit/widgets/authentication/_UserAdminUser:postCreate', arguments);
+                console.log('ijit/widgets/authentication/_UserAdminPendingUser:postCreate', arguments);
 
                 var that = this;
                 array.forEach(this.roles, function(role) {
@@ -106,7 +106,7 @@ define([
                 // summary:
                 //      fires the accept service with the passed in role
                 // role: String
-                console.log('ijit/widgets/authentication/_UserAdminUser:assignRole', arguments);
+                console.log('ijit/widgets/authentication/_UserAdminPendingUser:assignRole', arguments);
 
                 request(this.urls.base + this.urls.accept, {
                     data: JSON.stringify({
@@ -125,7 +125,7 @@ define([
             onSuccess: function() {
                 // summary:
                 //      description
-                console.log('ijit/widgets/authentication/_UserAdminUser:onSuccess', arguments);
+                console.log('ijit/widgets/authentication/_UserAdminPendingUser:onSuccess', arguments);
 
                 domStyle.set(this.wellDiv, 'backgroundColor', this.successColor);
 
@@ -146,7 +146,7 @@ define([
                 //      error callback for xhr request
                 // response: {}
                 //      response object returned by server
-                console.log('ijit/widgets/authentication/_UserAdminUser:onError', arguments);
+                console.log('ijit/widgets/authentication/_UserAdminPendingUser:onError', arguments);
 
                 this.errMsgDiv.innerHTML = response.message;
                 domStyle.set(this.errMsgDiv, 'display', 'block');
@@ -154,7 +154,7 @@ define([
             reject: function() {
                 // summary:
                 //      calls the reject service
-                console.log('ijit/widgets/authentication/_UserAdminUser:reject', arguments);
+                console.log('ijit/widgets/authentication/_UserAdminPendingUser:reject', arguments);
 
                 request(this.urls.base + this.urls.reject, {
                     data: JSON.stringify({

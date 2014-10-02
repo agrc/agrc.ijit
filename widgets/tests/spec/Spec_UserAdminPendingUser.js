@@ -1,5 +1,5 @@
 require([
-        'ijit/widgets/authentication/_UserAdminUser',
+        'ijit/widgets/authentication/_UserAdminPendingUser',
         'dojo/dom-construct',
         'dojo/dom-style',
         'dojo/_base/window',
@@ -8,13 +8,13 @@ require([
     ],
 
     function(
-        UserAdminUser,
+        UserAdminPendingUser,
         domConstruct,
         domStyle,
         win,
         query
     ) {
-        describe('ijit/widgets/authentication/_UserAdminUser', function() {
+        describe('ijit/widgets/authentication/_UserAdminPendingUser', function() {
             var testWidget;
             var destroy = function(widget) {
                 widget.destroyRecursive();
@@ -23,7 +23,7 @@ require([
             var email = 'test@test.com';
             var roles = ['role1', 'role2', 'role3'];
             beforeEach(function() {
-                testWidget = new UserAdminUser({
+                testWidget = new UserAdminPendingUser({
                     name: 'blah',
                     agency: 'blah2',
                     email: email,
@@ -35,7 +35,7 @@ require([
                 destroy(testWidget);
             });
             it('create a valid object', function() {
-                expect(testWidget).toEqual(jasmine.any(UserAdminUser));
+                expect(testWidget).toEqual(jasmine.any(UserAdminPendingUser));
             });
             describe('postCreate', function() {
                 it('creates a button for each role', function() {
