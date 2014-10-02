@@ -3,15 +3,11 @@ define([
 
     'dojo/_base/declare',
 
-    'dojo/on',
-
     'ijit/widgets/authentication/_LoginRegisterPaneMixin'
 ], function(
     template,
 
     declare,
-
-    on,
 
     LoginRegisterPaneMixin
 ) {

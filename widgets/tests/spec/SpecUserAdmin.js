@@ -46,6 +46,9 @@ require([
                         var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, win.body()));
                         spyOn(testWidget2, 'showUsers');
 
+                        testWidget2.login.user = {
+                            adminToken: 'blah'
+                        };
                         testWidget2.getUsers();
 
                         expect(xhrSpy).toHaveBeenCalled();
