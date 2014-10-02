@@ -107,7 +107,8 @@ define([
 
                 request(this.urls.base + this.urls.getallwaiting, {
                     query: {
-                        application: this.appName
+                        application: this.appName,
+                        adminToken: this.login.user.adminToken
                     },
                     handleAs: 'json'
                 }).then(lang.hitch(this, 'showUsers'), lang.hitch(this, 'onError'));
