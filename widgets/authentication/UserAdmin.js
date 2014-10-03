@@ -18,8 +18,9 @@ define([
         'dgrid/OnDemandGrid',
 
         'jquery',
-        './LoginRegister',
-        './_UserAdminPendingUser'
+        'ijit/widgets/authentication/LoginRegister',
+        'ijit/widgets/authentication/_UserAdminPendingUser',
+        'ijit/widgets/authentication/_UserAdminUser'
     ],
 
     function(
@@ -43,7 +44,8 @@ define([
 
         jquery,
         LoginRegister,
-        UserAdminPendingUser
+        UserAdminPendingUser,
+        UserAdminUser
     ) {
         // summary:
         //      Provides controls to allow admins to do things like acceept users, delete users and reset passwords.
@@ -56,12 +58,11 @@ define([
                 base: '/permissionproxy/api',
                 getallwaiting: '/admin/getallwaiting',
                 getallapproved: '/admin/getallapproved',
-                getroles: '/admin/getroles',
-                del: '/admin/reject',
-                reset: '/user/resetpassword'
+                getroles: '/admin/getroles'
             },
 
             fieldNames: {
+                id: 'userId',
                 email: 'email',
                 role: 'role',
                 lastLogin: 'lastLogin',
@@ -76,6 +77,10 @@ define([
 
             // login: LoginRegister
             login: null,
+
+            // grid: Grid
+            //      the approved users grid
+            grid: null,
 
 
             // params passed in via the constructor
@@ -151,45 +156,71 @@ define([
                 // response: {}
                 //      response object from getallapproved service
                 console.log('ijit/widgets/authentication/UserAdmin:showApprovedUsers', arguments);
-            
+                
                 var that = this;
-                var grid = new Grid({
-                    store: new Memory({
+                var getStore = function () {
+                    return new Memory({
                         data: response.result,
-                        idProperty: this.fieldNames.email
-                    }),
-                    columns: [
-                        {
-                            label: 'Edit',
-                            field: 'edit',
-                            renderCell: function (object) {
-                                return domConstruct.create('button', {
-                                    value: object[that.fieldNames.email],
-                                    innerHTML: '...',
-                                    'class': 'btn btn-default btn-xs'
-                                });
-                            }
-                        },
-                        {label: 'Email', field: this.fieldNames.email},
-                        {label: 'First Name', field: this.fieldNames.first},
-                        {label: 'Last Name', field: this.fieldNames.last},
-                        {label: 'Agency', field: this.fieldNames.agency},
-                        {label: 'Role', field: this.fieldNames.role},
-                        {
-                            label: 'Last Login',
-                            field: this.fieldNames.lastLogin,
-                            formatter: function (value) {
-                                if (value > 0) {
-                                    return new Date(value).toLocaleString();
-                                } else {
-                                    return '';
+                        idProperty: that.fieldNames.email
+                    });
+                };
+
+                if (!this.grid) {
+                    this.grid = new Grid({
+                        store: getStore(),
+                        columns: [
+                            {
+                                label: 'Edit',
+                                field: this.fieldNames.id,
+                                renderCell: function (object) {
+                                    return domConstruct.create('button', {
+                                        value: object[that.fieldNames.email],
+                                        innerHTML: '...',
+                                        'class': 'btn btn-default btn-xs',
+                                        onclick: function () {
+                                            that.editUser(object);
+                                        }
+                                    });
+                                }
+                            },
+                            {label: 'Email', field: this.fieldNames.email},
+                            {label: 'First Name', field: this.fieldNames.first},
+                            {label: 'Last Name', field: this.fieldNames.last},
+                            {label: 'Agency', field: this.fieldNames.agency},
+                            {label: 'Role', field: this.fieldNames.role},
+                            {
+                                label: 'Last Login',
+                                field: this.fieldNames.lastLogin,
+                                formatter: function (value) {
+                                    if (value > 0) {
+                                        return new Date(value).toLocaleString();
+                                    } else {
+                                        return '';
+                                    }
                                 }
                             }
-                        }
-                    ]
-                }, this.userGrid);
-                grid.set('sort', 'email');
-                grid.startup();
+                        ]
+                    }, this.userGrid);
+                    this.grid.set('sort', 'email');
+                    this.grid.startup();
+                } else {
+                    this.grid.set('store', getStore());
+                }
+            },
+            editUser: function (item) {
+                // summary:
+                //      creates a new UserAdminUser widget
+                // item: Object
+                //      row item as returned from the grid
+                console.log('ijit/widget/authentication/UserAdmin:editUser', arguments);
+            
+                var userAdmin = new UserAdminUser(lang.mixin(item, {
+                    adminToken: this.login.user.adminToken,
+                    appName: this.appName,
+                    roles: this.roles
+                }));
+                userAdmin.startup();
+                userAdmin.on('edit', lang.partial(lang.hitch(this, 'getUsers'), true));
             },
             onError: function(response) {
                 // summary:
@@ -230,60 +261,6 @@ define([
 
                 this.login.destroyRecursive();
                 this.inherited(arguments);
-            },
-            deleteUser: function() {
-                // summary:
-                //      fires when the user clicks the delete button
-                console.log('ijit/widgets/authentication/UserAdmin:deleteUser', arguments);
-
-                this.sendRequest(
-                    this.deleteSuccessMsgDiv,
-                    this.urls.del,
-                    this.delEmailTxt,
-                    'DELETE',
-                    this.deleteUserSpan,
-                    this.deleteErrMsgDiv);
-            },
-            resetPassword: function() {
-                // summary:
-                //      fires when the user clicks on the reset button
-                console.log('ijit/widgets/authentication/UserAdmin:resetPassword', arguments);
-
-                this.sendRequest(
-                    this.resetSuccessMsgDiv,
-                    this.urls.reset,
-                    this.resetEmailTxt,
-                    'PUT',
-                    this.resetUserSpan,
-                    this.resetErrMsgDiv);
-            },
-            sendRequest: function(successMsg, service, textBox, verb, userSpan, errDiv) {
-                // summary:
-                //      send reset or delete request
-                console.log('ijit/widgets/authentication/UserAdmin:sendRequest', arguments);
-
-                domStyle.set(successMsg, 'display', 'none');
-                domStyle.set(errDiv, 'display', 'none');
-
-                request(this.urls.base + service, {
-                    data: JSON.stringify({
-                        email: textBox.value,
-                        application: this.appName,
-                        adminToken: this.login.user.adminToken
-                    }),
-                    handleAs: 'json',
-                    method: verb,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(function() {
-                    userSpan.innerHTML = textBox.value;
-                    textBox.value = '';
-                    domStyle.set(successMsg, 'display', 'block');
-                }, function(response) {
-                    errDiv.innerHTML = response.message;
-                    domStyle.set(errDiv, 'display', 'block');
-                });
             }
         });
     });
