@@ -13,7 +13,7 @@ define([
         'dijit/_TemplatedMixin',
         'dijit/_WidgetsInTemplateMixin',
 
-        'dojo/text!./templates/_UserAdminPendingUser.html'
+        'dojo/text!ijit/widgets/authentication/templates/_UserAdminPendingUser.html'
     ],
 
     function(
