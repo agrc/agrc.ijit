@@ -36,7 +36,7 @@ function (
         
         // baseClass: [private] String
         //    The css class that is applied to the base div of the widget markup
-        baseClass: "side-bar-toggler",
+        baseClass: 'side-bar-toggler',
         
         // open: Boolean
         open: true,
@@ -67,21 +67,21 @@ function (
             //    Parameters to pass into the widget. Required values include:
             // div: String|DomNode
             //    A reference to the div that you want the widget to be created in.
-            console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+            console.log('ijit/layout/SideBarToggler:constructor', arguments);
             
             this.openWidth = domStyle.get(params.sidebar, 'width');
         },
         postCreate: function () {
             // summary:
             //      description
-            console.log(this.declaredClass + "::postCreate", arguments);
+            console.log('ijit/layout/SideBarToggler:postCreate', arguments);
         
             on(this.domNode, 'click', lang.hitch(this, this.onClick));
         },
         onClick: function () {
             // summary:
             //      description
-            console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+            console.log('ijit/layout/SideBarToggler:onClick', arguments);
             
             // adjust sidebar width
             var width = (this.open) ? 0 : this.openWidth;

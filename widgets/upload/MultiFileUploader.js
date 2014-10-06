@@ -23,29 +23,8 @@ define([
     _WidgetBase
 ) {
     // description:
-    //      **Summary**: A widget that creates native file uploaders with the option to add more
-    //      <p>
-    //      **Owner(s)**: Steve Gourley
-    //      </p>
-    //      <p>
-    //      **Test Page**: <a href='/tests/dojo/agrc/1.0/agrc/widgets/tests/MultiFileUploaderTests.html' target='_blank'>ijit.widgets.MultiFileUploader.Test</a>
-    //      </p>
-    //      <p>
-    //      **Description**: Create multiple input type fileuploaders. Has a plus button to add a new one. Can set the max limit etc. Must already be inside of a form. **Does not create form for you!**
-    //      </p>
-    //      <p>
-    //      **Published Channels/Events**:
-    //      </p>
-    //      <ul><li>None</li></ul>
-    //      <p>
-    //          **Exceptions**:
-    //      </p>
-    //      <ul><li>None</li></ul>
-    //      <p>
-    //      **Required Files**:
-    //      </p>
-    //      <ul><li>None</li></ul>
-    // example:
+    //      A widget that creates native file uploaders
+    //      with the option to add more
     // |    var fu = new MultiFileUploader({max:5}, domNode);
     return declare([_WidgetBase, _TemplatedMixin], {
         templateString: template,
@@ -78,7 +57,7 @@ define([
             // summary:
             //      Constructor function for object.
             // args: Object?
-            //      The parameters that you want to pass into the object. 
+            //      The parameters that you want to pass into the object.
             // Includes: max, postName, labelText, moreLabel
             console.log('agrc.ijit.upload.MultiFileUploader::constructor', arguments);
         },
@@ -89,7 +68,7 @@ define([
             console.log('agrc.ijit.upload.MultiFileUploader::_add', arguments);
 
             evnt.stop(evt);
-            
+
             if (this._isFull()) {
                 this.buttonNode.innerHTML = 'Max uploads: ' + this.max;
                 domAttr.set(this.buttonNode, 'disabled', true);

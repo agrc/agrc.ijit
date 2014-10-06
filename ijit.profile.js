@@ -3,8 +3,8 @@ profile = (function() {
     var testResourceRe = /.*\/tests\//;
     var copyOnly = function(filename, mid) {
         var list = {
-            "ijit/ijit.profile": true,
-            "ijit/package.json": true
+            'ijit/ijit.profile': true,
+            'ijit/package.json': true
         };
         return (mid in list) ||
             (/^resources\//.test(mid) && !/\.css$/.test(filename)) ||
@@ -13,13 +13,13 @@ profile = (function() {
         // resource (but not CSS) or is an image
     };
     var ignores = {
-        "ijit/Gruntfile": true
+        'ijit/Gruntfile': true
     };
 
     return {
         resourceTags: {
             test: function(filename, mid) {
-                return testResourceRe.test(mid) || mid == "app/tests";
+                return testResourceRe.test(mid) || mid === 'app/tests';
             },
             copyOnly: function(filename, mid) {
                 return copyOnly(filename, mid);

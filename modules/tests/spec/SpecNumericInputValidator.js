@@ -8,7 +8,7 @@ require([
     'dojo/dom-attr',
     'dojo/dom-class',
 
-    './modules/tests/jasmine-fixture.js'
+    'jasmine-fixture'
 ], function(
     NumericInputValidator,
     dom,

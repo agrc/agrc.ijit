@@ -1,25 +1,5 @@
 /* jshint camelcase:false */
 module.exports = function(grunt) {
-    var specs = [
-        'widgets/tests/spec/SpecLoginRegister.js',
-        'widgets/tests/spec/Spec_LoginRegisterPaneMixin.js',
-        'widgets/tests/spec/Spec_LoginRegisterSignInPane.js',
-        'widgets/tests/spec/Spec_LoginRegisterRequestPane.js',
-        'widgets/tests/spec/Spec_LoginRegisterForgotPane.js',
-        'widgets/tests/spec/Spec_LoginRegisterLogout.js',
-        'widgets/tests/spec/Spec_UserAdminPendingUser.js',
-        'widgets/tests/spec/Spec_UserAdminUser.js',
-        'widgets/tests/spec/SpecUserAdmin.js',
-        'modules/tests/spec/SpecNumericInputValidator.js',
-        'modules/tests/spec/Spec_ErrorMessageMixin.js'
-    ];
-    var jsFiles = specs.concat([
-        'widgets/tests/SetUpTests.js',
-        'widgets/authentication/*.js',
-        'modules/NumericInputValidator.js',
-        'modules/_ErrorMessageMixin.js',
-        'GruntFile.js'
-    ]);
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -32,32 +12,33 @@ module.exports = function(grunt) {
                         'bower_components/jquery/dist/jquery.js',
                         'widgets/tests/jasmineAMDErrorChecking.js'
                     ],
-                    specs: specs,
+                    specs: ['**/tests/**/Spec*.js'],
                     host: 'http://localhost:8000'
                 }
             }
         },
         jshint: {
-            files: jsFiles,
+            files: [
+                'widgets/**/*.js',
+                'modules/**/*.js',
+                'resources/**/*.js',
+                'Gruntfile.js',
+                'ijit.profile.js'
+            ],
             options: {
                 jshintrc: '.jshintrc',
                 ignores: [
-                    'resources/libs/*.js',
-                    'widgets/tests/stubmodule/**/*.js'
+                    'resources/libs/**'
                 ]
             }
         },
         watch: {
             files: [
-                'modules/**/*.js',
-                'widgets/**/*.js',
-                'modules/**/*.html',
-                'widgets/**/*.html',
-                'modules/**/*.css',
-                'resources/**/*.css',
+                '**',
+                '!_SpecRunner.html',
                 '!**/node_modules/**',
-                '!**/stubmodule/**',
-                'Gruntfile.js'
+                '!**/bower_components/**',
+                '!**/vendor/**'
             ],
             tasks: [
                 'jasmine:main:build',

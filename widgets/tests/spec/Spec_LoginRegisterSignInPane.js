@@ -112,7 +112,7 @@ require([
                 });
             });
             describe('onSubmitClick', function() {
-                it('submit button is disabled', function() {
+                it('submit button is disabled', function(done) {
                     spyOn(testWidget, 'showError');
                     stubmodule('ijit/widgets/authentication/_LoginRegisterSignInPane', {
                         'dojo/request': function() {
@@ -126,10 +126,13 @@ require([
                         }
                     }).then(function(StubbedModule) {
                         var testWidget2 = new StubbedModule({}, domConstruct.create('div', {}, document.body));
+                        testWidget2.parentWidget = {appName: 'blah'};
                         testWidget2.onSubmitClick();
-                        destroy(testWidget2);
 
                         expect(testWidget2.submitBtn.disabled).toBe(true);
+
+                        destroy(testWidget2);
+                        done();
                     });
                 });
             });

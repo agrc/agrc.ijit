@@ -9,7 +9,7 @@ define([
         'dojo/request',
         'dojo/keys',
 
-        '../../resources/libs/ladda-bootstrap/ladda',
+        'ladda',
 
         'dijit/_WidgetBase',
         'dijit/_TemplatedMixin',

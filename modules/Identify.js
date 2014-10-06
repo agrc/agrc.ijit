@@ -20,7 +20,7 @@ define([
     array,
     InfoTemplate
 ) {
-    return declare("ijit/modules/Identify", null, {
+    return declare('ijit/modules/Identify', null, {
         // summary:
         //      quick and dirty identify for all layers in map service
         // 
@@ -59,7 +59,7 @@ define([
         popupParameters: null,
 
         constructor: function(params) {
-            console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+            console.log('ijit/modules/Identify:constructor', arguments);
 
             lang.mixin(this, params);
 
@@ -73,7 +73,7 @@ define([
         initIdentifyTask: function() {
             // summary:
             //      description
-            console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+            console.log('ijit/modules/Identify:initIdentifyTask', arguments);
 
             this.iParams = new IdentifyParameters();
             this.iParams.layerOption = IdentifyParameters.LAYER_OPTION_VISIBLE;
@@ -85,16 +85,16 @@ define([
         wireEvents: function() {
             // summary:
             //      description
-            console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+            console.log('ijit/modules/Identify:wireEvents', arguments);
 
-            aspect.after(this.iTask, "onError", lang.hitch(this, this.onTaskError), true);
-            aspect.after(this.iTask, "onComplete", lang.hitch(this, this.onTaskComplete), true);
-            aspect.after(this.popup, "onSelectionChange", lang.hitch(this, this.onPopupSelectionChange), true);
+            aspect.after(this.iTask, 'onError', lang.hitch(this, this.onTaskError), true);
+            aspect.after(this.iTask, 'onComplete', lang.hitch(this, this.onTaskComplete), true);
+            aspect.after(this.popup, 'onSelectionChange', lang.hitch(this, this.onPopupSelectionChange), true);
         },
         onPopupSelectionChange: function() {
             // summary:
             //      When the user clicks through the different features in the popup
-            console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+            console.log('ijit/modules/Identify:onPopupSelectionChange', arguments);
 
             var selectedFeature = this.popup.getSelectedFeature();
 
@@ -107,16 +107,16 @@ define([
         setMap: function(map) {
             // summary:
             //      get reference to map and wire onclick event
-            console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+            console.log('ijit/modules/Identify:setMap', arguments);
 
             this.map = map;
 
-            aspect.after(map, "onClick", lang.hitch(this, this.onMapClick), true);
+            aspect.after(map, 'onClick', lang.hitch(this, this.onMapClick), true);
         },
         onTaskError: function(er) {
             // summary:
             //      description
-            console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+            console.log('ijit/modules/Identify:onTaskError', arguments);
 
             this.errorLogger.log(er, 'error with identify task');
             window.alert('There was an error with the identify operation. An email has been sent to support staff.');
@@ -126,7 +126,7 @@ define([
         onTaskComplete: function(iResults) {
             // summary:
             //      description
-            console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+            console.log('ijit/modules/Identify:onTaskComplete', arguments);
 
             if (iResults.length === 0) {
                 this.popup.hide();
@@ -139,8 +139,10 @@ define([
                 var g = result.feature;
                 delete g.attributes.OBJECTID;
                 delete g.attributes.Shape;
+                /* jshint -W106 */
                 delete g.attributes.Shape_Length;
                 delete g.attributes.Shape_Area;
+                /* jshint +W106 */
                 g.setInfoTemplate(this.getInfoTemplate(result));
                 return g;
             }, this));
@@ -153,7 +155,7 @@ define([
             // summary:
             //      builds an info template based upon the display field of the graphic
             // result: esri.tasks.IdentifyResult
-            console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+            console.log('ijit/modules/Identify:getInfoTemplate', arguments);
 
             var titleString = result.layerName + ': ${' + result.displayFieldName + '}';
             return new InfoTemplate(titleString, '${*}');
@@ -162,7 +164,7 @@ define([
             // summary:
             //      description
             // map: esri.Map
-            console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+            console.log('ijit/modules/Identify:onMapClick', arguments);
 
             this.identifyPoint(evt.mapPoint);
         },
@@ -170,7 +172,7 @@ define([
             // summary:
             //      fires the identify task on the specific point
             // mapPoint: Point
-            console.log(this.declaredClass + "::identifyPoint", arguments);
+            console.log('ijit/modules/Identify:identifyPoint', arguments);
 
             this.map.showLoader();
 
@@ -188,7 +190,7 @@ define([
             //      displays the popup in the centroid of the graphic
             // layerName: String
             // displayFieldName: String
-            console.info(this.declaredClass + "::" + arguments.callee.nom, arguments);
+            console.log('ijit/modules/Identify:methodName', arguments);
 
             // set point that the popup will be placed on the map
             var pnt;

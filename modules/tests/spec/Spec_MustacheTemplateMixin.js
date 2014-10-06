@@ -3,18 +3,20 @@ require([
 ],
 
 function (
-    _MustacheTemplateMixin
+    MustacheTemplateMixin
     ) {
     describe('ijit/modules/_MustacheTemplateMixin', function () {
         var testObject;
         beforeEach(function () {
-            testObject = new _MustacheTemplateMixin();
+            testObject = new MustacheTemplateMixin({
+                templateString: '<div></div>'
+            });
         });
         afterEach(function () {
             testObject = null;
         });
         it('create a valid object', function () {
-            expect(testObject).toEqual(jasmine.any(_MustacheTemplateMixin));
+            expect(testObject).toEqual(jasmine.any(MustacheTemplateMixin));
         });
     });
 });

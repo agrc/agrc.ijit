@@ -33,17 +33,27 @@ require([
                     expect(testWidget._counter).toEqual(1);
                     expect(testWidget._isFull()).toBeFalsy();
 
-                    testWidget._add();
+                    var evt = {
+                        preventDefault: function() {
+
+                        },
+                        stopPropagation: function() {
+
+                        }
+                    };
+
+                    testWidget._add(evt);
                     expect(testWidget._counter).toEqual(2);
                     expect(testWidget._isFull()).toBeFalsy();
 
-                    testWidget._add();
+                    testWidget._add(evt);
                     expect(testWidget._counter).toEqual(3);
                     expect(testWidget._isFull()).toBeTruthy();
 
-                    testWidget._add();
+                    testWidget._add(evt);
                     expect(testWidget._counter).toEqual(3);
                     expect(testWidget._isFull()).toBeTruthy();
+
                 });
             });
         });
