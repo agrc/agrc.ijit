@@ -64,7 +64,7 @@ define([
                 // summary:
                 //      validates email and password values on keyup event
                 // returns: Boolean
-                console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:validate', arguments);
+                // console.log('ijit/widgets/authentication/_LoginRegisterPaneMixin:validate', arguments);
 
                 var valid = query(
                     'input[type="text"], input[type="password"], input[type="email"]',

@@ -14,6 +14,7 @@ define([
 
     'dojo/request',
     'dojo/dom-construct',
+    'dojo/aspect',
     'dojo/topic',
 
     'dojo/text!./templates/LoginRegister.html',
@@ -45,6 +46,7 @@ define([
 
     xhr,
     domConstruct,
+    aspect,
     topic,
 
     template,

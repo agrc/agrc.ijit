@@ -8,14 +8,19 @@ define([
         'dojo/request',
         'dojo/dom-style',
         'dojo/dom-construct',
+        'dojo/store/Memory',
+        'dojo/topic',
 
         'dijit/_WidgetBase',
         'dijit/_TemplatedMixin',
         'dijit/_WidgetsInTemplateMixin',
 
+        'dgrid/OnDemandGrid',
+
         'jquery',
-        './LoginRegister',
-        './_UserAdminUser'
+        'ijit/widgets/authentication/LoginRegister',
+        'ijit/widgets/authentication/_UserAdminPendingUser',
+        'ijit/widgets/authentication/_UserAdminUser'
     ],
 
     function(
@@ -28,13 +33,18 @@ define([
         request,
         domStyle,
         domConstruct,
+        Memory,
+        topic,
 
         _WidgetBase,
         _TemplatedMixin,
         _WidgetsInTemplateMixin,
 
+        Grid,
+
         jquery,
         LoginRegister,
+        UserAdminPendingUser,
         UserAdminUser
     ) {
         // summary:
@@ -47,9 +57,18 @@ define([
             urls: {
                 base: '/permissionproxy/api',
                 getallwaiting: '/admin/getallwaiting',
-                getroles: '/admin/getroles',
-                del: '/admin/reject',
-                reset: '/user/resetpassword'
+                getallapproved: '/admin/getallapproved',
+                getroles: '/admin/getroles'
+            },
+
+            fieldNames: {
+                id: 'userId',
+                email: 'email',
+                role: 'role',
+                lastLogin: 'lastLogin',
+                first: 'first',
+                last: 'last',
+                agency: 'agency'
             },
 
             // roles: String[]
@@ -58,6 +77,10 @@ define([
 
             // login: LoginRegister
             login: null,
+
+            // grid: Grid
+            //      the approved users grid
+            grid: null,
 
 
             // params passed in via the constructor
@@ -82,6 +105,12 @@ define([
                 this.login.on('sign-in-success', function() {
                     that.getRoles();
                 });
+
+                this.own(
+                    topic.subscribe(UserAdminPendingUser.prototype.successTopic, function () {
+                        that.getUsers(true);
+                    })
+                );
             },
             getRoles: function() {
                 // summary:
@@ -100,18 +129,98 @@ define([
                     that.getUsers();
                 }, lang.hitch(this, 'onError'));
             },
-            getUsers: function() {
+            getUsers: function(approvedOnly) {
                 // summary:
-                //      calls getallwaiting
+                //      calls getallwaiting & getallapproved
                 console.log('ijit/widgets/authentication/UserAdmin:getUsers', arguments);
 
-                request(this.urls.base + this.urls.getallwaiting, {
-                    query: {
-                        application: this.appName,
-                        adminToken: this.login.user.adminToken
-                    },
-                    handleAs: 'json'
-                }).then(lang.hitch(this, 'showUsers'), lang.hitch(this, 'onError'));
+                var that = this;
+                var makeRequest = function (url, callback) {
+                    request(that.urls.base + url, {
+                        query: {
+                            application: that.appName,
+                            adminToken: that.login.user.adminToken
+                        },
+                        handleAs: 'json'
+                    }).then(lang.hitch(that, callback), lang.hitch(that, 'onError'));
+                };
+
+                if (!approvedOnly) {
+                    makeRequest(this.urls.getallwaiting, 'showWaitingUsers');
+                }
+                makeRequest(this.urls.getallapproved, 'showApprovedUsers');
+            },
+            showApprovedUsers: function (response) {
+                // summary:
+                //      builds the approved users grid
+                // response: {}
+                //      response object from getallapproved service
+                console.log('ijit/widgets/authentication/UserAdmin:showApprovedUsers', arguments);
+                
+                var that = this;
+                var getStore = function () {
+                    return new Memory({
+                        data: response.result,
+                        idProperty: that.fieldNames.email
+                    });
+                };
+
+                if (!this.grid) {
+                    this.grid = new Grid({
+                        store: getStore(),
+                        columns: [
+                            {
+                                label: 'Edit',
+                                field: this.fieldNames.id,
+                                renderCell: function (object) {
+                                    return domConstruct.create('button', {
+                                        value: object[that.fieldNames.email],
+                                        innerHTML: '...',
+                                        'class': 'btn btn-default btn-xs',
+                                        onclick: function () {
+                                            that.editUser(object);
+                                        }
+                                    });
+                                }
+                            },
+                            {label: 'Email', field: this.fieldNames.email},
+                            {label: 'First Name', field: this.fieldNames.first},
+                            {label: 'Last Name', field: this.fieldNames.last},
+                            {label: 'Agency', field: this.fieldNames.agency},
+                            {label: 'Role', field: this.fieldNames.role},
+                            {
+                                label: 'Last Login',
+                                field: this.fieldNames.lastLogin,
+                                formatter: function (value) {
+                                    if (value > 0) {
+                                        return new Date(value).toLocaleString();
+                                    } else {
+                                        return '';
+                                    }
+                                }
+                            }
+                        ]
+                    }, this.userGrid);
+                    this.grid.set('sort', 'email');
+                    this.grid.startup();
+                } else {
+                    this.grid.set('store', getStore());
+                }
+            },
+            editUser: function (item) {
+                // summary:
+                //      creates a new UserAdminUser widget
+                // item: Object
+                //      row item as returned from the grid
+                console.log('ijit/widget/authentication/UserAdmin:editUser', arguments);
+            
+                var userAdmin = new UserAdminUser(lang.mixin(item, {
+                    adminToken: this.login.user.adminToken,
+                    appName: this.appName,
+                    roles: this.roles
+                }));
+                userAdmin.startup();
+                userAdmin.on('edit', lang.partial(lang.hitch(this, 'getUsers'), true));
             },
             onError: function(response) {
                 // summary:
@@ -123,13 +232,13 @@ define([
                 this.errMsgDiv.innerHTML = response.message;
                 domStyle.set(this.errMsgDiv, 'display', 'block');
             },
-            showUsers: function(response) {
+            showWaitingUsers: function(response) {
                 // summary:
                 //      callback from getallwaiting
                 //      builds user widgets
                 // response: {}
                 //      response object from server
-                console.log('ijit/widgets/authentication/UserAdmin:showUsers', arguments);
+                console.log('ijit/widgets/authentication/UserAdmin:showWaitingUsers', arguments);
 
                 var users = response.result;
 
@@ -137,7 +246,7 @@ define([
                     domStyle.set(this.noUsersMsg, 'display', 'block');
                 } else {
                     array.forEach(users, function(u) {
-                        new UserAdminUser(lang.mixin(u, {
+                        new UserAdminPendingUser(lang.mixin(u, {
                             roles: this.roles,
                             adminToken: this.login.user.adminToken,
                             appName: this.appName
@@ -152,60 +261,6 @@ define([
 
                 this.login.destroyRecursive();
                 this.inherited(arguments);
-            },
-            deleteUser: function() {
-                // summary:
-                //      fires when the user clicks the delete button
-                console.log('ijit/widgets/authentication/UserAdmin:deleteUser', arguments);
-
-                this.sendRequest(
-                    this.deleteSuccessMsgDiv,
-                    this.urls.del,
-                    this.delEmailTxt,
-                    'DELETE',
-                    this.deleteUserSpan,
-                    this.deleteErrMsgDiv);
-            },
-            resetPassword: function() {
-                // summary:
-                //      fires when the user clicks on the reset button
-                console.log('ijit/widgets/authentication/UserAdmin:resetPassword', arguments);
-
-                this.sendRequest(
-                    this.resetSuccessMsgDiv,
-                    this.urls.reset,
-                    this.resetEmailTxt,
-                    'PUT',
-                    this.resetUserSpan,
-                    this.resetErrMsgDiv);
-            },
-            sendRequest: function(successMsg, service, textBox, verb, userSpan, errDiv) {
-                // summary:
-                //      send reset or delete request
-                console.log('ijit/widgets/authentication/UserAdmin:sendRequest', arguments);
-
-                domStyle.set(successMsg, 'display', 'none');
-                domStyle.set(errDiv, 'display', 'none');
-
-                request(this.urls.base + service, {
-                    data: JSON.stringify({
-                        email: textBox.value,
-                        application: this.appName,
-                        adminToken: this.login.user.adminToken
-                    }),
-                    handleAs: 'json',
-                    method: verb,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(function() {
-                    userSpan.innerHTML = textBox.value;
-                    textBox.value = '';
-                    domStyle.set(successMsg, 'display', 'block');
-                }, function(response) {
-                    errDiv.innerHTML = response.message;
-                    domStyle.set(errDiv, 'display', 'block');
-                });
             }
         });
     });

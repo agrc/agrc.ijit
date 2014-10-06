@@ -5,41 +5,50 @@
 
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-        <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/dijit.css">
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="../../resources/authentication/UserAdmin.css">
+        <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="../../bower_components/dijit/themes/claro/claro.css">
 
         <script type="text/javascript">
-            var projectUrl = location.pathname.replace(/\/[^\/]+$/, "") + '/';
-            var dojoConfig = {
+            var projectUrl = location.pathname.replace(/\/[^\/]+$/, '') + '/';
+            window.dojoConfig = {
                 packages: [{
                     name: 'ijit',
                     location: projectUrl + '../../'
                 },{
                     name: 'jquery',
-                    location: 'http://code.jquery.com/',
-                    main: 'jquery-1.10.2'
+                    location: projectUrl + '../../bower_components/jquery/dist/',
+                    main: 'jquery'
                 },{
                     name: 'bootstrap',
-                    location: 'http://netdna.bootstrapcdn.com/bootstrap/',
-                    main: '3.0.0/js/bootstrap'
+                    location: projectUrl + '../../bower_components/bootstrap/dist/js',
+                    main: 'bootstrap'
+                },{
+                    name: 'esri',
+                    location: projectUrl + '../../vendor/esri/'
                 }]
             };
         </script>
-        <script type="text/javascript" src="http://js.arcgis.com/3.7"></script>
+        <script type="text/javascript" src="../../bower_components/dojo/dojo.js"></script>
 
         <script type="text/javascript">
             require([
-                    'ijit/widgets/authentication/UserAdmin'
+                    'jquery',
+
+                    'ijit/widgets/authentication/UserAdmin',
+
+                    'dojo/domReady!'
                 ],
 
                 function(
+                    $,
                     UserAdmin
                 ) {
-                    testWidget = new UserAdmin({
-                        title: 'PEL',
-                        appName: 'pel'
+                    var testWidget = new UserAdmin({
+                        title: 'Unit Tests',
+                        appName: 'unittests'
                     }, 'testdiv');
+                    testWidget.startup();
 
                     // fake login so that I don't have to type in my password every time
                     // setTimeout(function() {

@@ -1,60 +1,61 @@
 require([
-        'ijit/widgets/authentication/_UserAdminUser',
-        'dojo/dom-construct',
-        'dojo/dom-style',
-        'dojo/_base/window',
-        'dojo/query'
+    'ijit/widgets/authentication/_UserAdminUser',
 
-    ],
+    'dojo/dom-construct'
+], function(
+    WidgetUnderTest,
 
-    function(
-        UserAdminUser,
-        domConstruct,
-        domStyle,
-        win,
-        query
-    ) {
-        describe('ijit/widgets/authentication/_UserAdminUser', function() {
-            var testWidget;
-            var destroy = function(widget) {
-                widget.destroyRecursive();
-                widget = null;
-            };
-            var email = 'test@test.com';
-            var roles = ['role1', 'role2', 'role3'];
-            beforeEach(function() {
-                testWidget = new UserAdminUser({
-                    name: 'blah',
-                    agency: 'blah2',
-                    email: email,
-                    roles: roles
-                }, domConstruct.create('div', {}, win.body()));
-                testWidget.startup();
+    domConstruct
+) {
+    describe('ijit/widgets/authentication/_UserAdminUser', function() {
+        var widget;
+        var destroy = function (widget) {
+            widget.destroyRecursive();
+            widget = null;
+        };
+
+        beforeEach(function() {
+            widget = new WidgetUnderTest({
+                first: 'Scott',
+                last: 'Davis',
+                email: 'stdavis@utah.gov',
+                role: 'publisher',
+                roles: ['publisher', 'viewer', 'admin'],
+                agency: 'AGRC',
+                lastLogin: 1412283976527
+            }, domConstruct.create('div', null, document.body));
+        });
+
+        afterEach(function() {
+            if (widget) {
+                destroy(widget);
+            }
+        });
+
+        describe('Sanity', function() {
+            it('should create a _UserAdminUser', function() {
+                expect(widget).toEqual(jasmine.any(WidgetUnderTest));
             });
-            afterEach(function() {
-                destroy(testWidget);
+        });
+        describe('postCreate', function () {
+            it('builds role options into select', function () {
+                expect(widget.roleSelect.children.length).toBe(3);
             });
-            it('create a valid object', function() {
-                expect(testWidget).toEqual(jasmine.any(UserAdminUser));
+        });
+        describe('isValid', function () {
+            it('returns false if not values have changed', function () {
+                expect(widget.isValid()).toBe(false);
             });
-            describe('postCreate', function() {
-                it('creates a button for each role', function() {
-                    expect(query('.btn-group .btn', testWidget.domNode).length).toBe(3);
-                });
-                it('wires the buttons to the assignRole method', function() {
-                    spyOn(testWidget, 'assignRole');
+            it('returns true is something changes', function () {
+                widget.emailTxt.value = 'different';
 
-                    testWidget.roleBtnGroup.children[0].click();
-
-                    expect(testWidget.assignRole).toHaveBeenCalledWith(roles[0]);
-                });
+                expect(widget.isValid()).toBe(true);
             });
-            describe('onSuccess', function() {
-                it('turns background color to green and then fades out', function() {
-                    testWidget.onSuccess();
+            it('returns false if a value is blank', function () {
+                widget.emailTxt.value = '';
 
-                    expect(domStyle.get(testWidget.wellDiv, 'backgroundColor')).toBe(testWidget.successColor);
-                });
+                expect(widget.isValid()).toBe(false);
             });
         });
     });
+});

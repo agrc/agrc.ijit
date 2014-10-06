@@ -1,165 +1,227 @@
 define([
-        'dojo/_base/declare',
-        'dojo/_base/array',
-        'dojo/_base/lang',
-        'dojo/_base/fx',
+    'dojo/text!./templates/_UserAdminUser.html',
 
-        'dojo/dom-construct',
-        'dojo/dom-style',
-        'dojo/request',
+    'dojo/_base/declare',
+    'dojo/_base/array',
+    'dojo/_base/lang',
+    'dojo/dom-construct',
+    'dojo/request/xhr',
 
-        'dijit/_WidgetBase',
-        'dijit/_TemplatedMixin',
-        'dijit/_WidgetsInTemplateMixin',
+    'dijit/_WidgetBase',
+    'dijit/_TemplatedMixin',
+    'dijit/_WidgetsInTemplateMixin',
 
-        'dojo/text!./templates/_UserAdminUser.html'
-    ],
-
-    function(
-        declare,
-        array,
-        lang,
-        fx,
-
-        domConstruct,
-        domStyle,
-        request,
-
-        _WidgetBase,
-        _TemplatedMixin,
-        _WidgetsInTemplateMixin,
-
-        template
-    ) {
-        // summary:
-        //      A widget associated with a user that is awaiting approval that allows an 
-        //      admin to accept and assign a role or reject.
-        return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
-            widgetsInTemplate: false,
-            templateString: template,
-            baseClass: 'user-admin-user',
-
-            urls: {
-                base: '/permissionproxy/api',
-                accept: '/admin/accept',
-                reject: '/admin/reject'
-            },
-
-            // successColor: String
-            successColor: 'rgb(223, 240, 216)',
+    'ijit/modules/_ErrorMessageMixin',
 
 
-            // parameters passed into constructor
+    'bootstrap'
+], function(
+    template,
 
-            // appName: String
-            appName: null,
+    declare,
+    array,
+    lang,
+    domConstruct,
+    xhr,
 
-            // first: String
-            //      User's first name
-            first: null,
+    _WidgetBase,
+    _TemplatedMixin,
+    _WidgetsInTemplateMixin,
 
-            // last: String
-            //      User's last name
-            last: null,
+    _ErrorMessageMixin
+) {
+    var baseUrl = '/permissionproxy/api/';
+    return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _ErrorMessageMixin], {
+        // description:
+        //      Dialog for viewing and editing user properties.
 
-            // email: String
-            //      user's email
-            email: null,
+        templateString: template,
+        baseClass: 'user-admin-user modal fade',
+        widgetsInTemplate: true,
 
-            // agency: String
-            //      user's agency
-            agency: null,
+        urls: {
+            edit: baseUrl + 'admin/edit',
+            reset: baseUrl + 'user/resetpassword',
+            del: baseUrl + 'admin/reject'
+        },
 
-            // roles: String[]
-            //      an array of available roles that this user can be assigned to.
-            roles: null,
+        // Properties to be sent into constructor
 
-            // adminToken: String
-            adminToken: null,
+        // userId: String
+        userId: null,
 
-            constructor: function() {
-                console.log('ijit/widgets/authentication/_UserAdminUser:constructor', arguments);
-            },
-            postCreate: function() {
-                // summary:
-                //      dom is ready
-                console.log('ijit/widgets/authentication/_UserAdminUser:postCreate', arguments);
+        // email: String
+        email: null,
 
-                var that = this;
-                array.forEach(this.roles, function(role) {
-                    domConstruct.create('button', {
-                        'class': 'btn btn-default',
-                        innerHTML: role,
-                        onclick: function() {
-                            that.assignRole(role);
-                        }
-                    }, that.roleBtnGroup);
-                });
-            },
-            assignRole: function(role) {
-                // summary:
-                //      fires the accept service with the passed in role
-                // role: String
-                console.log('ijit/widgets/authentication/_UserAdminUser:assignRole', arguments);
+        // first: String
+        first: null,
 
-                request(this.urls.base + this.urls.accept, {
-                    data: JSON.stringify({
-                        email: this.email,
-                        role: role,
-                        application: this.appName,
-                        adminToken: this.adminToken
-                    }),
-                    method: 'PUT',
-                    handleAs: 'json',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(lang.hitch(this, 'onSuccess'), lang.hitch(this, 'onError'));
-            },
-            onSuccess: function() {
-                // summary:
-                //      description
-                console.log('ijit/widgets/authentication/_UserAdminUser:onSuccess', arguments);
+        // last: String
+        last: null,
 
-                domStyle.set(this.wellDiv, 'backgroundColor', this.successColor);
+        // role: String
+        role: null,
 
-                var that = this;
+        // roles: String[]
+        roles: null,
 
-                fx.fadeOut({
-                    node: this.domNode,
-                    duration: 1000,
-                    onEnd: function() {
-                        that.destroy();
-                    }
-                }).play();
-            },
-            onError: function(response) {
-                // summary:
-                //      error callback for xhr request
-                // response: {}
-                //      response object returned by server
-                console.log('ijit/widgets/authentication/_UserAdminUser:onError', arguments);
+        // agency: String
+        agency: null,
 
-                this.errMsgDiv.innerHTML = response.message;
-                domStyle.set(this.errMsgDiv, 'display', 'block');
-            },
-            reject: function() {
-                // summary:
-                //      calls the reject service
-                console.log('ijit/widgets/authentication/_UserAdminUser:reject', arguments);
+        // adminToken: String
+        adminToken: null,
 
-                request(this.urls.base + this.urls.reject, {
-                    data: JSON.stringify({
-                        email: this.email,
-                        application: this.appName,
-                        adminToken: this.adminToken
-                    }),
-                    method: 'DELETE',
-                    handleAs: 'json',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(lang.hitch(this, 'onSuccess'), lang.hitch(this, 'onError'));
-            }
-        });
+        // appName: String
+        appName: null,
+
+        postCreate: function() {
+            // summary:
+            //      Overrides method of same name in dijit._Widget.
+            // tags:
+            //      private
+            console.log('ijit.widgets.authentication._UserAdminUser::postCreate', arguments);
+
+            $(this.domNode).modal();
+
+            this.setupConnections();
+
+            var that = this;
+            array.forEach(this.roles, function (r) {
+                domConstruct.create('option', {
+                    value: r,
+                    innerHTML: r
+                }, that.roleSelect);
+            });
+            this.roleSelect.value = this.role;
+
+            this.inherited(arguments);
+        },
+        setupConnections: function() {
+            // summary:
+            //      wire events, and such
+            //
+            console.log('ijit.widgets.authentication._UserAdminUser::setupConnections', arguments);
+
+            $(this.domNode).on('hidden.bs.modal', lang.hitch(this, 'destroy'));
+        },
+        close: function () {
+            // summary:
+            //      closes the dialog and destroys this widget
+            console.log('ijit/widgets/authentication/_UserAdminUser:close', arguments);
+        
+            $(this.domNode).modal('hide');
+        },
+        update: function () {
+            // summary:
+            //      sends data to the update service
+            console.log('ijit/widgets/authentication/_UserAdminUser:update', arguments);
+
+            this.hideErrMsg();
+            
+            var that = this;
+            xhr.put(this.urls.edit, {
+                handleAs: 'json',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify({
+                    adminToken: this.adminToken,
+                    userId: this.userId,
+                    email: this.emailTxt.value,
+                    first: this.firstTxt.value,
+                    last: this.lastTxt.value,
+                    role: this.roleSelect.value,
+                    agency: this.agencyTxt.value,
+                    application: this.appName
+                })
+            }).then(function () {
+                that.onEdit();
+                that.close();
+            }, function (er) {
+                that.showErrMsg(er.message);
+            });
+        },
+        onEdit: function () {
+            // summary:
+            //      event for UserAdmin to listen to
+            console.log('ijit/widgets/authentication/_UserAdminUser:onEdit', arguments);
+        
+        },
+        validate: function () {
+            // summary:
+            //      validates the form and enables the submit button if valid
+            console.log('ijit/widgets/authentication/_UserAdminUser:validate', arguments);
+        
+            this.toggleEnabled(this.isValid());
+
+            this.hideErrMsg();
+        },
+        toggleEnabled: function (enable) {
+            // summary:
+            //      toggles the disabled property on the submit button
+            // enable: Boolean
+            console.log('ijit/widgets/authentication/_UserAdminUser:toggleEnabled', arguments);
+        
+            this.submitBtn.disabled = !enable;
+        },
+        isValid: function () {
+            // summary:
+            //      checks to see if there were any changes and if values are valid
+            console.log('ijit/widgets/authentication/_UserAdminUser:isValid', arguments);
+        
+            return !(
+                this.emailTxt.value === this.email &&
+                this.firstTxt.value === this.first &&
+                this.lastTxt.value === this.last &&
+                this.roleSelect.value === this.role &&
+                this.agencyTxt.value === this.agency
+            ) && (
+                this.emailTxt.value.length > 0 &&
+                this.firstTxt.value.length > 0 &&
+                this.lastTxt.value.length > 0 &&
+                this.roleSelect.value.length > 0 &&
+                this.agencyTxt.value.length > 0
+            );
+        },
+        deleteUser: function() {
+            // summary:
+            //      fires when the user clicks the delete button
+            console.log('ijit/widgets/authentication/_UserAdminUser:deleteUser', arguments);
+
+            this.sendRequest(this.urls.del, 'DELETE');
+        },
+        resetPassword: function() {
+            // summary:
+            //      fires when the user clicks on the reset button
+            console.log('ijit/widgets/authentication/_UserAdminUser:resetPassword', arguments);
+
+            this.sendRequest(this.urls.reset, 'PUT');
+        },
+        sendRequest: function(service, verb) {
+            // summary:
+            //      send reset or delete request
+            console.log('ijit/widgets/authentication/UserAdmin:sendRequest', arguments);
+
+            this.hideErrMsg();
+
+            var that = this;
+            xhr(service, {
+                data: JSON.stringify({
+                    email: this.emailTxt.value,
+                    application: this.appName,
+                    adminToken: this.adminToken
+                }),
+                handleAs: 'json',
+                method: verb,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(function() {
+                that.close();
+                that.onEdit();
+            }, function(response) {
+                that.showErrMsg(response.message);
+            });
+        }
     });
+});

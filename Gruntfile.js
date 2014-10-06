@@ -7,6 +7,7 @@ module.exports = function(grunt) {
         'widgets/tests/spec/Spec_LoginRegisterRequestPane.js',
         'widgets/tests/spec/Spec_LoginRegisterForgotPane.js',
         'widgets/tests/spec/Spec_LoginRegisterLogout.js',
+        'widgets/tests/spec/Spec_UserAdminPendingUser.js',
         'widgets/tests/spec/Spec_UserAdminUser.js',
         'widgets/tests/spec/SpecUserAdmin.js',
         'modules/tests/spec/SpecNumericInputValidator.js',
