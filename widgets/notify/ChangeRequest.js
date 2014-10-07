@@ -95,11 +95,9 @@ define([
                 this.graphicsLayer = this.map.graphics;
 
                 //if maps already loaded just set this first.
-                this.own(
-                    on(this.map, 'Load', lang.hitch(this, function() {
-                        this.graphicsLayer = this.map.graphics;
-                    }))
-                );
+                this.map.on('Load', lang.hitch(this, function() {
+                    this.graphicsLayer = this.map.graphics;
+                }));
             }
 
             // create symbol if none was provided in options
@@ -244,6 +242,8 @@ define([
                 ids = [2];
             }
 
+            var email = lang.getObject('window.AGRC.user.email', false);
+
             var options = {
                 email: {
                     toIds: ids,
@@ -255,7 +255,7 @@ define([
                         description: args.description,
                         application: window.location.href,
                         basemap: this.map.layerIds[0],
-                        user: window.AGRC.user.email || 'anonymous'
+                        user: email || 'anonymous'
                     }
                 }
             };
