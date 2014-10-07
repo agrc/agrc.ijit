@@ -1,3 +1,10 @@
+require({
+    map: {
+        'ladda': {
+            'spin': 'ladda/dist/spin'
+        }
+    }
+});
 define([
     'dojo/_base/declare',
     'dojo/_base/lang',

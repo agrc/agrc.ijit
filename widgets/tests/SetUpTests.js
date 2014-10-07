@@ -20,10 +20,6 @@ window.dojoConfig = {
         location: 'bower_components/stubmodule/src',
         main: 'stub-module'
     }, {
-        name: 'spin',
-        location: 'bower_components/spinjs',
-        main: 'spin'
-    }, {
         name: 'ladda',
         location: 'bower_components/ladda-bootstrap',
         main: 'dist/ladda'
