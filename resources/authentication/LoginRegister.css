@@ -2,6 +2,7 @@
 @import '_LoginRegisterRequestPane.css';
 @import '_LoginRegisterForgotPane.css';
 @import '_LoginRegisterLogout.css';
+@import '../../../ladda-bootstrap/dist/ladda-themeless.css';
 
 .login-register .dijitStackContainer-child {
     /* required or else these are set to 0 for some reason

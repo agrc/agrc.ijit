@@ -30,8 +30,8 @@
   "dependencies": {
     "dgrid": "~0.3.16",
     "put-selector": "~0.3.5",
-    "xstyle": "~0.2.1",
     "mustache": "~0.8.2",
-    "ladda-bootstrap": "~0.1.0"
+    "ladda-bootstrap": "~0.1.0",
+    "xstyle": "~0.2.1"
   }
 }
