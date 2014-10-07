@@ -1,11 +1,3 @@
-require({
-    // this is so that the 'spin' import in ladda resolves correctly
-    map: {
-        'ijit/resources/libs': {
-            'spin': 'ijit/resources/libs/ladda-bootstrap/spin'
-        }
-    }
-});
 define([
     'dojo/_base/declare',
     'dojo/_base/lang',

@@ -1,8 +1,8 @@
 define([
     'dojo/_base/declare',
-    'mustache/mustache',
-    'dijit/_WidgetBase', 
-    'dijit/_TemplatedMixin', 
+    'mustache',
+    'dijit/_WidgetBase',
+    'dijit/_TemplatedMixin',
     'dijit/_WidgetsInTemplateMixin'
 
 ],
@@ -21,7 +21,7 @@ function (
 
         _stringRepl: function(tmpl){
             // overriden from _TemplatedMixin
-            
+
             return mustache.render(tmpl, this);
         }
     });

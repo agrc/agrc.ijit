@@ -5,75 +5,86 @@
 
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-        <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/dijit.css">
-        <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/esri/css/esri.css">
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../../vendor/esri/css/esri.css">
+        <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
         <link rel="stylesheet" href="../../resources/authentication/LoginRegister.css">
 
         <script type="text/javascript">
-            var projectUrl = location.pathname.replace(/\/[^\/]+$/, "") + '/';
-            var dojoConfig = {
+            var projectUrl = location.pathname.replace(/\/[^\/]+$/, '') + '/';
+            window.dojoConfig = {
                 packages: [{
                     name: 'ijit',
                     location: projectUrl + '../../'
                 },{
                     name: 'jquery',
-                    location: 'http://code.jquery.com/',
-                    main: 'jquery-1.10.2'
+                    location: projectUrl + '../../bower_components/jquery/dist/',
+                    main: 'jquery'
                 },{
                     name: 'bootstrap',
-                    location: 'http://netdna.bootstrapcdn.com/bootstrap/',
-                    main: '3.0.0/js/bootstrap'
+                    location: projectUrl + '../../bower_components/bootstrap/dist/js',
+                    main: 'bootstrap'
+                },{
+                    name: 'esri',
+                    location: projectUrl + '../../vendor/esri'
+                },{
+                    name: 'ladda',
+                    location: projectUrl + '../../bower_components/ladda-bootstrap/dist',
+                    main: 'ladda'
+                },{
+                    name: 'spin',
+                    location: projectUrl + '../../bower_components/spinjs',
+                    main: 'spin'
                 }]
             };
         </script>
-        <script type="text/javascript" src="http://js.arcgis.com/3.7"></script>
+        <script type="text/javascript" src="../../bower_components/dojo/dojo.js"></script>
 
         <script type="text/javascript">
-            require(['jquery'], function () {
-                require([
-                    'jquery',
-                    'ijit/widgets/authentication/LoginRegister',
-                    'esri/map',
-                    'esri/layers/ArcGISDynamicMapServiceLayer',
-                    'esri/geometry/Extent',
-                    
-                    'dojo/on'
-                ],
+            require([
+                'jquery',
+                'ijit/widgets/authentication/LoginRegister',
+                'esri/map',
+                'esri/layers/ArcGISDynamicMapServiceLayer',
+                'esri/geometry/Extent',
 
-                function (
-                    jQuery,
-                    LoginRegister,
-                    Map,
-                    ArcGISDynamicMapServiceLayer,
-                    Extent,
+                'dojo/on',
 
-                    on
-                    ) {
-                    testWidget = new LoginRegister({
-                        appName: 'roadkill',
-                        logoutDiv: 'testdiv',
-                        showOnLoad: true
+
+                'dojo/domReady!'
+            ],
+
+            function (
+                jQuery,
+                LoginRegister,
+                Map,
+                ArcGISDynamicMapServiceLayer,
+                Extent,
+
+                on
+                ) {
+                var testWidget = new LoginRegister({
+                    appName: 'roadkill',
+                    logoutDiv: 'testdiv',
+                    showOnLoad: true
+                });
+
+                on(testWidget, 'sign-in-success', function(){
+                    console.log('signed in');
+                    var map = new Map('map-div', {
+                        defaultExtent: new Extent({
+                            xmin: 81350,
+                            ymin: 3962431,
+                            xmax: 800096,
+                            ymax: 4785283,
+                            spatialReference: {
+                                wkid: 26912
+                            }
+                        })
                     });
 
-                    on(testWidget, 'sign-in-success', function(stuff){
-                        console.log('signed in');
-                        map = new Map('map-div', {
-                            defaultExtent: new Extent({
-                                xmin: 81350,
-                                ymin: 3962431,
-                                xmax: 800096,
-                                ymax: 4785283,
-                                spatialReference: {
-                                    wkid: 26912
-                                }
-                            })
-                        });
-                        
-                        lyr = new ArcGISDynamicMapServiceLayer('/arcgis/rest/services/Roadkill/MapService/MapServer');
-                        map.addLayer(lyr);
-                        lyr.setVisibleLayers([0,1]);
-                    });
+                    var lyr = new ArcGISDynamicMapServiceLayer('/arcgis/rest/services/DEQEnviro/MapServer');
+                    map.addLayer(lyr);
+                    lyr.setVisibleLayers([0,1]);
                 });
             });
         </script>
