@@ -2,7 +2,6 @@
 @import '_LoginRegisterRequestPane.css';
 @import '_LoginRegisterForgotPane.css';
 @import '_LoginRegisterLogout.css';
-@import '../../bower_components/ladda-bootstrap/dist/ladda-themeless.css';
 
 .login-register .dijitStackContainer-child {
     /* required or else these are set to 0 for some reason
@@ -26,10 +25,10 @@
 .login-register .form-group.last {
     margin-bottom: 0
 }
-.login-register .ladda-button[data-loading] {
+.login-register .ladda-button[data-style=expand-left][data-loading] {
     padding-left: 33px;
 }
-.login-register .ladda-button .ladda-spinner {
+.login-register .ladda-button[data-style=expand-left] .ladda-spinner {
     left: 0;
 }
 

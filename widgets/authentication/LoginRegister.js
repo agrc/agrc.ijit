@@ -29,7 +29,8 @@ define([
     'dijit/layout/ContentPane',
 
     'jquery',
-    'bootstrap'
+    'bootstrap',
+    'xstyle/css!ladda/dist/ladda-themeless.css'
 ], function(
     declare,
     lang,

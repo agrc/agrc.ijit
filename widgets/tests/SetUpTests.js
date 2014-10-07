@@ -25,8 +25,8 @@ window.dojoConfig = {
         main: 'spin'
     }, {
         name: 'ladda',
-        location: 'bower_components/ladda-bootstrap/dist',
-        main: 'ladda'
+        location: 'bower_components/ladda-bootstrap',
+        main: 'dist/ladda'
     }, {
         name: 'jquery',
         location: 'bower_components/jquery/dist',

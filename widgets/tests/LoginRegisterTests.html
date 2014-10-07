@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="../../vendor/esri/css/esri.css">
         <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
         <link rel="stylesheet" href="../../resources/authentication/LoginRegister.css">
+        <link rel="stylesheet" href="../../bower_components/dijit/themes/claro/claro.css">
 
         <script type="text/javascript">
             var projectUrl = location.pathname.replace(/\/[^\/]+$/, '') + '/';
@@ -28,8 +29,8 @@
                     location: projectUrl + '../../vendor/esri'
                 },{
                     name: 'ladda',
-                    location: projectUrl + '../../bower_components/ladda-bootstrap/dist',
-                    main: 'ladda'
+                    location: projectUrl + '../../bower_components/ladda-bootstrap',
+                    main: 'dist/ladda'
                 },{
                     name: 'spin',
                     location: projectUrl + '../../bower_components/spinjs',
@@ -62,13 +63,13 @@
 
                 on
                 ) {
-                var testWidget = new LoginRegister({
+                window.testWidget = new LoginRegister({
                     appName: 'roadkill',
                     logoutDiv: 'testdiv',
                     showOnLoad: true
                 });
 
-                on(testWidget, 'sign-in-success', function(){
+                on(window.testWidget, 'sign-in-success', function(){
                     console.log('signed in');
                     var map = new Map('map-div', {
                         defaultExtent: new Extent({
