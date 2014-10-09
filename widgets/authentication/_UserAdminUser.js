@@ -117,6 +117,7 @@ define([
             console.log('ijit/widgets/authentication/_UserAdminUser:update', arguments);
 
             this.hideErrMsg();
+            this.toggleEnabled(false);
 
             var that = this;
             xhr.put(this.urls.edit, {
@@ -139,7 +140,7 @@ define([
                 that.close();
             }, function (er) {
                 that.showErrMsg(er.message);
-            });
+            }).always(lang.partial(lang.hitch(this, 'toggleEnabled')), true);
         },
         onEdit: function () {
             // summary:
