@@ -40,7 +40,7 @@ define([
         widgetsInTemplate: true,
 
         urls: {
-            edit: baseUrl + 'admin/edit',
+            edit: baseUrl + 'admin/updateuser',
             reset: baseUrl + 'user/resetpassword',
             del: baseUrl + 'admin/reject'
         },
@@ -108,7 +108,7 @@ define([
             // summary:
             //      closes the dialog and destroys this widget
             console.log('ijit/widgets/authentication/_UserAdminUser:close', arguments);
-        
+
             $(this.domNode).modal('hide');
         },
         update: function () {
@@ -117,7 +117,7 @@ define([
             console.log('ijit/widgets/authentication/_UserAdminUser:update', arguments);
 
             this.hideErrMsg();
-            
+
             var that = this;
             xhr.put(this.urls.edit, {
                 handleAs: 'json',
@@ -145,13 +145,13 @@ define([
             // summary:
             //      event for UserAdmin to listen to
             console.log('ijit/widgets/authentication/_UserAdminUser:onEdit', arguments);
-        
+
         },
         validate: function () {
             // summary:
             //      validates the form and enables the submit button if valid
             console.log('ijit/widgets/authentication/_UserAdminUser:validate', arguments);
-        
+
             this.toggleEnabled(this.isValid());
 
             this.hideErrMsg();
@@ -161,14 +161,14 @@ define([
             //      toggles the disabled property on the submit button
             // enable: Boolean
             console.log('ijit/widgets/authentication/_UserAdminUser:toggleEnabled', arguments);
-        
+
             this.submitBtn.disabled = !enable;
         },
         isValid: function () {
             // summary:
             //      checks to see if there were any changes and if values are valid
             console.log('ijit/widgets/authentication/_UserAdminUser:isValid', arguments);
-        
+
             return !(
                 this.emailTxt.value === this.email &&
                 this.firstTxt.value === this.first &&
