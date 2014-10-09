@@ -39,7 +39,7 @@ define([
         return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
             widgetsInTemplate: false,
             templateString: template,
-            baseClass: 'user-admin-user',
+            baseClass: 'user-admin-pending-user',
 
             urls: {
                 base: '/permissionproxy/api',
