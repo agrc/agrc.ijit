@@ -125,22 +125,29 @@ define([
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                data: JSON.stringify({
-                    adminToken: this.adminToken,
-                    userId: this.userId,
-                    email: this.emailTxt.value,
-                    first: this.firstTxt.value,
-                    last: this.lastTxt.value,
-                    role: this.roleSelect.value,
-                    agency: this.agencyTxt.value,
-                    application: this.appName
-                })
+                data: JSON.stringify(this.getData())
             }).then(function () {
                 that.onEdit();
                 that.close();
             }, function (er) {
                 that.showErrMsg(er.message);
             }).always(lang.partial(lang.hitch(this, 'toggleEnabled')), true);
+        },
+        getData: function () {
+            // summary:
+            //      assembles data from the inputs into an object
+            console.log('ijit/widgets/authentication/_UserAdminUser:getData', arguments);
+        
+            return {
+                adminToken: this.adminToken,
+                userId: this.userId,
+                email: this.emailTxt.value,
+                first: this.firstTxt.value,
+                last: this.lastTxt.value,
+                role: this.roleSelect.value,
+                agency: this.agencyTxt.value,
+                application: this.appName
+            };
         },
         onEdit: function () {
             // summary:
