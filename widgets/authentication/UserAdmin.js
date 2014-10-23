@@ -10,6 +10,7 @@ define([
         'dojo/dom-construct',
         'dojo/store/Memory',
         'dojo/topic',
+        'dojo/string',
 
         'dijit/_WidgetBase',
         'dijit/_TemplatedMixin',
@@ -35,6 +36,7 @@ define([
         domConstruct,
         Memory,
         topic,
+        dojoString,
 
         _WidgetBase,
         _TemplatedMixin,
@@ -161,7 +163,26 @@ define([
                 var getStore = function () {
                     return new Memory({
                         data: response.result,
-                        idProperty: that.fieldNames.email
+                        idProperty: that.fieldNames.email,
+                        query: function (query, options){
+                            query = query || {};
+                            options = options || {};
+
+                            // this block is to make the sorting of strings case-insensitive
+                            // it overrides the default sort logic adding in the .toLowerCase stuff
+                            if (options.sort) {
+                                var sort = options.sort[0];
+                                options.sort = function (a, b) {
+                                    a = dojoString.trim(a[sort.attribute]).toLowerCase();
+                                    b = dojoString.trim(b[sort.attribute]).toLowerCase();
+
+                                    /* jshint -W018 */
+                                    return !!sort.descending === (a > b) ? -1 : 1;
+                                    /* jshint +W018 */
+                                };
+                            }
+                            return this.queryEngine(query, options)(this.data);
+                        }
                     });
                 };
 
