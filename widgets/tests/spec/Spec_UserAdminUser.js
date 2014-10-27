@@ -39,7 +39,20 @@ require([
         });
         describe('postCreate', function () {
             it('builds role options into select', function () {
-                expect(widget.roleSelect.children.length).toBe(3);
+                expect(widget.roleSelect.children.length).toBe(4);
+            });
+            it('accounts for no role', function () {
+                var widget2 = new WidgetUnderTest({
+                    first: 'Scott',
+                    last: 'Davis',
+                    email: 'stdavis@utah.gov',
+                    role: '',
+                    roles: ['publisher', 'viewer', 'admin'],
+                    agency: 'AGRC',
+                    lastLogin: 1412283976527
+                }, domConstruct.create('div', null, document.body));
+                expect(widget2.roleSelect.value).toBe('');
+                destroy(widget2);
             });
         });
         describe('isValid', function () {

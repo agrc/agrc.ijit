@@ -11,6 +11,7 @@ define([
         'dojo/store/Memory',
         'dojo/topic',
         'dojo/string',
+        'dojo/Deferred',
 
         'dijit/_WidgetBase',
         'dijit/_TemplatedMixin',
@@ -37,6 +38,7 @@ define([
         Memory,
         topic,
         dojoString,
+        Deferred,
 
         _WidgetBase,
         _TemplatedMixin,
@@ -214,7 +216,7 @@ define([
                                 field: this.fieldNames.lastLogin,
                                 formatter: function (value) {
                                     if (value > 0) {
-                                        return new Date(value).toLocaleString();
+                                        return new Date(parseInt(value, 10)).toLocaleString();
                                     } else {
                                         return '';
                                     }
@@ -234,6 +236,12 @@ define([
                 // item: Object
                 //      row item as returned from the grid
                 console.log('ijit/widget/authentication/UserAdmin:editUser', arguments);
+
+                // deferred makes custom approvals possible
+                // check app/security/_UserAdminPendingUser in deq-enviro
+                // for an example
+                var def = new Deferred();
+                var that = this;
             
                 var userAdmin = new UserAdminUser(lang.mixin(item, {
                     adminToken: this.login.user.adminToken,
@@ -241,7 +249,12 @@ define([
                     roles: this.roles
                 }));
                 userAdmin.startup();
-                userAdmin.on('edit', lang.partial(lang.hitch(this, 'getUsers'), true));
+                userAdmin.on('edit', function () {
+                    that.getUsers(true);
+                    def.resolve();
+                });
+
+                return def;
             },
             onError: function(response) {
                 // summary:
@@ -270,7 +283,8 @@ define([
                         new UserAdminPendingUser(lang.mixin(u, {
                             roles: this.roles,
                             adminToken: this.login.user.adminToken,
-                            appName: this.appName
+                            appName: this.appName,
+                            userAdmin: this
                         }), domConstruct.create('div', {}, this.userContainer));
                     }, this);
                 }
