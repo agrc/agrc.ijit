@@ -23,3 +23,6 @@
 .user-admin .dgrid td.dgrid-column-0 {
     text-align: center;
 }
+.user-admin>.btn {
+    margin-top: 5px;
+}
