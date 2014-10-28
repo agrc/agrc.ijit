@@ -1,0 +1,130 @@
+{
+    "result": [{
+        "userId": "6d96db89-b9b0-46c3-9079-48b302075d62",
+        "first": "scott",
+        "last": "davis",
+        "email": "stdavis@test.com",
+        "agency": "eeee",
+        "role": "admin",
+        "lastLogin": "0",
+        "additional": {
+            "phone": "801-699-7187 ",
+            "address": "3990 s 1925 e",
+            "city": "holladay",
+            "state": "ut",
+            "zip": "84124"
+        },
+        "accessRules": {
+            "startDate": 0,
+            "endDate": 1414230242338,
+            "options": {
+                "counties": ["CARBON", "DUCHESNE"],
+                "locationTxt": "undefined",
+                "layers": ["s3", "s1"]
+            }
+        },
+        "application": "deq"
+    }, {
+        "userId": "dd792ddb-66e7-4df8-a821-44a50650d210",
+        "first": "test",
+        "last": "test",
+        "email": "test@test.com",
+        "agency": "test",
+        "role": "water",
+        "lastLogin": "0",
+        "additional": {
+            "phone": "tewT",
+            "address": "test",
+            "city": "test",
+            "state": "test",
+            "zip": "test"
+        },
+        "accessRules": {
+            "startDate": 0,
+            "endDate": 1421260837288,
+            "options": {
+                "counties": ["CARBON"],
+                "locationTxt": "test",
+                "layers": ["s0", "s3"]
+            }
+        },
+        "application": "deq"
+    }, {
+        "userId": "8cf44e52-0d0f-4917-8a30-d9cf1ff8d568",
+        "first": "test",
+        "last": "test",
+        "email": "test6@test.com",
+        "agency": "test",
+        "role": "admin",
+        "lastLogin": "0",
+        "additional": {
+            "phone": "test",
+            "address": "test",
+            "city": "TEST",
+            "state": "TEST",
+            "zip": "TEST"
+        },
+        "accessRules": {
+            "startDate": 0,
+            "endDate": 1417108622378,
+            "options": {
+                "counties": ["CACHE", "DAGGETT"],
+                "locationTxt": "test location txt",
+                "layers": ["s0", "s1"]
+            }
+        },
+        "application": "deq"
+    }, {
+        "userId": "7b4c6866-dc20-4af1-9277-261a874f5bc6",
+        "first": "test7",
+        "last": "test",
+        "email": "test7@test.com",
+        "agency": "test",
+        "role": "water",
+        "lastLogin": "0",
+        "additional": {
+            "phone": "qasdf",
+            "address": "test",
+            "city": "test",
+            "state": "asdf",
+            "zip": "asdf"
+        },
+        "accessRules": {
+            "startDate": 0,
+            "endDate": 1417128184531,
+            "options": {
+                "counties": ["BOX ELDER", "DAGGETT"],
+                "locationTxt": "test location txt",
+                "layers": ["s1", "s2"]
+            }
+        },
+        "application": "deq"
+    }, {
+        "userId": "c587b4e7-5d46-4256-b444-96d202082eae",
+        "first": "admin",
+        "last": "user",
+        "email": "stdavis@utah.gov",
+        "agency": "test",
+        "role": "admin",
+        "adminToken": "users/1.5c6aa4d0-d363-4d13-938d-2d7d9b1ad47d",
+        "lastLogin": "1414507516855",
+        "additional": {
+            "phone": "801-699-7187 ",
+            "address": "3990 s 1925 e",
+            "city": "holladay",
+            "state": "ut",
+            "zip": "84124"
+        },
+        "accessRules": {
+            "startDate": 0,
+            "endDate": 1423929678537,
+            "options": {
+                "counties": ["CARBON", "DAVIS"],
+                "locationTxt": "location text newline",
+                "layers": ["s0", "s3", "s1"]
+            }
+        },
+        "application": "deq"
+    }],
+    "status": 200
+}
