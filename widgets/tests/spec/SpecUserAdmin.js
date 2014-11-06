@@ -121,6 +121,16 @@ require([
                 expect(testWidget.exportToCsv().split('\n')[5].split(','))
                     .not.toContain('"users/1.5c6aa4d0-d363-4d13-938d-2d7d9b1ad47d"');
             });
+            it('formats dates', function () {
+                var row = testWidget.exportToCsv().split('\n')[1].split('","');
+
+                // lastLogin
+                expect(row[6]).toBe('10/24/2014, 10:10:42 PM');
+                // startDate
+                expect(row[12]).toBe('10/23/2014, 11:57:22 PM');
+                // endDate
+                expect(row[13]).toBe('10/25/2014, 3:44:02 AM');
+            });
         });
     });
 });

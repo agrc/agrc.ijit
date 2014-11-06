@@ -6,7 +6,7 @@
         "email": "stdavis@test.com",
         "agency": "eeee",
         "role": "admin",
-        "lastLogin": "0",
+        "lastLogin": 1414210242338,
         "additional": {
             "phone": "801-699-7187 ",
             "address": "3990 s 1925 e",
@@ -15,7 +15,7 @@
             "zip": "84124"
         },
         "accessRules": {
-            "startDate": 0,
+            "startDate": 1414130242338,
             "endDate": 1414230242338,
             "options": {
                 "counties": ["CARBON", "DUCHESNE"],

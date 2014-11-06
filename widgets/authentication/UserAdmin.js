@@ -49,6 +49,25 @@ define([
     UserAdminPendingUser,
     UserAdminUser
 ) {
+    var fieldNames = {
+        id: 'userId',
+        email: 'email',
+        role: 'role',
+        lastLogin: 'lastLogin',
+        first: 'first',
+        last: 'last',
+        agency: 'agency',
+        startDate: 'startDate',
+        endDate: 'endDate'
+    };
+    var formatDate = function (value) {
+        if (value > 0) {
+            return new Date(parseInt(value, 10)).toLocaleString();
+        } else {
+            return '';
+        }
+    };
+
     // summary:
     //      Provides controls to allow admins to do things like acceept users, delete users and reset passwords.
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -63,15 +82,11 @@ define([
             getroles: '/admin/getroles'
         },
 
-        fieldNames: {
-            id: 'userId',
-            email: 'email',
-            role: 'role',
-            lastLogin: 'lastLogin',
-            first: 'first',
-            last: 'last',
-            agency: 'agency'
-        },
+        fieldNames: fieldNames,
+
+        // dateFields: string[]
+        //      list of date fields for csv export
+        dateFields: [fieldNames.lastLogin, fieldNames.startDate, fieldNames.endDate],
 
         // roles: String[]
         //      as returned by GetRoles
@@ -212,13 +227,7 @@ define([
                         {
                             label: 'Last Login',
                             field: this.fieldNames.lastLogin,
-                            formatter: function (value) {
-                                if (value > 0) {
-                                    return new Date(parseInt(value, 10)).toLocaleString();
-                                } else {
-                                    return '';
-                                }
-                            }
+                            formatter: formatDate
                         }
                     ]
                 }, this.userGrid);
@@ -301,6 +310,7 @@ define([
             console.log('ijit/widgets/authentication/UserAdmin:exportToCsv', arguments);
         
             var csvTxt;
+            var that = this;
 
             var users = this.grid.store.data;
             var firstUser = users[0];
@@ -322,6 +332,10 @@ define([
                                 continue;
                             }
                             var v = (header) ? prop : obj[prop];
+
+                            if (array.indexOf(that.dateFields, prop) !== -1) {
+                                v = formatDate(v);
+                            }
                             values.push('"' + v + '"');
                         } else {
                             values = values.concat(walkObject(obj[prop], header));
