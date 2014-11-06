@@ -18,13 +18,15 @@ module.exports = function(grunt) {
             }
         },
         jshint: {
-            files: [
-                'widgets/**/*.js',
-                'modules/**/*.js',
-                'resources/**/*.js',
-                'Gruntfile.js',
-                'ijit.profile.js'
-            ],
+            main: {
+                src: [
+                    'widgets/**/*.js',
+                    'modules/**/*.js',
+                    'resources/**/*.js',
+                    'Gruntfile.js',
+                    'ijit.profile.js'
+                ]
+            },
             options: {
                 jshintrc: '.jshintrc',
                 ignores: [
@@ -43,7 +45,7 @@ module.exports = function(grunt) {
             tasks: [
                 'jasmine:main:build',
                 'amdcheck',
-                'jshint'
+                'newer:jshint:main'
             ],
             options: {
                 livereload: true
@@ -99,7 +101,7 @@ module.exports = function(grunt) {
     grunt.registerTask('default', [
         'if-missing:esri_slurp:dev',
         'amdcheck',
-        'jshint',
+        'newer:jshint:main',
         'connect',
         'jasmine:main:build',
         'watch'
@@ -107,7 +109,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('travis', [
         'esri_slurp:travis',
-        'jshint',
+        'jshint:main',
         'connect',
         'jasmine:main'
     ]);

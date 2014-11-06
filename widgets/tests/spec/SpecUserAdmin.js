@@ -114,12 +114,23 @@ require([
             });
             it('exports the right data values', function () {
                 expect(testWidget.exportToCsv().split('\n')[2])
-                    .toEqual('"dd792ddb-66e7-4df8-a821-44a50650d210","test","test","test@test.com","test","water",' +
-                        '"0","tewT","test","test","test","test","0","1421260837288","CARBON","test","s0,s3","deq"');
+                    .toEqual('"dd792ddb-66e7-4df8-a821-44a50650d210","test","test","test@test.com","test",' +
+                        '"water","","tewT","test","test","test","test","","' +
+                        new Date(1421260837288).toLocaleString() + '","CARBON","test","s0,s3","deq"');
             });
             it('skips adminToken', function () {
                 expect(testWidget.exportToCsv().split('\n')[5].split(','))
                     .not.toContain('"users/1.5c6aa4d0-d363-4d13-938d-2d7d9b1ad47d"');
+            });
+            it('formats dates', function () {
+                var row = testWidget.exportToCsv().split('\n')[1].split('","');
+
+                // lastLogin
+                expect(new Date(row[6]).getTime()/1000).toBeCloseTo(1414210242338/1000, 0);
+                // startDate
+                expect(new Date(row[12]).getTime()/1000).toBeCloseTo(1414130242338/1000, 0);
+                // endDate
+                expect(new Date(row[13]).getTime()/1000).toBeCloseTo(1414230242338/1000, 0);
             });
         });
     });
