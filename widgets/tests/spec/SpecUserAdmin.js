@@ -114,8 +114,9 @@ require([
             });
             it('exports the right data values', function () {
                 expect(testWidget.exportToCsv().split('\n')[2])
-                    .toEqual('"dd792ddb-66e7-4df8-a821-44a50650d210","test","test","test@test.com","test","water",' +
-                        '"0","tewT","test","test","test","test","0","1421260837288","CARBON","test","s0,s3","deq"');
+                    .toEqual('"dd792ddb-66e7-4df8-a821-44a50650d210","test","test","test@test.com","test",' +
+                        '"water","","tewT","test","test","test","test","","' +
+                        new Date(1421260837288).toLocaleString() + '","CARBON","test","s0,s3","deq"');
             });
             it('skips adminToken', function () {
                 expect(testWidget.exportToCsv().split('\n')[5].split(','))
@@ -125,11 +126,11 @@ require([
                 var row = testWidget.exportToCsv().split('\n')[1].split('","');
 
                 // lastLogin
-                expect(row[6]).toBe('10/24/2014, 10:10:42 PM');
+                expect(new Date(row[6]).getTime()/1000).toBeCloseTo(1414210242338/1000, 0);
                 // startDate
-                expect(row[12]).toBe('10/23/2014, 11:57:22 PM');
+                expect(new Date(row[12]).getTime()/1000).toBeCloseTo(1414130242338/1000, 0);
                 // endDate
-                expect(row[13]).toBe('10/25/2014, 3:44:02 AM');
+                expect(new Date(row[13]).getTime()/1000).toBeCloseTo(1414230242338/1000, 0);
             });
         });
     });

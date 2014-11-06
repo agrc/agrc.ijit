@@ -333,7 +333,7 @@ define([
                             }
                             var v = (header) ? prop : obj[prop];
 
-                            if (array.indexOf(that.dateFields, prop) !== -1) {
+                            if (array.indexOf(that.dateFields, prop) !== -1 && !header) {
                                 v = formatDate(v);
                             }
                             values.push('"' + v + '"');
