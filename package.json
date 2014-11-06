@@ -22,7 +22,8 @@
     "grunt-contrib-jshint": "~0.9",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-esri-slurp": "^1.0.4",
-    "grunt-if-missing": "^1.0.0"
+    "grunt-if-missing": "^1.0.0",
+    "grunt-newer": "^0.8.0"
   },
   "dojoBuild": "ijit.profile.js",
   "scripts": {
