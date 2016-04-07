@@ -6,62 +6,58 @@ require({
     }
 });
 define([
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/window',
-    'dojo/Deferred',
-
-    'dojo/request',
-    'dojo/dom-construct',
-    'dojo/aspect',
-    'dojo/topic',
-
-    'dojo/text!./templates/LoginRegister.html',
-
     'dijit/_TemplatedMixin',
     'dijit/_WidgetBase',
     'dijit/_WidgetsInTemplateMixin',
 
-    'esri/request',
+    'dojo/aspect',
+    'dojo/Deferred',
+    'dojo/dom-construct',
+    'dojo/request',
+    'dojo/text!./templates/LoginRegister.html',
+    'dojo/topic',
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/_base/window',
+
+    'esri/config',
     'esri/IdentityManagerBase',
     'esri/kernel',
+    'esri/request',
 
-    'ijit/widgets/authentication/_LoginRegisterSignInPane',
-    'ijit/widgets/authentication/_LoginRegisterRequestPane',
     'ijit/widgets/authentication/_LoginRegisterForgotPane',
     'ijit/widgets/authentication/_LoginRegisterLogout',
+    'ijit/widgets/authentication/_LoginRegisterRequestPane',
+    'ijit/widgets/authentication/_LoginRegisterSignInPane',
 
-    // no params
-    'dijit/layout/StackContainer',
+    'bootstrap',
     'dijit/layout/ContentPane',
-
-    'jquery',
-    'bootstrap'
+    'dijit/layout/StackContainer',
+    'jquery'
 ], function(
-    declare,
-    lang,
-    win,
-    Deferred,
-
-    xhr,
-    domConstruct,
-    aspect,
-    topic,
-
-    template,
-
     _TemplatedMixin,
     _WidgetBase,
     _WidgetsInTemplateMixin,
 
-    esriRequest,
+    aspect,
+    Deferred,
+    domConstruct,
+    xhr,
+    template,
+    topic,
+    declare,
+    lang,
+    win,
+
+    esriConfig,
     IdentityManagerBase,
     kernel,
+    esriRequest,
 
-    LoginRegisterSignInPane,
-    LoginRegisterRequestPane,
     LoginRegisterForgotPane,
-    LoginRegisterLogout
+    LoginRegisterLogout,
+    LoginRegisterRequestPane,
+    LoginRegisterSignInPane
 ) {
     // summary:
     //      Works with agrc/ArcGisServerPermissionsProxy to allow users to register or login.
@@ -305,6 +301,14 @@ define([
 
             if (!this.isAdminPage) {
                 this.registerToken(c);
+            }
+
+            // remove strange server that's added within the call to registerToken above
+            // this appears to only apply to apps on domains that are different from the base domain
+            // in securedServicesBaseUrl
+            var crazyUrlIndex = esriConfig.defaults.io.corsEnabledServers.indexOf('null://undefined');
+            if (crazyUrlIndex > -1) {
+                esriConfig.defaults.io.corsEnabledServers.splice(crazyUrlIndex, 1);
             }
 
             if (this.def) {
