@@ -211,6 +211,8 @@ define([
                     }),
                     'class': this.baseClass
                 }, this.logoutDiv);
+
+                this.emit('remember-me-unsuccessful');
             });
 
             var def;
