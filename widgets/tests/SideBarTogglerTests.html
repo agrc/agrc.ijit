@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SideBarToggler Tests</title>
+
+        <link rel="stylesheet" href="../../vendor/esri/css/esri.css">
+        <link rel="stylesheet" href="../../themes/standard/layout/SideBarToggler.css">
+        <style>
+            .side-bar-container {
+                width: 200px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                position: absolute;
+                left: 10px;
+                top: 75px;
+                bottom: 10px;
+            }
+            .side-bar-padder {
+                padding: 10px;
+                width: 200px;
+                margin: -1px;
+            }
+            .container-with-border {
+                border: 1px solid #b5bcc7;
+            }
+
+            /* CENTER (MAP) */
+            .center-container {
+                position: absolute;
+                top: 75px;
+                left: 220px;
+                bottom: 10px;
+                right: 10px;
+                overflow: hidden;
+            }
+            #mapDiv {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+        </style>
+
+        <script type="text/javascript">
+            var projectUrl = location.pathname.replace(/\/[^\/]+$/, '') + '/';
+            window.dojoConfig = {
+                packages: [{
+                    name: 'ijit',
+                    location: projectUrl + '../../'
+                },{
+                    name: 'jquery',
+                    location: projectUrl + '../../bower_components/jquery/dist/',
+                    main: 'jquery'
+                },{
+                    name: 'bootstrap',
+                    location: projectUrl + '../../bower_components/bootstrap/dist/js',
+                    main: 'bootstrap'
+                },{
+                    name: 'esri',
+                    location: projectUrl + '../../vendor/esri'
+                },{
+                    name: 'ladda',
+                    location: projectUrl + '../../bower_components/ladda-bootstrap',
+                    main: 'dist/ladda'
+                }]
+            };
+        </script>
+        <script type="text/javascript" src="../../bower_components/dojo/dojo.js"></script>
+        <script type='text/javascript'>
+            require([
+                'ijit/widgets/layout/SideBarToggler',
+                'esri/Map',
+                'dojo/dom',
+                'dojo/domReady!'
+            ], function (
+                SideBarToggler,
+                Map,
+                dom
+            ) {
+                var map = new Map('mapDiv', {
+                    center: [-118, 34.5],
+                    zoom: 8,
+                    basemap: 'topo'
+                });
+                var sb = new SideBarToggler({
+                    sidebar: 'sideBarContainer',
+                    map: map,
+                    centerContainer: 'centerContainer'
+                }, dom.byId('sidebarToggle'))
+                sb.startup();
+            });
+        </script>
+    </head>
+    <body>
+        <h1>SideBarToggler Tests</h1>
+        <div id='sideBarContainer' class='side-bar-container container-with-border'>
+            <div class="side-bar-padder"> <!-- required for side bar toggle widget -->
+                blah, blah, blah
+            </div>
+        </div>
+        <div id='centerContainer' class='center-container container-with-border'>
+            <div id='sidebarToggle'></div>
+            <div id='mapDiv'></div>
+        </div>
+    </body>
+</html>
