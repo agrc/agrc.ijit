@@ -138,6 +138,10 @@ define([
                 query: {
                     application: this.appName
                 },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': ''
+                },
                 handleAs: 'json'
             });
             var that = this;
@@ -157,6 +161,10 @@ define([
                     query: {
                         application: that.appName,
                         adminToken: that.login.user.adminToken
+                    },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': ''
                     },
                     handleAs: 'json'
                 }).then(lang.hitch(that, callback), lang.hitch(that, 'onError'));

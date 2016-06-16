@@ -148,7 +148,8 @@ define([
                         handleAs: 'json',
                         method: this.xhrMethod,
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': ''
                         }
                     }).then(
                         lang.hitch(this, 'onSubmitReturn'),

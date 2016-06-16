@@ -224,7 +224,8 @@ define([
                         appName: this.appName
                     },
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': ''
                     }
                 }).then(
                     lang.hitch(this.signInPane, this.signInPane.onSubmitReturn),
