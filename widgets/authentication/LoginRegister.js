@@ -84,7 +84,7 @@ define([
         logout: null,
 
         urls: {
-            base: '//maps.geology.utah.gov/permissionproxy/api',
+            base: window.location.protocol + '//maps.geology.utah.gov/permissionproxy/api',
             signIn: '/authenticate/user',
             request: '/user/register',
             reset: '/user/resetpassword',

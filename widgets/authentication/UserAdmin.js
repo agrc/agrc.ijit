@@ -76,7 +76,7 @@ define([
         baseClass: 'user-admin',
 
         urls: {
-            base: '//maps.geology.utah.gov/permissionproxy/api',
+            base: window.location.protocol + '//maps.geology.utah.gov/permissionproxy/api',
             getallwaiting: '/admin/getallwaiting',
             getallapproved: '/admin/getallapproved',
             getroles: '/admin/getroles'
