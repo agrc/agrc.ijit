@@ -1,53 +1,55 @@
 define([
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/array',
-
-    'dojo/text!./templates/UserAdmin.html',
-
-    'dojo/request',
-    'dojo/dom-style',
-    'dojo/dom-construct',
-    'dojo/store/Memory',
-    'dojo/topic',
-    'dojo/string',
-    'dojo/Deferred',
-
-    'dijit/_WidgetBase',
-    'dijit/_TemplatedMixin',
-    'dijit/_WidgetsInTemplateMixin',
+    'app/config',
 
     'dgrid/OnDemandGrid',
 
-    'jquery',
+    'dijit/_TemplatedMixin',
+    'dijit/_WidgetBase',
+    'dijit/_WidgetsInTemplateMixin',
+
+    'dojo/Deferred',
+    'dojo/dom-construct',
+    'dojo/dom-style',
+    'dojo/request',
+    'dojo/store/Memory',
+    'dojo/string',
+    'dojo/text!./templates/UserAdmin.html',
+    'dojo/topic',
+    'dojo/_base/array',
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+
     'ijit/widgets/authentication/LoginRegister',
     'ijit/widgets/authentication/_UserAdminPendingUser',
-    'ijit/widgets/authentication/_UserAdminUser'
+    'ijit/widgets/authentication/_UserAdminUser',
+
+    'jquery'
 ], function(
-    declare,
-    lang,
-    array,
-
-    template,
-
-    request,
-    domStyle,
-    domConstruct,
-    Memory,
-    topic,
-    dojoString,
-    Deferred,
-
-    _WidgetBase,
-    _TemplatedMixin,
-    _WidgetsInTemplateMixin,
+    config,
 
     Grid,
 
-    jquery,
+    _TemplatedMixin,
+    _WidgetBase,
+    _WidgetsInTemplateMixin,
+
+    Deferred,
+    domConstruct,
+    domStyle,
+    request,
+    Memory,
+    dojoString,
+    template,
+    topic,
+    array,
+    declare,
+    lang,
+
     LoginRegister,
     UserAdminPendingUser,
-    UserAdminUser
+    UserAdminUser,
+
+    jquery
 ) {
     var fieldNames = {
         id: 'userId',
@@ -76,7 +78,7 @@ define([
         baseClass: 'user-admin',
 
         urls: {
-            base: window.location.protocol + '//maps.geology.utah.gov/permissionproxy/api',
+            base: window.location.protocol + '//' + config.agsDomain + '/permissionproxy/api',
             getallwaiting: '/admin/getallwaiting',
             getallapproved: '/admin/getallapproved',
             getroles: '/admin/getroles'

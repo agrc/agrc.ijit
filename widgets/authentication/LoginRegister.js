@@ -6,6 +6,8 @@ require({
     }
 });
 define([
+    'app/config',
+
     'dijit/_TemplatedMixin',
     'dijit/_WidgetBase',
     'dijit/_WidgetsInTemplateMixin',
@@ -35,6 +37,8 @@ define([
     'dijit/layout/StackContainer',
     'jquery'
 ], function(
+    config,
+
     _TemplatedMixin,
     _WidgetBase,
     _WidgetsInTemplateMixin,
@@ -84,7 +88,7 @@ define([
         logout: null,
 
         urls: {
-            base: window.location.protocol + '//maps.geology.utah.gov/permissionproxy/api',
+            base: window.location.protocol + '//' + config.agsDomain + '/permissionproxy/api',
             signIn: '/authenticate/user',
             request: '/user/register',
             reset: '/user/resetpassword',
