@@ -1,6 +1,6 @@
 {
   "name": "agrc-ijit",
-  "version": "3.1.3",
+  "version": "3.2.0",
   "homepage": "https://github.com/agrc/agrc.ijit",
   "authors": [
     "Scott Davis <stdavis@utah.gov>",
@@ -29,5 +29,10 @@
     "mustache": "~0.8.2",
     "ladda-bootstrap": "0.1.0",
     "dijit-themes": "dojo-themes#1.14.0"
+  },
+  "resolutions": {
+    "dojox": "v1.14.0/esri-3.26.0",
+    "dojo": "v1.14.0/esri-3.26.0",
+    "dijit": "v1.14.0/esri-3.26.0"
   }
 }
