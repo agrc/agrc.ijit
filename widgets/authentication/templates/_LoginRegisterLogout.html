@@ -1,12 +1,14 @@
 <div>
     <div class="dropdown">
-        Welcome, 
-        <a data-toggle='dropdown' role='button' href="#">${firstName} ${lastName} 
+        Welcome,
+        <a data-toggle='dropdown' role='button' href="#">${firstName} ${lastName}
             <span class="caret"></span>
         </a>
         <ul class="dropdown-menu" role='menu'>
             <li><a href="#" data-dojo-attach-event='onclick: onSignOutClick'>Sign out</a></li>
-            <li class='admin-link' data-dojo-attach-point='adminLink'><a href="user_admin.html">User Admin Page</a></li>
+            <li class='admin-link' data-dojo-attach-point='adminLink'>
+                <a data-dojo-attach-point='userAdminLink' href="user_admin.html">User Admin Page</a>
+            </li>
             <li><a href="#" data-dojo-attach-event='onclick: onChangePasswordClick'>Change Password</a></li>
         </ul>
     </div>
@@ -49,9 +51,9 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button data-dojo-attach-point='submitBtn'
                         data-dojo-attach-event='onclick: onSubmitClick'
-                        type="button" 
-                        data-style='expand-left' 
-                        data-spinner-size='32' 
+                        type="button"
+                        data-style='expand-left'
+                        data-spinner-size='32'
                         class="btn btn-primary ladda-button" disabled tabindex="4">
                         <span class='ladda-label'>Submit</span>
                     </button>

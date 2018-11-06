@@ -73,6 +73,11 @@ define([
 
             domConstruct.place(this.modalDiv, document.body);
 
+            const qStringIndex = document.location.href.indexOf('?');
+            if (qStringIndex > -1) {
+                this.userAdminLink.href += document.location.href.substring(qStringIndex);
+            }
+
             this.inherited(arguments);
         },
         onSignOutClick: function(evt) {
@@ -88,7 +93,7 @@ define([
         },
         refreshPage: function() {
             // summary:
-            //      wrapper around window.location.reload to enable testing since 
+            //      wrapper around window.location.reload to enable testing since
             //      it's immutable
             console.log('ijit/widgets/authentication/_LoginRegisterLogout:refreshPage', arguments);
 
@@ -99,7 +104,7 @@ define([
             //      description
             // evt: Click Event
             console.log('ijit/widgets/authentication/_LoginRegisterLogout:onChangePasswordClick', arguments);
-        
+
             evt.preventDefault();
 
             $(this.modalDiv).modal('show');
@@ -115,7 +120,7 @@ define([
             if (this.newPassTxt.value !== this.newPassConfirmTxt.value) {
                 throw this.mismatchedErrMsg;
             }
-        
+
             return {
                 email: this.email,
                 currentPassword: this.currentPassTxt.value,
@@ -127,7 +132,7 @@ define([
             // summary:
             //      callback for successful xhr request
             console.log('ijit/widgets/authentication/_LoginRegisterLogout:onSubmitReturn', arguments);
-        
+
             domStyle.set(this.form, 'display', 'none');
             domStyle.set(this.successDiv, 'display', 'block');
             domStyle.set(this.submitBtn, 'display', 'none');
@@ -136,7 +141,7 @@ define([
             // summary:
             //      overridden for unit test clean up
             console.log('ijit/widgets/authentication/_LoginRegisterLogout:destroy', arguments);
-        
+
             domConstruct.destroy(this.modalDiv);
 
             this.inherited(arguments);

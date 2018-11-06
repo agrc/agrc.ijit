@@ -1,55 +1,39 @@
 window.dojoConfig = {
-    baseUrl: './',
-    packages: [{
+    baseUrl: 'bower_components',
+    packages: ['dojo', 'dijit', 'dojox', 'esri', 'dgrid', 'put-selector', 'xstyle', {
         name: 'ijit',
-        location: '.'
-    }, {
-        name: 'dojo',
-        location: 'bower_components/dojo'
-    }, {
-        name: 'dijit',
-        location: 'bower_components/dijit'
-    }, {
-        name: 'dojox',
-        location: 'bower_components/dojox'
-    }, {
-        name: 'esri',
-        location: 'vendor/esri'
+        location: '../'
     }, {
         name: 'stubmodule',
-        location: 'bower_components/stubmodule/src',
+        location: 'stubmodule/src',
         main: 'stub-module'
     }, {
         name: 'ladda',
-        location: 'bower_components/ladda-bootstrap',
+        location: 'ladda-bootstrap',
         main: 'dist/ladda'
     }, {
         name: 'jquery',
-        location: 'bower_components/jquery/dist',
+        location: 'jquery/dist',
         main: 'jquery'
     }, {
         name: 'bootstrap',
-        location: 'bower_components/bootstrap/dist/js',
+        location: 'bootstrap/dist/js',
         main: 'bootstrap'
     }, {
-        name: 'dgrid',
-        location: 'bower_components/dgrid'
-    }, {
-        name: 'put-selector',
-        location: 'bower_components/put-selector'
-    }, {
-        name: 'xstyle',
-        location: 'bower_components/xstyle'
-    }, {
         name: 'jasmine-fixture',
-        location: 'bower_components/jasmine-fixture/dist',
+        location: 'jasmine-fixture/dist',
         main: 'jasmine-fixture'
     }, {
         name: 'mustache',
-        location: 'bower_components/mustache',
+        location: 'mustache',
         main: 'mustache'
     }],
     has: {
         'dojo-undef-api': true
+    },
+    map: {
+        'ladda': {
+            'spin': 'ladda/dist/spin'
+        }
     }
 };
