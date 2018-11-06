@@ -61,20 +61,6 @@ module.exports = function(grunt) {
                 push: false
             }
         },
-        esri_slurp: {
-            options: {
-                version: '3.10'
-            },
-            dev: {
-                options: {
-                    beautify: true
-                },
-                dest: 'vendor/esri'
-            },
-            travis: {
-                dest: 'vendor/esri'
-            }
-        },
         amdcheck: {
             main: {
                 options: {
@@ -99,7 +85,6 @@ module.exports = function(grunt) {
 
     // Default task.
     grunt.registerTask('default', [
-        'if-missing:esri_slurp:dev',
         'amdcheck',
         'newer:jshint:main',
         'connect',
@@ -108,7 +93,6 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('travis', [
-        'esri_slurp:travis',
         'jshint:main',
         'connect',
         'jasmine:main'
