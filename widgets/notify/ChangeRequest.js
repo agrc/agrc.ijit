@@ -235,7 +235,7 @@ define([
             //     Deferred
             console.info('agrc.ijit.widgets.notify.ChangeRequest::_invokeWebService', arguments);
 
-            var url = '/sendemailservice/notify',
+            var url = 'https://mapserv.utah.gov/sendemailservice/notify',
                 ids = this.toIds || [2];
 
             if (ids.length < 1) {
