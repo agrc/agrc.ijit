@@ -271,7 +271,8 @@ define([
             return request.post(url, {
                 data: dojoJson.toJson(options),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': null
                 }
             });
         },
