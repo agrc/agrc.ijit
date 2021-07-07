@@ -70,10 +70,12 @@ define([
         toolbar: null,
         // the redline symbol
         symbol: null,
-        // the base url to the redliner applicatin
+        // the base url to the red liner application
         redliner: null,
         // the id's of the emails to notify
         toIds: null,
+        // the email service configuration
+        emailServiceConfiguration: 'prod',
 
         constructor: function() {
             // summary:
@@ -235,8 +237,12 @@ define([
             //     Deferred
             console.info('agrc.ijit.widgets.notify.ChangeRequest::_invokeWebService', arguments);
 
-            var url = 'https://mapserv.utah.gov/sendemailservice/notify',
-                ids = this.toIds || [2];
+            var url = 'https://mapserv.utah.gov/sendemailservice/notify';
+            var ids = this.toIds || [2];
+
+            if (this.emailServiceConfiguration !== 'prod') {
+                url = 'https://us-central1-ut-dts-agrc-chalkdust-dev.cloudfunctions.net/send-email-service';
+            }
 
             if (ids.length < 1) {
                 ids = [2];
