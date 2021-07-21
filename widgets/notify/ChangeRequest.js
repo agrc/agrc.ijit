@@ -268,7 +268,7 @@ define([
 
             if (this._graphic && this._graphic.geometry) {
                 options.template.templateValues.link = this.redliner;
-                options.template.templateValues.redline = JSON.stringify(this._graphic.geometry.toJson());
+                options.template.templateValues.redline = this._graphic.geometry.toJson();
             }
 
             return request.post(url, {
