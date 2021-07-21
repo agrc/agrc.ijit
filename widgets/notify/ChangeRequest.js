@@ -71,7 +71,7 @@ define([
         // the redline symbol
         symbol: null,
         // the base url to the red liner application
-        redliner: null,
+        redliner: 'https://chalkdust.ugrc.utah.gov',
         // the id's of the emails to notify
         toIds: null,
         // the email service configuration
