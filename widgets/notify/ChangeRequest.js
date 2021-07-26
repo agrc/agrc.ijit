@@ -237,7 +237,7 @@ define([
             //     Deferred
             console.info('agrc.ijit.widgets.notify.ChangeRequest::_invokeWebService', arguments);
 
-            var url = 'https://mapserv.utah.gov/sendemailservice/notify';
+            var url = 'https://us-central1-ut-dts-agrc-chalkdust-prod.cloudfunctions.net/send-email-service';
             var ids = this.toIds || [2];
 
             if (this.emailServiceConfiguration !== 'prod') {
