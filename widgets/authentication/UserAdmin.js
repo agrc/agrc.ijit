@@ -173,7 +173,7 @@ define([
             // response: {}
             //      response object from getallapproved service
             console.log('ijit/widgets/authentication/UserAdmin:showApprovedUsers', arguments);
-            
+
             var that = this;
             var getStore = function () {
                 return new Memory({
@@ -249,7 +249,7 @@ define([
             // for an example
             var def = new Deferred();
             var that = this;
-        
+
             var userAdmin = new UserAdminUser(lang.mixin(item, {
                 adminToken: this.login.user.adminToken,
                 appName: this.appName,
@@ -308,7 +308,7 @@ define([
             // summary:
             //      Exports the user list to a csv file for download
             console.log('ijit/widgets/authentication/UserAdmin:exportToCsv', arguments);
-        
+
             var csvTxt;
             var that = this;
 
@@ -344,7 +344,7 @@ define([
                 }
                 return values;
             };
-            
+
             csvTxt = walkObject(firstUser, true).join(',') + '\n';
 
             var data = array.map(users, function (u) {
@@ -355,7 +355,8 @@ define([
             var uri = encodeURI('data:text/csv;charset=utf-8,' + csvTxt);
 
             if (this.downloadLink.download === '') {
-                this.downloadLink.href = uri;
+                // encodeURI does not touch hash marks but they mess up the csv if they are preserved
+                this.downloadLink.href = uri.replace(/#/g, '%23');
                 this.downloadLink.download = 'users.csv';
                 this.downloadLink.click();
             } else {
