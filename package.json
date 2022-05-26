@@ -15,7 +15,7 @@
   ],
   "devDependencies": {
     "es5-shim": "4.5.8",
-    "grunt": "1.5.2",
+    "grunt": "1.5.3",
     "grunt-amdcheck": "1.2.5",
     "grunt-bump": "0.8.0",
     "grunt-contrib-connect": "2.0.0",
